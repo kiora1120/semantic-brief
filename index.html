@@ -1,784 +1,1024 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Semantic Brief — 2026-03-30</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Semantic Brief — 2026.03.30</title>
   <style>
-    :root { --bg: #0a0a0f; --card: #12121a; --accent: #6c63ff; --gold: #f0c060; --text: #e8e8f0; --muted: #888; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; }
-    .masthead { text-align: center; padding: 40px 20px 30px; border-bottom: 2px solid var(--gold); }
-    .masthead h1 { font-family: 'Noto Serif KR', serif; font-size: 2.5rem; color: var(--gold); letter-spacing: 0.2em; }
-    .masthead .tagline { color: var(--muted); font-size: 0.85rem; margin-top: 8px; }
-    .masthead .date-issue { display: flex; justify-content: center; gap: 30px; margin-top: 15px; font-size: 0.8rem; color: var(--muted); }
-    .section { max-width: 800px; margin: 30px auto; padding: 0 20px; }
-    .section-title { font-family: 'Noto Serif KR', serif; font-size: 1.1rem; color: var(--gold); border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.1em; }
-    .card { background: var(--card); border-radius: 12px; margin-bottom: 16px; overflow: hidden; border: 1px solid #1e1e2e; }
-    .card-header { padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-    .card-header:hover { background: #1a1a2a; }
-    .card-tag { font-size: 0.7rem; background: var(--accent); color: white; padding: 2px 8px; border-radius: 20px; margin-right: 10px; white-space: nowrap; }
-    .card-tag.gold { background: #a07820; }
-    .card-tag.green { background: #2a7a4a; }
-    .card-tag.red { background: #7a2a3a; }
-    .card-tag.teal { background: #1a6a6a; }
-    .card-title { font-size: 1rem; font-weight: 500; flex: 1; }
-    .card-arrow { color: var(--muted); transition: transform 0.3s; font-size: 1.2rem; }
-    .card-body { display: none; padding: 0 20px 20px; border-top: 1px solid #1e1e2e; }
-    .card-body.open { display: block; }
-    .card-arrow.open { transform: rotate(90deg); }
-    .card-body p { line-height: 1.8; margin-top: 14px; color: #ccc; font-size: 0.92rem; }
-    .card-body a { color: var(--accent); text-decoration: none; }
-    .card-body a:hover { text-decoration: underline; }
-    .card-body ul { margin-top: 12px; padding-left: 20px; color: #ccc; font-size: 0.92rem; line-height: 1.8; }
-    .diagram-wrap { margin: 16px 0; overflow-x: auto; }
-    svg { max-width: 100%; }
-    pre { background: #0d1117; border-radius: 8px; padding: 14px; overflow-x: auto; margin: 12px 0; font-size: 0.82rem; border-left: 3px solid var(--accent); }
-    code { font-family: 'JetBrains Mono', 'Consolas', monospace; color: #79c0ff; }
-    .highlight { color: #ff9966; }
-    .comment { color: #6a9955; }
-    .string { color: #ce9178; }
-    .links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
-    .link-item { background: var(--card); border-radius: 8px; padding: 12px; border: 1px solid #1e1e2e; }
-    .link-item a { color: var(--accent); text-decoration: none; font-size: 0.85rem; display: block; margin-bottom: 4px; }
-    .link-item a:hover { text-decoration: underline; }
-    .link-item .link-desc { color: var(--muted); font-size: 0.75rem; }
-    footer { text-align: center; padding: 30px; color: var(--muted); font-size: 0.8rem; border-top: 1px solid #1e1e2e; margin-top: 40px; }
-    .summary-box { background: linear-gradient(135deg, #12121a, #1a1a2e); border: 1px solid var(--accent); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
-    .summary-box h3 { color: var(--gold); font-size: 0.9rem; margin-bottom: 12px; letter-spacing: 0.05em; }
-    .summary-box p { color: #bbb; font-size: 0.88rem; line-height: 1.7; }
-    .badge { display: inline-block; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
-    .badge-new { background: #1a4a2a; color: #4caf90; border: 1px solid #2a6a3a; }
-    .badge-hot { background: #4a1a1a; color: #ff7060; border: 1px solid #6a2a2a; }
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+    :root {
+      --bg: #0e0f13;
+      --ink: #f0f0f4;
+      --ink2: #9a9db0;
+      --ink3: #5a5d72;
+      --rule: #22253a;
+      --card: #14151e;
+      --card2: #1a1c28;
+      --accent: #7b93ff;
+      --accent2: #b48eff;
+      --red: #ff6b6b;
+      --green: #4ecb8d;
+      --gold: #f5c842;
+      --r: 12px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Noto Sans KR', -apple-system, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      padding-bottom: 80px;
+    }
+
+    /* ── MASTHEAD ── */
+    .masthead {
+      padding: 32px 20px 0;
+      border-bottom: 2px solid var(--ink);
+    }
+    .masthead-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 14px;
+    }
+    .masthead-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -.02em;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .masthead-title span {
+      color: var(--accent);
+    }
+    .masthead-issue {
+      font-size: 10px;
+      color: var(--ink3);
+      text-align: right;
+      line-height: 1.5;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .masthead-tagline {
+      font-size: 11px;
+      color: var(--ink3);
+      border-top: 1px solid var(--rule);
+      padding: 8px 0;
+      letter-spacing: .04em;
+    }
+
+    /* ── NAV ── */
+    .nav-bar {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      border-bottom: 1px solid var(--rule);
+    }
+    .nav-bar::-webkit-scrollbar { display: none; }
+    .nav-bar a {
+      flex-shrink: 0;
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: .2s;
+      white-space: nowrap;
+    }
+    .nav-bar a:hover, .nav-bar a.active {
+      color: var(--ink);
+      border-bottom-color: var(--accent);
+    }
+
+    /* ── LAYOUT ── */
+    main { padding: 0 18px; }
+
+    /* ── COVER STORY ── */
+    .cover {
+      padding: 28px 0 0;
+    }
+    .cover-kicker {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .cover-headline {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 26px;
+      font-weight: 900;
+      line-height: 1.25;
+      letter-spacing: -.02em;
+      margin-bottom: 14px;
+    }
+    .cover-lead {
+      font-size: 15px;
+      color: var(--ink2);
+      line-height: 1.75;
+      border-left: 3px solid var(--accent);
+      padding-left: 14px;
+      margin-bottom: 20px;
+    }
+    .cover-visual {
+      margin: 0 -18px 24px;
+      background: linear-gradient(135deg, #0e1428 0%, #1a1040 50%, #0e0f13 100%);
+      padding: 24px 18px;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 28px 0 14px;
+    }
+    .section-head-num {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--rule);
+      line-height: 1;
+    }
+    .section-head-text { flex: 1; }
+    .section-head-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .section-head-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .rule { height: 1px; background: var(--rule); margin: 4px 0 20px; }
+
+    /* ── ARTICLE CARD ── */
+    .article {
+      background: var(--card);
+      border: 1px solid var(--rule);
+      border-radius: var(--r);
+      margin-bottom: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: border-color .2s;
+    }
+    .article:hover { border-color: #35395a; }
+    .article.open { border-color: #3d4270; background: var(--card2); }
+
+    .article-preview {
+      padding: 16px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .article-emoji {
+      font-size: 28px;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .article-meta { flex: 1; min-width: 0; }
+    .article-category {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .article-headline {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+    .article-deck {
+      font-size: 12.5px;
+      color: var(--ink2);
+      line-height: 1.55;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .article.open .article-deck { display: none; }
+
+    .article-toggle {
+      flex-shrink: 0;
+      margin-top: 4px;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #ffffff08;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink3);
+      font-size: 11px;
+      transition: transform .3s, color .2s, background .2s;
+    }
+    .article.open .article-toggle {
+      transform: rotate(180deg);
+      color: var(--accent);
+      background: #7b93ff18;
+    }
+
+    /* ── ARTICLE BODY ── */
+    .article-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .45s cubic-bezier(.4,0,.2,1);
+    }
+    .article.open .article-body { max-height: 4000px; }
+
+    .article-body-inner {
+      padding: 0 18px 20px;
+      border-top: 1px solid var(--rule);
+    }
+
+    /* prose */
+    .prose { margin-top: 16px; }
+    .prose p {
+      font-size: 14px;
+      color: var(--ink2);
+      line-height: 1.85;
+      margin-bottom: 14px;
+    }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose strong { color: var(--ink); font-weight: 600; }
+    .prose em { color: var(--ink); font-style: normal; font-weight: 500; }
+
+    /* pull quote */
+    .pullquote {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.5;
+      color: var(--ink);
+      border-left: 3px solid var(--accent);
+      padding: 10px 14px;
+      margin: 16px 0;
+      background: #7b93ff08;
+      border-radius: 0 6px 6px 0;
+    }
+
+    /* fact box */
+    .factbox {
+      background: #0a0b10;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 14px 0;
+    }
+    .factbox-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .factbox-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .factbox-stat {
+      flex: 1;
+      min-width: 80px;
+      text-align: center;
+      padding: 8px 4px;
+      background: var(--card2);
+      border-radius: 6px;
+    }
+    .factbox-num {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 22px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .factbox-caption { font-size: 10px; color: var(--ink3); margin-top: 3px; line-height: 1.3; }
+
+    /* code block */
+    .codeblock {
+      background: #080910;
+      border: 1px solid #1e2035;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin: 14px 0;
+      overflow-x: auto;
+    }
+    .codeblock pre {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.65;
+      color: #abb2bf;
+      white-space: pre;
+    }
+    .ck { color: #c678dd; }
+    .cs { color: #98c379; }
+    .cc { color: #5c6370; font-style: italic; }
+    .cv { color: #61afef; }
+    .cn { color: #e06c75; }
+
+    /* arch diagram */
+    .diagram {
+      background: #080910;
+      border: 1px solid #1e2035;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 14px 0;
+    }
+    .diagram-label {
+      padding: 7px 12px;
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      border-bottom: 1px solid #1e2035;
+    }
+    .diagram svg { display: block; width: 100%; height: auto; }
+
+    /* compare */
+    .compare {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      margin: 14px 0;
+    }
+    .compare th {
+      background: #0a0b10;
+      color: var(--accent);
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 7px 8px;
+      text-align: left;
+      border-bottom: 1px solid var(--rule);
+    }
+    .compare td {
+      padding: 7px 8px;
+      border-bottom: 1px solid #ffffff05;
+      color: var(--ink2);
+      vertical-align: top;
+    }
+    .compare tr:last-child td { border-bottom: none; }
+    .compare td:first-child { color: var(--ink); font-weight: 600; }
+    .y { color: var(--green); }
+    .n { color: var(--ink3); }
+    .p { color: var(--gold); }
+
+    /* read more */
+    .readmore {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid #7b93ff40;
+      padding-bottom: 1px;
+      transition: .2s;
+    }
+    .readmore:hover { color: var(--accent2); border-color: var(--accent2); }
+
+    /* ── TOOL STRIP ── */
+    .tool-strip { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+    .tool-item {
+      background: var(--card);
+      border: 1px solid var(--rule);
+      border-radius: var(--r);
+      overflow: hidden;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: border-color .2s;
+    }
+    .tool-item:hover { border-color: #35395a; }
+    .tool-item.open { border-color: #3d4270; background: var(--card2); }
+    .tool-head {
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .tool-icon {
+      width: 38px; height: 38px;
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+    .tool-meta { flex: 1; }
+    .tool-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .tool-sub { font-size: 11.5px; color: var(--ink3); }
+    .tool-badge {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--accent);
+      text-align: right;
+      line-height: 1.1;
+    }
+    .tool-badge small { display: block; font-size: 9.5px; color: var(--ink3); font-weight: 500; }
+    .tool-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .45s cubic-bezier(.4,0,.2,1);
+    }
+    .tool-item.open .tool-body { max-height: 2000px; }
+    .tool-body-inner {
+      border-top: 1px solid var(--rule);
+      padding: 14px 16px 16px;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+    .chip {
+      font-size: 10.5px;
+      color: var(--accent2);
+      background: #b48eff12;
+      border: 1px solid #b48eff25;
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+
+    /* ── SOURCES ── */
+    .source-list { list-style: none; }
+    .source-list li { border-bottom: 1px solid var(--rule); }
+    .source-list li:last-child { border-bottom: none; }
+    .source-list a {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px 0;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+      line-height: 1.4;
+      transition: color .2s;
+    }
+    .source-list a:hover { color: var(--accent2); }
+    .source-list a::before { content: "↗"; flex-shrink: 0; font-size: 12px; margin-top: 1px; opacity: .6; }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 40px;
+      padding: 20px 18px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10.5px;
+      color: var(--ink3);
+    }
+    footer strong { color: var(--ink2); }
   </style>
 </head>
 <body>
 
-<div class="masthead">
-  <div style="font-size:0.75rem; color: var(--muted); letter-spacing:0.3em; margin-bottom:8px;">DAILY INTELLIGENCE REPORT</div>
-  <h1>SEMANTIC BRIEF</h1>
-  <div class="tagline">온톨로지 · 지식그래프 · 시맨틱레이어 최신 동향</div>
-  <div class="date-issue">
-    <span>📅 2026년 3월 30일 (월)</span>
-    <span>|</span>
-    <span>Vol. 2026 · Issue #089</span>
-    <span>|</span>
-    <span>🔍 6개 카테고리 · 15개 이슈</span>
+<!-- MASTHEAD -->
+<header>
+  <div class="masthead">
+    <div class="masthead-top">
+      <div class="masthead-title">Semantic<span>Brief</span></div>
+      <div class="masthead-issue">
+        Vol. 1 · No. 2<br>
+        2026년 3월 30일
+      </div>
+    </div>
+    <div class="masthead-tagline">온톨로지 & 시멘틱레이어 · 지식그래프 · AI 데이터 인프라</div>
   </div>
-</div>
+  <nav class="nav-bar">
+    <a href="#cover" class="active">커버스토리</a>
+    <a href="#news">뉴스</a>
+    <a href="#tools">도구</a>
+    <a href="#research">연구</a>
+    <a href="#industry">산업</a>
+    <a href="#sources">링크</a>
+  </nav>
+</header>
 
-<!-- 오늘의 요약 -->
-<div class="section">
-  <div class="summary-box">
-    <h3>⚡ TODAY'S TOP 3 HIGHLIGHTS</h3>
-    <p>① <strong style="color:#f0c060">Digital Science, Ontopic 인수</strong> — VKG(Virtual Knowledge Graph) 선구자 Ontopic을 인수하여 엔터프라이즈 지식그래프 시장 주도권 강화. Ontop 오픈소스 프레임워크 기반의 OBDA 기술이 metaphactory 플랫폼과 통합.</p>
-    <p style="margin-top:10px">② <strong style="color:#f0c060">Snowflake Semantic View Autopilot GA</strong> — AI 기반 시맨틱 뷰 자동화 서비스 정식 출시. ML로 BI 도구 사용 패턴을 분석해 메트릭 정의를 자동 생성, 데이터 팀의 시맨틱 모델링 작업을 수일에서 수분으로 단축.</p>
-    <p style="margin-top:10px">③ <strong style="color:#f0c060">GraphRAG, 프로덕션 표준으로 부상</strong> — 2026년 들어 GraphRAG가 실험적 기법에서 엔터프라이즈 AI의 핵심 아키텍처로 자리매김. LinearRAG(ICLR'26), LogicRAG(AAAI'26) 채택으로 학술-산업 연계 가속.</p>
-  </div>
-</div>
+<main>
 
-<!-- Section 1: 기업 뉴스 -->
-<div class="section">
-  <div class="section-title">🏢 Industry News & Acquisitions</div>
+  <!-- ── COVER STORY ── -->
+  <section id="cover" class="cover">
+    <div class="cover-kicker">Today's Top Story</div>
+    <div class="cover-headline">GraphRAG,<br>프로덕션의 표준이 되다</div>
+    <div class="cover-lead">
+      벡터 검색 대비 3.4배의 정확도 향상. Gartner가 지식그래프를 GenAI의 "Critical Enabler"로 공식 선언했다. 실험실의 기술이 엔터프라이즈 인프라로 전환되는 변곡점이다.
+    </div>
 
-  <!-- Card 1 -->
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag gold">M&amp;A</span>
-      <span class="card-title">Digital Science, VKG 선구자 Ontopic 인수 <span class="badge badge-hot">HOT</span></span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <p>2026년 3월 25일, Digital Science는 이탈리아 볼자노 소재 Virtual Knowledge Graph 전문 기업 Ontopic을 인수했다. Ontopic은 자유 볼자노-보첸 대학교의 스핀오프로, 오픈소스 VKG 프레임워크 <strong>Ontop</strong>의 주요 개발사다.</p>
-      <p>Ontopic Studio는 기존 관계형 DB나 데이터 레이크에서 복잡한 데이터 변환 없이 직접 지식그래프를 구축하고 쿼리할 수 있게 해준다. Digital Science의 <strong>metaphactory</strong> 플랫폼과 통합되면, OBDA(Ontology-Based Data Access) 기술이 엔터프라이즈 지식 민주화 플랫폼으로 확장된다.</p>
-      <p>Digital Science 내에 새롭게 설립된 <em>Knowledge Graph Competency</em> 그룹이 Ontopic 팀을 흡수하여 시맨틱 기술 혁신 센터 역할을 맡는다.</p>
-      <p>🔗 <a href="https://www.digital-science.com/blog/2026/03/digital-science-acquires-ontopic/" target="_blank">Digital Science 공식 발표 →</a></p>
-    </div>
-  </div>
+    <div class="cover-visual">
+      <svg viewBox="0 0 340 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#4ecb8d" stop-opacity=".22"/>
+            <stop offset="100%" stop-color="#4ecb8d" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#7b93ff" stop-opacity=".18"/>
+            <stop offset="100%" stop-color="#7b93ff" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle cx="170" cy="60" r="80" fill="url(#glow1)"/>
+        <circle cx="80" cy="40" r="50" fill="url(#glow2)"/>
 
-  <!-- Card 2 -->
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag">CONFERENCE</span>
-      <span class="card-title">Knowledge Graph Conference 2026 — 5월 뉴욕 개최</span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <p>2026년 5월 4~8일, 뉴욕 Cornell Tech에서 The Knowledge Graph Conference 2026이 열린다. 지식그래프, 시맨틱 기술, AI 분야의 실무자·연구자·업계 리더들이 모여 최신 개발 동향을 공유한다.</p>
-      <p>주요 트랙으로는 엔터프라이즈 KG 구축, GraphRAG 활용, LLM + 온톨로지 통합, 데이터 거버넌스 등이 예정되어 있다.</p>
-      <p>🔗 <a href="https://www.digital-science.com/events/the-knowledge-graph-conference-2026/" target="_blank">KGC 2026 공식 페이지 →</a></p>
-    </div>
-  </div>
+        <!-- central: GraphRAG -->
+        <circle cx="170" cy="60" r="28" fill="#4ecb8d18" stroke="#4ecb8d" stroke-width="1.5"/>
+        <text x="170" y="56" text-anchor="middle" fill="#6ee7b7" font-size="8.5" font-weight="700" font-family="sans-serif">GraphRAG</text>
+        <text x="170" y="68" text-anchor="middle" fill="#4ecb8d" font-size="7.5" font-family="sans-serif">KG 기반</text>
 
-  <!-- Card 3 -->
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag">CONFERENCE</span>
-      <span class="card-title">Neo4j NODES AI 2026 — 그래프 + AI 버추얼 컨퍼런스 (4/15)</span>
-      <span class="card-arrow">▶</span>
+        <!-- satellites -->
+        <circle cx="55" cy="28" r="19" fill="#7b93ff12" stroke="#7b93ff" stroke-width="1"/>
+        <text x="55" y="25" text-anchor="middle" fill="#93a8ff" font-size="7.5" font-family="sans-serif">Vector</text>
+        <text x="55" y="36" text-anchor="middle" fill="#7b93ff" font-size="7" font-family="sans-serif">RAG ×1</text>
+
+        <circle cx="295" cy="28" r="19" fill="#f5c84212" stroke="#f5c842" stroke-width="1"/>
+        <text x="295" y="25" text-anchor="middle" fill="#fde68a" font-size="7.5" font-family="sans-serif">Gartner</text>
+        <text x="295" y="36" text-anchor="middle" fill="#f5c842" font-size="7" font-family="sans-serif">Critical</text>
+
+        <circle cx="55" cy="98" r="19" fill="#b48eff12" stroke="#b48eff" stroke-width="1"/>
+        <text x="55" y="95" text-anchor="middle" fill="#c4a8ff" font-size="7.5" font-family="sans-serif">ICLR</text>
+        <text x="55" y="106" text-anchor="middle" fill="#b48eff" font-size="7" font-family="sans-serif">LinearRAG</text>
+
+        <circle cx="295" cy="98" r="19" fill="#ff6b6b12" stroke="#ff6b6b" stroke-width="1"/>
+        <text x="295" y="95" text-anchor="middle" fill="#fca5a5" font-size="7.5" font-family="sans-serif">AAAI</text>
+        <text x="295" y="106" text-anchor="middle" fill="#ff6b6b" font-size="7" font-family="sans-serif">LogicRAG</text>
+
+        <!-- edges -->
+        <line x1="73" y1="36" x2="144" y2="52" stroke="#7b93ff40" stroke-width="1.2"/>
+        <line x1="277" y1="36" x2="196" y2="52" stroke="#f5c84240" stroke-width="1.2"/>
+        <line x1="73" y1="90" x2="144" y2="68" stroke="#b48eff40" stroke-width="1.2"/>
+        <line x1="277" y1="90" x2="196" y2="68" stroke="#ff6b6b40" stroke-width="1.2"/>
+
+        <!-- 3.4x label -->
+        <text x="170" y="108" text-anchor="middle" fill="#4ecb8d" font-size="9" font-weight="700" font-family="sans-serif">벡터 RAG 대비 3.4× 정확도</text>
+      </svg>
     </div>
-    <div class="card-body">
-      <p>Neo4j의 연례 온라인 컨퍼런스 NODES AI가 2026년 4월 15일 개최된다. 세 가지 핵심 트랙으로 구성된다:</p>
-      <ul>
-        <li><strong>Knowledge Graphs &amp; GraphRAG</strong> — 지식그래프 기반 RAG 아키텍처</li>
-        <li><strong>Graph Memory &amp; Agents</strong> — AI 에이전트의 그래프 메모리 활용</li>
-        <li><strong>Graph + AI in Production</strong> — Mercedes-Benz 등 실제 엔터프라이즈 사례</li>
+
+    <!-- cover article -->
+    <div class="article" onclick="toggle(this)">
+      <div class="article-preview">
+        <div class="article-emoji">🚀</div>
+        <div class="article-meta">
+          <div class="article-category" style="color:var(--green)">커버스토리</div>
+          <div class="article-headline">KG 기반 RAG가 엔터프라이즈 표준으로 — Gartner "Critical Enabler" 선언</div>
+          <div class="article-deck">3.4배 정확도 차이가 만들어낸 패러다임 전환. 벡터 검색 단독 시대가 저물고 있다.</div>
+        </div>
+        <div class="article-toggle">▾</div>
+      </div>
+      <div class="article-body">
+        <div class="article-body-inner">
+          <div class="prose">
+            <p>2026년 1분기, 엔터프라이즈 AI 인프라의 중심이 빠르게 이동하고 있다. 지식그래프 기반 GraphRAG가 순수 벡터 검색 RAG 대비 <strong>3.4배 높은 정확도</strong>를 보인다는 벤치마크가 잇달아 발표되면서, Gartner는 이 흐름을 공식화했다. 지식그래프를 생성형 AI 파이프라인의 "Critical Enabler"로 분류한 것이다.</p>
+            <p>핵심 이유는 단순하다. 벡터 검색은 의미적 유사성을 잘 찾지만, <strong>다중 홉 관계 추론</strong>을 처리하지 못한다. "A가 B의 부서장이고, B가 C 프로젝트를 관리할 때, C의 예산 책임자는 누구인가?" 같은 질의에서 벡터 RAG는 관련 청크를 모아오는 데 그치지만, GraphRAG는 엔티티 간 관계를 따라 정확한 경로를 추론한다.</p>
+            <div class="pullquote">"KG 없는 RAG는 사전 없이 번역하는 것과 같다. 어느 정도는 되지만, 정밀도가 없다."</div>
+            <div class="factbox">
+              <div class="factbox-label">GraphRAG vs Vector RAG — 2026 벤치마크</div>
+              <div class="factbox-row">
+                <div class="factbox-stat"><div class="factbox-num">3.4×</div><div class="factbox-caption">정확도<br>향상 배수</div></div>
+                <div class="factbox-stat"><div class="factbox-num">67%</div><div class="factbox-caption">다중 홉<br>질의 개선율</div></div>
+                <div class="factbox-stat"><div class="factbox-num">82%</div><div class="factbox-caption">엔터프라이즈<br>환각 감소율</div></div>
+              </div>
+            </div>
+            <p>Microsoft는 오픈소스 GraphRAG 프레임워크의 v2를 릴리즈했고, Neo4j·Stardog·Ontotext는 각각 자사 플랫폼에 GraphRAG 파이프라인을 통합했다. Gartner는 2027년까지 Fortune 500의 40%가 RAG 파이프라인에 KG를 결합할 것으로 전망한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NEWS ── -->
+  <section id="news">
+    <div class="section-head">
+      <div class="section-head-num">01</div>
+      <div class="section-head-text">
+        <div class="section-head-label">News</div>
+        <div class="section-head-title">주요 뉴스 & 업데이트</div>
+      </div>
+    </div>
+    <div class="rule"></div>
+
+    <!-- Snowflake Autopilot -->
+    <div class="article" onclick="toggle(this)">
+      <div class="article-preview">
+        <div class="article-emoji">❄️</div>
+        <div class="article-meta">
+          <div class="article-category" style="color:var(--accent)">GA 출시 · Snowflake</div>
+          <div class="article-headline">Snowflake Semantic View Autopilot GA — AI가 시맨틱 뷰를 직접 만든다</div>
+          <div class="article-deck">자연어 설명만 입력하면 AI가 시맨틱 뷰를 자동 생성·최적화하는 서비스가 정식 출시됐다.</div>
+        </div>
+        <div class="article-toggle">▾</div>
+      </div>
+      <div class="article-body">
+        <div class="article-body-inner">
+          <div class="prose">
+            <p>Snowflake가 Semantic View Autopilot을 정식(GA) 출시했다. "월별 활성 고객 수를 보여주는 뷰를 만들어줘"라고 입력하면, AI가 스키마를 분석하고 적절한 집계 로직과 필터를 포함한 <strong>시맨틱 뷰를 자동 생성</strong>한다. 이전에는 데이터 엔지니어가 직접 SQL DDL을 작성하고 시맨틱 메타데이터를 수동으로 정의해야 했다.</p>
+            <div class="diagram">
+              <div class="diagram-label">Semantic View Autopilot — 동작 흐름</div>
+              <svg viewBox="0 0 340 75" xmlns="http://www.w3.org/2000/svg" style="padding:10px;">
+                <rect x="5" y="15" width="65" height="30" rx="7" fill="#7b93ff18" stroke="#7b93ff" stroke-width="1.2"/>
+                <text x="37" y="27" text-anchor="middle" fill="#93a8ff" font-size="8" font-weight="700" font-family="sans-serif">자연어</text>
+                <text x="37" y="38" text-anchor="middle" fill="#7b93ff" font-size="7.5" font-family="sans-serif">비즈니스 요구</text>
+                <rect x="82" y="15" width="75" height="30" rx="7" fill="#b48eff18" stroke="#b48eff" stroke-width="1.2"/>
+                <text x="119" y="27" text-anchor="middle" fill="#c4a8ff" font-size="8" font-weight="700" font-family="sans-serif">Autopilot AI</text>
+                <text x="119" y="38" text-anchor="middle" fill="#b48eff" font-size="7.5" font-family="sans-serif">스키마 분석 + 추론</text>
+                <rect x="169" y="15" width="75" height="30" rx="7" fill="#4ecb8d18" stroke="#4ecb8d" stroke-width="1.2"/>
+                <text x="206" y="27" text-anchor="middle" fill="#6ee7b7" font-size="8" font-weight="700" font-family="sans-serif">Semantic View</text>
+                <text x="206" y="38" text-anchor="middle" fill="#4ecb8d" font-size="7.5" font-family="sans-serif">자동 생성 + 등록</text>
+                <rect x="256" y="15" width="74" height="30" rx="7" fill="#f5c84218" stroke="#f5c842" stroke-width="1.2"/>
+                <text x="293" y="27" text-anchor="middle" fill="#fde68a" font-size="8" font-weight="700" font-family="sans-serif">Cortex Analyst</text>
+                <text x="293" y="38" text-anchor="middle" fill="#f5c842" font-size="7.5" font-family="sans-serif">NL 쿼리 즉시 사용</text>
+                <line x1="70" y1="30" x2="82" y2="30" stroke="#7b93ff60" stroke-width="1.2" marker-end="url(#ap1)"/>
+                <line x1="157" y1="30" x2="169" y2="30" stroke="#b48eff60" stroke-width="1.2" marker-end="url(#ap1)"/>
+                <line x1="244" y1="30" x2="256" y2="30" stroke="#4ecb8d60" stroke-width="1.2" marker-end="url(#ap1)"/>
+                <defs><marker id="ap1" markerWidth="5" markerHeight="5" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#7b93ff"/></marker></defs>
+              </svg>
+            </div>
+            <p>Autopilot이 생성한 시맨틱 뷰는 Cortex Analyst와 즉시 연동된다. 비즈니스 사용자가 자연어로 데이터를 질의하면 Cortex Analyst가 시맨틱 뷰의 메트릭 정의를 참조해 정확한 SQL로 변환한다. <strong>데이터 엔지니어 없이도 일관된 메트릭 거버넌스</strong>가 가능해지는 구조다. 단, 복잡한 조직별 비즈니스 로직은 여전히 사람이 검토·수정해야 한다는 한계도 존재한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Digital Science / Ontopic metaphactory -->
+    <div class="article" onclick="toggle(this)">
+      <div class="article-preview">
+        <div class="article-emoji">🔗</div>
+        <div class="article-meta">
+          <div class="article-category" style="color:var(--green)">통합 · M&A 후속</div>
+          <div class="article-headline">Ontopic VKG, metaphactory 플랫폼과 통합 — OBDA의 새 시대</div>
+          <div class="article-deck">Digital Science의 Ontopic 인수(3/25) 이후, VKG 기술이 metaphactory 지식그래프 플랫폼에 공식 통합된다.</div>
+        </div>
+        <div class="article-toggle">▾</div>
+      </div>
+      <div class="article-body">
+        <div class="article-body-inner">
+          <div class="prose">
+            <p>지난 3월 25일 발표된 Digital Science의 Ontopic 인수가 구체적인 기술 통합 계획으로 이어졌다. Ontopic의 핵심인 <strong>Ontop VKG 엔진</strong>이 metaphactory 지식그래프 플랫폼에 통합되면, 기존 관계형 DB를 ETL 없이 온톨로지 레이어로 노출하는 OBDA(Ontology-Based Data Access) 기능이 metaphactory 사용자에게도 제공된다.</p>
+            <p>OBDA의 핵심 가치는 <strong>데이터를 이동시키지 않는다</strong>는 것이다. R2RML 매핑 파일만 작성하면 SPARQL 쿼리가 실시간으로 SQL로 변환되어 원본 DB에서 데이터를 가져온다. 연구 기관들이 이종 데이터 소스(논문 DB, 임상 데이터, 특허 등)를 하나의 시맨틱 레이어로 통합하는 데 특히 강점을 발휘한다.</p>
+            <div class="factbox">
+              <div class="factbox-label">VKG vs 전통 KG 구축</div>
+              <div class="factbox-row">
+                <div class="factbox-stat"><div class="factbox-num">0%</div><div class="factbox-caption">ETL<br>파이프라인</div></div>
+                <div class="factbox-stat"><div class="factbox-num">실시간</div><div class="factbox-caption">데이터<br>최신성</div></div>
+                <div class="factbox-stat"><div class="factbox-num">R2RML</div><div class="factbox-caption">표준<br>매핑 언어</div></div>
+              </div>
+            </div>
+            <p>metaphactory는 이미 제약, 바이오, 문화유산 분야 기관들이 사용 중인 엔터프라이즈 KG 플랫폼이다. VKG 통합으로 <strong>새 데이터를 별도 Triple Store에 적재할 필요 없이</strong> 기존 운영 DB를 그대로 SPARQL 엔드포인트로 노출할 수 있게 된다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TOOLS ── -->
+  <section id="tools">
+    <div class="section-head">
+      <div class="section-head-num">02</div>
+      <div class="section-head-text">
+        <div class="section-head-label">Tools</div>
+        <div class="section-head-title">시멘틱레이어 도구 동향</div>
+      </div>
+    </div>
+    <div class="rule"></div>
+
+    <div class="factbox" style="margin-bottom:14px;">
+      <div class="factbox-label">dbt MetricFlow 0.9 — 주요 지표</div>
+      <div class="factbox-row">
+        <div class="factbox-stat"><div class="factbox-num">0.9</div><div class="factbox-caption">MetricFlow<br>최신 버전</div></div>
+        <div class="factbox-stat"><div class="factbox-num">5×</div><div class="factbox-caption">복합 메트릭<br>쿼리 속도</div></div>
+        <div class="factbox-stat"><div class="factbox-num">GA</div><div class="factbox-caption">Snowflake SV<br>Autopilot</div></div>
+      </div>
+    </div>
+
+    <div class="tool-strip">
+
+      <div class="tool-item" onclick="toggle(this)">
+        <div class="tool-head">
+          <div class="tool-icon" style="background:#ff690018;">🟧</div>
+          <div class="tool-meta">
+            <div class="tool-name">dbt MetricFlow 0.9</div>
+            <div class="tool-sub">Semantic Layer 통합 강화 · 복합 메트릭 지원</div>
+          </div>
+          <div class="tool-badge">v0.9<small>신규 릴리즈</small></div>
+        </div>
+        <div class="tool-body">
+          <div class="tool-body-inner">
+            <div class="prose">
+              <p>dbt MetricFlow 0.9가 릴리즈되며 시맨틱 레이어 통합이 한층 강화됐다. 가장 주목할 변경은 <strong>복합 메트릭(Derived Metric)</strong> 지원 확대다. 이제 ratio, cumulative, derived 메트릭을 서로 참조해 더 복잡한 비즈니스 로직을 단일 YAML 정의로 표현할 수 있다.</p>
+            </div>
+            <div class="codeblock"><pre><span class="cc"># MetricFlow 0.9 — Derived Metric 중첩 참조</span>
+<span class="ck">metric</span>:
+  <span class="cv">name</span>: revenue_per_active_user
+  <span class="cv">type</span>: derived
+  <span class="cv">type_params</span>:
+    <span class="cv">expr</span>: monthly_revenue / active_users
+    <span class="cv">metrics</span>:
+      - <span class="cv">name</span>: monthly_revenue   <span class="cc"># 다른 메트릭 참조</span>
+      - <span class="cv">name</span>: active_users      <span class="cc"># 다른 메트릭 참조</span>
+  <span class="cv">filter</span>: |
+    {{ Dimension(<span class="cs">'user__tier'</span>) }} = <span class="cs">'premium'</span></pre></div>
+            <p>성능 측면에서는 복합 메트릭 쿼리 플래너가 재작성돼 중복 서브쿼리를 제거하고 <strong>쿼리 속도가 최대 5배 향상</strong>됐다. Tableau와 Power BI의 JDBC 커넥터도 업데이트되어 드리프트 감지가 실시간으로 가능해졌다.</p>
+            <div class="chips">
+              <span class="chip">Derived Metric 중첩</span>
+              <span class="chip">쿼리 플래너 최적화</span>
+              <span class="chip">Tableau / Power BI JDBC</span>
+              <span class="chip">드리프트 실시간 감지</span>
+              <span class="chip">Snowflake / BigQuery / DuckDB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-item" onclick="toggle(this)">
+        <div class="tool-head">
+          <div class="tool-icon" style="background:#29b6f618;">❄️</div>
+          <div class="tool-meta">
+            <div class="tool-name">Snowflake Semantic Views</div>
+            <div class="tool-sub">Autopilot GA · Cortex Analyst 통합 · 자연어 거버넌스</div>
+          </div>
+          <div class="tool-badge">GA<small>정식 출시</small></div>
+        </div>
+        <div class="tool-body">
+          <div class="tool-body-inner">
+            <div class="prose">
+              <p>Autopilot GA와 함께 Snowflake Semantic Views에 <strong>Row-Level Security 자동 상속</strong> 기능이 추가됐다. 시맨틱 뷰를 통한 모든 Cortex Analyst 쿼리에 기존 RLS 정책이 자동 적용돼, LLM이 권한 밖 데이터를 반환하는 경우가 원천 차단된다.</p>
+            </div>
+            <div class="chips">
+              <span class="chip">Autopilot AI 자동 생성</span>
+              <span class="chip">RLS 자동 상속</span>
+              <span class="chip">Cortex Analyst 연동</span>
+              <span class="chip">메트릭 버전 관리</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 비교표 -->
+      <div class="article" onclick="toggle(this)" style="margin-top:4px;">
+        <div class="article-preview">
+          <div class="article-emoji">📋</div>
+          <div class="article-meta">
+            <div class="article-category" style="color:var(--gold)">비교 분석</div>
+            <div class="article-headline">dbt MetricFlow 0.9 vs Snowflake SV Autopilot — 어떻게 선택하나</div>
+            <div class="article-deck">코드 우선 vs AI 자동화. 두 접근의 트레이드오프를 정리했다.</div>
+          </div>
+          <div class="article-toggle">▾</div>
+        </div>
+        <div class="article-body">
+          <div class="article-body-inner">
+            <div class="prose">
+              <p>dbt MetricFlow는 <strong>코드로 메트릭을 정의</strong>하는 철학이다. Git 히스토리, CI/CD, 코드 리뷰가 그대로 붙는다. 반면 Snowflake Autopilot은 자연어에서 시작해 AI가 초안을 만들어준다. 정밀 제어가 필요한 팀은 dbt, 빠른 프로토타이핑이 목표라면 Autopilot이 유리하다.</p>
+              <div class="pullquote">"MetricFlow는 시맨틱 레이어를 코드베이스로, Autopilot은 대화로 다룬다. 선택은 팀 문화에 달렸다."</div>
+            </div>
+            <table class="compare">
+              <thead><tr><th>항목</th><th>dbt MetricFlow 0.9</th><th>Snowflake SV Autopilot</th></tr></thead>
+              <tbody>
+                <tr><td>정의 방식</td><td class="y">YAML 코드</td><td class="p">자연어 → AI</td></tr>
+                <tr><td>Git 버전관리</td><td class="y">✓ 네이티브</td><td class="n">✗ 미지원</td></tr>
+                <tr><td>멀티 DWH</td><td class="y">✓</td><td class="n">Snowflake만</td></tr>
+                <tr><td>초기 설정 속도</td><td class="p">중간</td><td class="y">빠름</td></tr>
+                <tr><td>복잡 비즈니스 로직</td><td class="y">✓ Derived</td><td class="p">AI 보조 필요</td></tr>
+                <tr><td>LLM 자연어 쿼리</td><td class="p">써드파티</td><td class="y">Cortex 네이티브</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── RESEARCH ── -->
+  <section id="research">
+    <div class="section-head">
+      <div class="section-head-num">03</div>
+      <div class="section-head-text">
+        <div class="section-head-label">Research</div>
+        <div class="section-head-title">주목할 연구</div>
+      </div>
+    </div>
+    <div class="rule"></div>
+
+    <!-- LinearRAG -->
+    <div class="article" onclick="toggle(this)">
+      <div class="article-preview">
+        <div class="article-emoji">📐</div>
+        <div class="article-meta">
+          <div class="article-category" style="color:var(--accent2)">논문 · ICLR 2026 채택</div>
+          <div class="article-headline">LinearRAG — 선형 시간 복잡도로 KG 추론을 혁신하다</div>
+          <div class="article-deck">기존 GraphRAG의 O(n²) 병목을 O(n)으로 줄인 새 아키텍처. 대규모 KG에서도 실시간 추론이 가능해진다.</div>
+        </div>
+        <div class="article-toggle">▾</div>
+      </div>
+      <div class="article-body">
+        <div class="article-body-inner">
+          <div class="prose">
+            <p>ICLR 2026에 채택된 LinearRAG 논문은 GraphRAG의 핵심 병목을 정면 돌파한다. 기존 KG 기반 RAG는 엔티티 간 관계를 탐색할 때 그래프 순회 비용이 O(n²)에 달해 대규모 KG에서 응답 지연이 발생했다. LinearRAG는 <strong>선형 어텐션 메커니즘과 KG 구조를 결합</strong>해 이 복잡도를 O(n)으로 낮춘다.</p>
+            <div class="diagram">
+              <div class="diagram-label">LinearRAG vs Standard GraphRAG — 복잡도 비교</div>
+              <svg viewBox="0 0 340 80" xmlns="http://www.w3.org/2000/svg" style="padding:12px;">
+                <!-- Standard GraphRAG bar -->
+                <text x="10" y="22" fill="#9a9db0" font-size="8.5" font-family="sans-serif">Standard GraphRAG</text>
+                <rect x="10" y="28" width="240" height="14" rx="4" fill="#ff6b6b18" stroke="#ff6b6b50" stroke-width="1"/>
+                <rect x="10" y="28" width="240" height="14" rx="4" fill="#ff6b6b30"/>
+                <text x="255" y="39" fill="#ff6b6b" font-size="8.5" font-weight="700" font-family="sans-serif">O(n²)</text>
+
+                <!-- LinearRAG bar -->
+                <text x="10" y="58" fill="#9a9db0" font-size="8.5" font-family="sans-serif">LinearRAG</text>
+                <rect x="10" y="64" width="80" height="14" rx="4" fill="#4ecb8d18" stroke="#4ecb8d50" stroke-width="1"/>
+                <rect x="10" y="64" width="80" height="14" rx="4" fill="#4ecb8d30"/>
+                <text x="96" y="75" fill="#4ecb8d" font-size="8.5" font-weight="700" font-family="sans-serif">O(n)</text>
+              </svg>
+            </div>
+            <p>실험 결과에서 LinearRAG는 100만 노드 이상의 대규모 KG에서 <strong>응답 시간 82% 단축</strong>을 달성했으며, 정확도는 기존 GraphRAG 대비 동등하거나 소폭 우수했다. 특히 실시간 운영 환경(금융 거래 분석, 의료 진단 보조)에서의 활용 가능성이 높다는 평가다.</p>
+            <div class="factbox">
+              <div class="factbox-label">LinearRAG 핵심 지표</div>
+              <div class="factbox-row">
+                <div class="factbox-stat"><div class="factbox-num">O(n)</div><div class="factbox-caption">시간<br>복잡도</div></div>
+                <div class="factbox-stat"><div class="factbox-num">82%</div><div class="factbox-caption">응답 시간<br>단축</div></div>
+                <div class="factbox-stat"><div class="factbox-num">1M+</div><div class="factbox-caption">노드 규모<br>검증</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LogicRAG -->
+    <div class="article" onclick="toggle(this)">
+      <div class="article-preview">
+        <div class="article-emoji">🧮</div>
+        <div class="article-meta">
+          <div class="article-category" style="color:var(--gold)">논문 · AAAI 2026 채택</div>
+          <div class="article-headline">LogicRAG — 논리 규칙으로 LLM 환각을 구조적으로 차단</div>
+          <div class="article-deck">온톨로지 제약 조건을 RAG 파이프라인에 직접 주입해 논리적 불일치를 사전 필터링하는 방법론.</div>
+        </div>
+        <div class="article-toggle">▾</div>
+      </div>
+      <div class="article-body">
+        <div class="article-body-inner">
+          <div class="prose">
+            <p>AAAI 2026에 채택된 LogicRAG는 다른 각도에서 RAG 정확도 문제를 접근한다. LinearRAG가 속도에 집중했다면, LogicRAG는 <strong>논리적 일관성</strong>을 목표로 삼는다. 핵심 아이디어는 온톨로지에 정의된 제약 조건(공리, 도메인/범위 규칙, 함의 관계)을 RAG 검색 단계에서 필터로 작동시키는 것이다.</p>
+            <div class="codeblock"><pre><span class="cc"># LogicRAG — OWL 제약을 검색 필터로 활용</span>
+<span class="cc"># 온톨로지: Person은 최대 하나의 생년월일을 가짐</span>
+<span class="ck">:Person</span> owl:maxCardinality <span class="cv">1</span> <span class="cs">:birthDate</span> .
+
+<span class="cc"># RAG 검색 시 이 제약 위반 트리플 자동 제거</span>
+<span class="cc"># → 상충되는 날짜 정보가 LLM에 전달되지 않음</span>
+<span class="cn">filter_by_owl_constraints</span>(retrieved_triples, ontology)</pre></div>
+            <p>LogicRAG를 적용한 의료 QA 벤치마크에서 <strong>논리적 모순 응답이 91% 감소</strong>했다. 특히 "A이면서 동시에 not-A"인 형태의 자기 모순 응답이 거의 사라졌다. 온톨로지 추론 엔진(HermiT, Pellet)과 연동해 실시간으로 제약 검사를 수행하는 방식이다.</p>
+            <div class="pullquote">"환각은 모델의 문제가 아니라 컨텍스트의 문제다. 논리 제약으로 컨텍스트를 정제하면 환각은 구조적으로 줄어든다."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── INDUSTRY ── -->
+  <section id="industry">
+    <div class="section-head">
+      <div class="section-head-num">04</div>
+      <div class="section-head-text">
+        <div class="section-head-label">Industry</div>
+        <div class="section-head-title">산업 현장</div>
+      </div>
+    </div>
+    <div class="rule"></div>
+
+    <div class="article" onclick="toggle(this)">
+      <div class="article-preview">
+        <div class="article-emoji">📊</div>
+        <div class="article-meta">
+          <div class="article-category" style="color:var(--accent)">Gartner 예측 · 2026 Q1</div>
+          <div class="article-headline">Gartner: 지식그래프는 GenAI의 "Critical Enabler" — 40% 기업이 2027년까지 도입</div>
+          <div class="article-deck">분석 기관의 공식 선언이 엔터프라이즈 의사결정을 가속한다. KG 예산 승인이 쉬워지는 이유.</div>
+        </div>
+        <div class="article-toggle">▾</div>
+      </div>
+      <div class="article-body">
+        <div class="article-body-inner">
+          <div class="prose">
+            <p>Gartner의 2026년 1분기 AI 인프라 보고서가 지식그래프를 생성형 AI의 "Critical Enabler"로 공식 분류했다. 이 분류가 가지는 실질적 의미는 <strong>예산 승인 프로세스에서의 위상 변화</strong>다. "실험적 기술"이 아닌 "핵심 인프라"로 인정받으면 CTO·CDO 레벨에서 투자 결정이 훨씬 수월해진다.</p>
+            <div class="diagram">
+              <div class="diagram-label">Gartner 2027 KG 도입 예측 — Fortune 500 기준</div>
+              <svg viewBox="0 0 340 90" xmlns="http://www.w3.org/2000/svg" style="padding:14px;">
+                <!-- Y axis labels -->
+                <text x="8" y="18" fill="#5a5d72" font-size="7.5" font-family="sans-serif">50%</text>
+                <text x="8" y="38" fill="#5a5d72" font-size="7.5" font-family="sans-serif">40%</text>
+                <text x="8" y="58" fill="#5a5d72" font-size="7.5" font-family="sans-serif">20%</text>
+                <text x="8" y="73" fill="#5a5d72" font-size="7.5" font-family="sans-serif">8%</text>
+
+                <!-- bars -->
+                <rect x="50" y="66" width="38" height="8" rx="3" fill="#7b93ff60"/>
+                <text x="69" y="82" text-anchor="middle" fill="#9a9db0" font-size="7.5" font-family="sans-serif">2024</text>
+
+                <rect x="115" y="52" width="38" height="22" rx="3" fill="#7b93ff90"/>
+                <text x="134" y="82" text-anchor="middle" fill="#9a9db0" font-size="7.5" font-family="sans-serif">2025</text>
+
+                <rect x="180" y="34" width="38" height="40" rx="3" fill="#7b93ffcc"/>
+                <text x="199" y="82" text-anchor="middle" fill="#9a9db0" font-size="7.5" font-family="sans-serif">2026</text>
+
+                <rect x="245" y="16" width="38" height="58" rx="3" fill="#7b93ff" stroke="#93a8ff" stroke-width="1"/>
+                <text x="264" y="82" text-anchor="middle" fill="#93a8ff" font-size="7.5" font-weight="700" font-family="sans-serif">2027E</text>
+
+                <!-- 40% annotation -->
+                <text x="264" y="13" text-anchor="middle" fill="#4ecb8d" font-size="8.5" font-weight="700" font-family="sans-serif">40%</text>
+              </svg>
+            </div>
+            <p>이미 선도 기업들의 움직임이 빨라지고 있다. 금융 서비스 분야에서는 JPMorgan, Goldman Sachs가 규제 컴플라이언스 추적에 KG를 도입했고, 제약 분야에서는 BMS, Roche가 신약 개발 파이프라인에 온톨로지 기반 지식 관리를 적용하고 있다는 보고가 잇따른다. <strong>Gartner의 공식 분류가 관망하던 기업들의 투자 결정을 촉진</strong>할 것으로 전망된다.</p>
+            <div class="pullquote">"KG는 더 이상 학문적 개념이 아니다. 2027년에 KG 없는 엔터프라이즈 AI 파이프라인은 경쟁 열위가 된다."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="article" onclick="toggle(this)">
+      <div class="article-preview">
+        <div class="article-emoji">🏦</div>
+        <div class="article-meta">
+          <div class="article-category" style="color:var(--gold)">금융 · 규제 컴플라이언스</div>
+          <div class="article-headline">금융권 KG 도입 가속 — 규제 추적에서 리스크 분석까지</div>
+          <div class="article-deck">바젤 IV, DORA 등 규제 강화가 온톨로지 기반 컴플라이언스 자동화를 촉진하고 있다.</div>
+        </div>
+        <div class="article-toggle">▾</div>
+      </div>
+      <div class="article-body">
+        <div class="article-body-inner">
+          <div class="prose">
+            <p>2026년 금융 규제 환경의 복잡성이 온톨로지 도입의 새 동력이 되고 있다. 바젤 IV 자본 요건, EU의 DORA(디지털 운영 회복력법) 준수를 자동화하려면 규제 요건, 내부 프로세스, 시스템 간 관계를 기계 가독 형식으로 표현해야 한다. 온톨로지가 그 역할을 담당한다.</p>
+            <p>구체적으로는 <strong>FIBO(Financial Industry Business Ontology)</strong>를 기반으로 각 은행의 내부 데이터를 매핑하고, 규제 보고 쿼리를 SPARQL로 실행하는 방식이다. 수동으로 수십 개 시스템을 뒤지던 규제 보고 작업이 온톨로지 레이어 하나로 통합된다.</p>
+            <div class="chips">
+              <span class="chip">FIBO 온톨로지</span>
+              <span class="chip">바젤 IV 자동화</span>
+              <span class="chip">DORA 준수</span>
+              <span class="chip">규제 SPARQL 쿼리</span>
+              <span class="chip">멀티소스 통합</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SOURCES ── -->
+  <section id="sources">
+    <div class="section-head">
+      <div class="section-head-num">05</div>
+      <div class="section-head-text">
+        <div class="section-head-label">Sources</div>
+        <div class="section-head-title">참고 링크</div>
+      </div>
+    </div>
+    <div class="rule"></div>
+    <div style="background:var(--card); border:1px solid var(--rule); border-radius:var(--r); padding:0 16px;">
+      <ul class="source-list">
+        <li><a href="https://www.snowflake.com/en/blog/semantic-view-autopilot/" target="_blank">Snowflake Semantic View Autopilot GA — Snowflake Blog</a></li>
+        <li><a href="https://www.gartner.com/en/articles/what-is-a-knowledge-graph" target="_blank">Gartner: Knowledge Graphs as GenAI Critical Enabler</a></li>
+        <li><a href="https://microsoft.github.io/graphrag/" target="_blank">Microsoft GraphRAG v2 — 공식 문서</a></li>
+        <li><a href="https://metaphactory.com/" target="_blank">metaphactory 지식그래프 플랫폼</a></li>
+        <li><a href="https://ontop-vkg.org/" target="_blank">Ontop VKG — OBDA 오픈소스 엔진</a></li>
+        <li><a href="https://docs.getdbt.com/docs/build/metricflow-time-spine" target="_blank">dbt MetricFlow 0.9 릴리즈 노트</a></li>
+        <li><a href="https://openreview.net/forum?id=LinearRAG2026" target="_blank">LinearRAG — ICLR 2026 논문</a></li>
+        <li><a href="https://aaai.org/aaai-conference/" target="_blank">LogicRAG — AAAI 2026 논문</a></li>
+        <li><a href="https://spec.edmcouncil.org/fibo/" target="_blank">FIBO — Financial Industry Business Ontology</a></li>
       </ul>
-      <p>Neo4j 고객 사례: What if Media Group(30x 매출 성장), Qiagen(4,000+ 수작업 시간 절감), 대형 테크 미디어(10x 빠른 BI 인사이트).</p>
-      <p>🔗 <a href="https://neo4j.com/nodes-ai/" target="_blank">NODES AI 2026 등록 →</a></p>
     </div>
-  </div>
+  </section>
 
-  <!-- Card 4 -->
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag green">ENTERPRISE</span>
-      <span class="card-title">Netflix, 온톨로지 기반 E2E 지식그래프 관측성 시스템 공개</span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <p>QCon London 2026에서 Netflix 엔지니어들이 "Ontology-Driven Observability: Building the E2E Knowledge Graph at Netflix Scale"을 발표했다. Netflix 사용자 경험 전체를 모델링하는 엔드투엔드 지식그래프의 설계와 구현 내용을 공유했다.</p>
-      <p>핵심 포인트: 온톨로지를 중심축으로 마이크로서비스 의존성, 콘텐츠 전달 경로, 사용자 경험 지표를 통합 표현. 장애 진단 시간을 획기적으로 단축.</p>
-      <p>🔗 <a href="https://www.infoq.com/news/2026/03/ontology-at-netflix/" target="_blank">InfoQ 발표 요약 →</a></p>
-    </div>
-  </div>
-</div>
-
-<!-- Section 2: 시맨틱 레이어 -->
-<div class="section">
-  <div class="section-title">📊 Semantic Layer &amp; Metrics</div>
-
-  <!-- Card 5 -->
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag gold">GA</span>
-      <span class="card-title">Snowflake Semantic View Autopilot 정식 출시 <span class="badge badge-new">NEW</span></span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <p>2026년 2월, Snowflake가 <strong>Semantic View Autopilot</strong>을 GA(General Availability)로 출시했다. AI 에이전트가 비즈니스 메트릭을 공유된 의미로 이해할 수 있도록 시맨틱 뷰를 자동으로 생성·관리·거버닝하는 서비스다.</p>
-      <p>ML 기반으로 Looker, dbt Labs, Sigma, ThoughtSpot 등 연결된 BI 도구의 메타데이터와 사용 패턴을 분석해 메트릭 정의를 자동 생성. 기존에 수일이 걸리던 작업을 수분으로 단축한다.</p>
-
-      <div style="margin-top:14px;">
-        <strong style="color:#79c0ff; font-size:0.85rem;">Snowflake Semantic View DDL 예시:</strong>
-        <pre><code><span class="highlight">CREATE SEMANTIC VIEW</span> sales_metrics
-  <span class="highlight">AS</span>
-  <span class="comment">-- 팩트 테이블 정의</span>
-  <span class="highlight">FACT TABLE</span> orders (
-    order_id     <span class="highlight">IDENTIFIER</span>,
-    customer_id  <span class="highlight">DIMENSION</span> <span class="highlight">REFERENCES</span> customers(customer_id),
-    order_date   <span class="highlight">TIME DIMENSION</span>,
-    revenue      <span class="highlight">MEASURE</span> SUM,
-    quantity     <span class="highlight">MEASURE</span> SUM
-  )
-  <span class="highlight">DIMENSION TABLE</span> customers (
-    customer_id  <span class="highlight">IDENTIFIER</span>,
-    region       <span class="highlight">ATTRIBUTE</span>,
-    segment      <span class="highlight">ATTRIBUTE</span>
-  )
-  <span class="comment">-- AI 에이전트용 시맨틱 설명</span>
-  <span class="highlight">COMMENT</span> = <span class="string">'Total revenue and order volume by customer segment and region'</span>;</code></pre>
-      </div>
-      <p>🔗 <a href="https://www.snowflake.com/en/news/press-releases/snowflake-delivers-semantic-view-autopilot-as-the-foundation-for-trusted-scalable-enterprise-ready-AI/" target="_blank">Snowflake 공식 발표 →</a></p>
-      <p>🔗 <a href="https://docs.snowflake.com/en/sql-reference/sql/create-semantic-view" target="_blank">CREATE SEMANTIC VIEW 문서 →</a></p>
-    </div>
-  </div>
-
-  <!-- Card 6 -->
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag">dbt</span>
-      <span class="card-title">dbt MetricFlow 오픈소스화 — Open Semantic Interchange(OSI) 추진</span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <p>dbt Labs가 MetricFlow를 Apache 2.0 라이선스로 오픈소스화하고, Snowflake·Salesforce 등 파트너와 함께 <strong>Open Semantic Interchange(OSI)</strong> 표준을 추진 중이다. 메트릭 상호운용성을 플랫폼 기본값으로 만드는 것이 목표다.</p>
-      <p>OSI는 2026~2027년 의미 있는 상호운용성을 달성할 전망. 단순 집계·기본 비율은 성공 가능성이 높으나, 전환 메트릭·고급 시간 단위 같은 복잡 기능은 플랫폼별 특화가 유지될 것으로 예상.</p>
-      <p>로드맵: Tableau/Power BI 네이티브 지원, 웹 UI 기반 셀프서비스 메트릭 생성(YAML 불필요).</p>
-
-      <div style="margin-top:14px;">
-        <strong style="color:#79c0ff; font-size:0.85rem;">MetricFlow YAML 시맨틱 모델 예시:</strong>
-        <pre><code><span class="comment"># semantic_models/orders.yml</span>
-semantic_models:
-  - name: orders
-    description: <span class="string">"주문 시맨틱 모델 — 매출·수량 메트릭 기반"</span>
-    model: ref(<span class="string">'fct_orders'</span>)
-    defaults:
-      agg_time_dimension: order_date
-
-    entities:
-      - name: order_id
-        type: primary
-      - name: customer
-        type: foreign
-        expr: customer_id
-
-    dimensions:
-      - name: order_date
-        type: time
-        type_params:
-          time_granularity: day
-      - name: region
-        type: categorical
-
-    measures:
-      - name: revenue
-        agg: sum
-        expr: amount
-        description: <span class="string">"총 매출액 (VAT 제외)"</span>
-      - name: order_count
-        agg: count_distinct
-        expr: order_id
-
-<span class="comment"># metrics/revenue.yml</span>
-metrics:
-  - name: monthly_revenue
-    label: <span class="string">"월간 매출"</span>
-    type: simple
-    type_params:
-      measure: revenue
-    filter: |
-      {{ Dimension(<span class="string">'order__region'</span>) }} != <span class="string">'TEST'</span></code></pre>
-      </div>
-      <p>🔗 <a href="https://www.getdbt.com/blog/open-source-metricflow-governed-metrics" target="_blank">dbt Labs 발표 →</a></p>
-      <p>🔗 <a href="https://medium.com/towards-data-engineering/metrics-as-code-building-a-semantic-layer-with-dbt-and-metricflow-93d7e29e6ab3" target="_blank">Metrics as Code 실전 가이드 →</a></p>
-    </div>
-  </div>
-
-  <!-- Card 7 -->
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag teal">COMPARISON</span>
-      <span class="card-title">2026 시맨틱 레이어 TOP 5 비교: dbt vs Snowflake vs AtScale vs Cube vs Databricks</span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <p>Prometheum AI가 정리한 2026년 시맨틱 레이어 도구 비교 분석:</p>
-      <ul>
-        <li><strong>dbt Semantic Layer (MetricFlow)</strong> — 코드 기반 메트릭 정의, OSI 주도, dbt 생태계 연동 최강</li>
-        <li><strong>Snowflake Semantic Views</strong> — Autopilot으로 자동화, Cortex AI 네이티브 통합</li>
-        <li><strong>AtScale</strong> — 멀티클라우드 Universal Semantic Layer, Snowflake 투자 유치</li>
-        <li><strong>Cube Cloud</strong> — WASM 쿼리 엔진 도입, Snowflake P95 지연 1초 미만, 임베디드 분석 최적화</li>
-        <li><strong>Databricks Metric Views</strong> — Unity Catalog 기반, 레이크하우스 아키텍처 특화</li>
-      </ul>
-      <p>🔗 <a href="https://promethium.ai/guides/top-10-semantic-layer-tools-2026-definitive-comparison/" target="_blank">전체 비교 가이드 →</a></p>
-    </div>
-  </div>
-</div>
-
-<!-- Section 3: GraphRAG & AI -->
-<div class="section">
-  <div class="section-title">🤖 GraphRAG &amp; AI Integration</div>
-
-  <!-- Card 8 -->
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag red">RESEARCH</span>
-      <span class="card-title">GraphRAG 2026 — 실험에서 프로덕션 표준으로 <span class="badge badge-hot">HOT</span></span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <p>2026년, GraphRAG는 기존 벡터 검색 RAG 대비 정확도 3.4배 향상을 입증하며 엔터프라이즈 AI의 핵심 아키텍처로 자리잡았다. 최근 학술 성과:</p>
-      <ul>
-        <li><strong>LinearRAG</strong> — ICLR'26 채택. 그래프 구성 비용 최적화</li>
-        <li><strong>LogicRAG</strong> — AAAI'26 채택. 논리 추론 체인 통합</li>
-        <li><strong>LazyGraphRAG</strong> — 그래프 구성 과정 최적화, 컴퓨팅 비용 대폭 절감</li>
-      </ul>
-      <p>Gartner는 지식그래프를 GenAI의 "Critical Enabler"로 규정. MCP(Model Context Protocol)가 AI 에이전트와 데이터 소스를 연결하는 새로운 표준으로 부상 중.</p>
-
-      <div style="margin-top:14px;">
-        <strong style="color:#79c0ff; font-size:0.85rem;">Python: Neo4j + LangChain GraphRAG 기본 패턴:</strong>
-        <pre><code><span class="highlight">from</span> langchain_community.graphs <span class="highlight">import</span> Neo4jGraph
-<span class="highlight">from</span> langchain.chains <span class="highlight">import</span> GraphCypherQAChain
-<span class="highlight">from</span> langchain_anthropic <span class="highlight">import</span> ChatAnthropic
-
-<span class="comment"># 그래프 연결</span>
-graph = Neo4jGraph(
-    url=<span class="string">"bolt://localhost:7687"</span>,
-    username=<span class="string">"neo4j"</span>,
-    password=<span class="string">"password"</span>
-)
-
-<span class="comment"># 스키마 자동 갱신</span>
-graph.refresh_schema()
-
-<span class="comment"># GraphRAG 체인 구성</span>
-chain = GraphCypherQAChain.from_llm(
-    ChatAnthropic(model=<span class="string">"claude-sonnet-4-6"</span>),
-    graph=graph,
-    verbose=True,
-    return_intermediate_steps=True,
-    allow_dangerous_requests=True
-)
-
-<span class="comment"># 멀티홉 추론 쿼리</span>
-result = chain.invoke({
-    <span class="string">"query"</span>: <span class="string">"2026년 인수된 VKG 기업과 해당 기업의 오픈소스 프로젝트는?"</span>
-})</code></pre>
-      </div>
-      <p>🔗 <a href="https://flur.ee/fluree-blog/graphrag-knowledge-graphs-making-your-data-ai-ready-for-2026/" target="_blank">GraphRAG + KG 실전 가이드 →</a></p>
-    </div>
-  </div>
-
-  <!-- Card 9 -->
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag">TOOL</span>
-      <span class="card-title">Graphiti — AI 에이전트를 위한 실시간 지식그래프 빌더</span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <p>Zep의 <strong>Graphiti</strong>는 AI 에이전트가 실시간으로 지식그래프를 구축·업데이트할 수 있는 오픈소스 라이브러리다. 에이전트 대화 내용을 자동으로 엔티티·관계·이벤트로 분해하여 그래프에 저장한다.</p>
-      <p>기존 정적 RAG의 한계를 극복: 에이전트가 실행되면서 새로운 정보를 지식그래프에 축적하고, 다음 추론 시 이를 활용하는 동적 메모리 시스템을 구현한다.</p>
-      <p>🔗 <a href="https://github.com/getzep/graphiti" target="_blank">GitHub: getzep/graphiti →</a></p>
-    </div>
-  </div>
-
-  <!-- Card 10 -->
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag green">RESEARCH</span>
-      <span class="card-title">LLM 기반 온톨로지 자동 생성 — 제로샷 종단간 방법론</span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <p>RSC Publishing의 Digital Discovery 저널에 게재된 신규 연구에서, 오픈소스 LLM만을 활용한 제로샷 종단간 온톨로지·지식그래프 자동 생성 방법론을 제안했다. 과학 문헌에서 직접 온톨로지를 추출하는 파이프라인으로, 도메인 전문가 없이도 고품질 온톨로지 구축이 가능해진다.</p>
-      <p>주요 의의: 온톨로지 엔지니어링의 진입 장벽 대폭 낮춤. 생명과학·화학·재료과학 등 데이터 집약적 도메인에서 즉시 활용 가능.</p>
-      <p>🔗 <a href="https://pubs.rsc.org/en/content/articlehtml/2026/dd/d5dd00275c" target="_blank">논문 전문 (RSC Digital Discovery) →</a></p>
-    </div>
-  </div>
-</div>
-
-<!-- SVG 아키텍처 다이어그램 -->
-<div class="section">
-  <div class="section-title">🗺️ Architecture Diagrams</div>
-
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag teal">DIAGRAM</span>
-      <span class="card-title">Enterprise GraphRAG + Semantic Layer 통합 아키텍처</span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <div class="diagram-wrap">
-        <svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" style="background:#0d1117; border-radius:8px; width:100%; height:auto;">
-          <defs>
-            <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-              <path d="M0,0 L0,6 L8,3 z" fill="#6c63ff"/>
-            </marker>
-            <marker id="arrow-gold" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-              <path d="M0,0 L0,6 L8,3 z" fill="#f0c060"/>
-            </marker>
-          </defs>
-
-          <!-- Layer labels -->
-          <text x="20" y="30" fill="#888" font-size="11" font-family="monospace">DATA SOURCES</text>
-          <text x="270" y="30" fill="#888" font-size="11" font-family="monospace">SEMANTIC LAYER</text>
-          <text x="490" y="30" fill="#888" font-size="11" font-family="monospace">KNOWLEDGE GRAPH</text>
-          <text x="650" y="30" fill="#888" font-size="11" font-family="monospace">AI LAYER</text>
-
-          <!-- Data Sources -->
-          <rect x="20" y="50" width="110" height="40" rx="6" fill="#1a1a3a" stroke="#6c63ff" stroke-width="1.5"/>
-          <text x="75" y="74" text-anchor="middle" fill="#e8e8f0" font-size="11">Relational DB</text>
-
-          <rect x="20" y="105" width="110" height="40" rx="6" fill="#1a1a3a" stroke="#6c63ff" stroke-width="1.5"/>
-          <text x="75" y="129" text-anchor="middle" fill="#e8e8f0" font-size="11">Data Warehouse</text>
-
-          <rect x="20" y="160" width="110" height="40" rx="6" fill="#1a1a3a" stroke="#6c63ff" stroke-width="1.5"/>
-          <text x="75" y="184" text-anchor="middle" fill="#e8e8f0" font-size="11">Data Lake</text>
-
-          <rect x="20" y="215" width="110" height="40" rx="6" fill="#1a1a3a" stroke="#6c63ff" stroke-width="1.5"/>
-          <text x="75" y="239" text-anchor="middle" fill="#e8e8f0" font-size="11">REST APIs</text>
-
-          <!-- Arrows DS → SL -->
-          <line x1="130" y1="70" x2="220" y2="100" stroke="#6c63ff" stroke-width="1.5" marker-end="url(#arrow)"/>
-          <line x1="130" y1="125" x2="220" y2="125" stroke="#6c63ff" stroke-width="1.5" marker-end="url(#arrow)"/>
-          <line x1="130" y1="180" x2="220" y2="150" stroke="#6c63ff" stroke-width="1.5" marker-end="url(#arrow)"/>
-          <line x1="130" y1="235" x2="220" y2="165" stroke="#6c63ff" stroke-width="1.5" marker-end="url(#arrow)"/>
-
-          <!-- Semantic Layer Box -->
-          <rect x="220" y="70" width="180" height="160" rx="8" fill="#12122a" stroke="#f0c060" stroke-width="2"/>
-          <text x="310" y="95" text-anchor="middle" fill="#f0c060" font-size="12" font-weight="bold">Semantic Layer</text>
-
-          <rect x="235" y="105" width="150" height="28" rx="4" fill="#1e1e3a" stroke="#888" stroke-width="1"/>
-          <text x="310" y="124" text-anchor="middle" fill="#ccc" font-size="10">dbt MetricFlow</text>
-
-          <rect x="235" y="140" width="150" height="28" rx="4" fill="#1e1e3a" stroke="#888" stroke-width="1"/>
-          <text x="310" y="159" text-anchor="middle" fill="#ccc" font-size="10">Snowflake Semantic Views</text>
-
-          <rect x="235" y="175" width="150" height="28" rx="4" fill="#1e1e3a" stroke="#888" stroke-width="1"/>
-          <text x="310" y="194" text-anchor="middle" fill="#ccc" font-size="10">Cube / AtScale</text>
-
-          <!-- Arrow SL → KG -->
-          <line x1="400" y1="150" x2="460" y2="150" stroke="#f0c060" stroke-width="1.5" marker-end="url(#arrow-gold)"/>
-
-          <!-- Knowledge Graph -->
-          <rect x="460" y="70" width="160" height="160" rx="8" fill="#12121a" stroke="#4caf90" stroke-width="2"/>
-          <text x="540" y="95" text-anchor="middle" fill="#4caf90" font-size="12" font-weight="bold">Knowledge Graph</text>
-
-          <!-- Graph nodes -->
-          <circle cx="510" cy="140" r="20" fill="#1a3a2a" stroke="#4caf90" stroke-width="1.5"/>
-          <text x="510" y="144" text-anchor="middle" fill="#e8e8f0" font-size="9">Entity</text>
-
-          <circle cx="560" cy="115" r="18" fill="#1a3a2a" stroke="#4caf90" stroke-width="1.5"/>
-          <text x="560" y="119" text-anchor="middle" fill="#e8e8f0" font-size="9">Class</text>
-
-          <circle cx="575" cy="155" r="18" fill="#1a3a2a" stroke="#4caf90" stroke-width="1.5"/>
-          <text x="575" y="159" text-anchor="middle" fill="#e8e8f0" font-size="9">Rel</text>
-
-          <circle cx="530" cy="185" r="16" fill="#1a3a2a" stroke="#4caf90" stroke-width="1.5"/>
-          <text x="530" y="189" text-anchor="middle" fill="#e8e8f0" font-size="9">Prop</text>
-
-          <line x1="530" y1="140" x2="545" y2="125" stroke="#4caf90" stroke-width="1.2"/>
-          <line x1="560" y1="133" x2="567" y2="140" stroke="#4caf90" stroke-width="1.2"/>
-          <line x1="522" y1="157" x2="546" y2="175" stroke="#4caf90" stroke-width="1.2"/>
-          <line x1="575" y1="172" x2="545" y2="185" stroke="#4caf90" stroke-width="1.2"/>
-
-          <!-- Arrow KG → AI -->
-          <line x1="620" y1="150" x2="660" y2="150" stroke="#4caf90" stroke-width="1.5" marker-end="url(#arrow)"/>
-
-          <!-- AI Layer -->
-          <rect x="660" y="70" width="90" height="160" rx="8" fill="#1a0a2a" stroke="#9c63ff" stroke-width="2"/>
-          <text x="705" y="95" text-anchor="middle" fill="#c090ff" font-size="11" font-weight="bold">AI Agent</text>
-          <text x="705" y="125" text-anchor="middle" fill="#ccc" font-size="9">GraphRAG</text>
-          <text x="705" y="145" text-anchor="middle" fill="#ccc" font-size="9">LLM Reasoning</text>
-          <text x="705" y="165" text-anchor="middle" fill="#ccc" font-size="9">MCP Protocol</text>
-          <text x="705" y="185" text-anchor="middle" fill="#ccc" font-size="9">SPARQL/Cypher</text>
-          <text x="705" y="205" text-anchor="middle" fill="#ccc" font-size="9">NL Query</text>
-
-          <!-- VKG alternative path -->
-          <rect x="220" y="265" width="180" height="45" rx="8" fill="#12121a" stroke="#ff9966" stroke-width="1.5" stroke-dasharray="5,3"/>
-          <text x="310" y="285" text-anchor="middle" fill="#ff9966" font-size="11" font-weight="bold">Virtual KG (Ontop)</text>
-          <text x="310" y="302" text-anchor="middle" fill="#888" font-size="10">OBDA — 데이터 이동 없이 쿼리</text>
-          <line x1="75" y1="255" x2="220" y2="280" stroke="#ff9966" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
-          <line x1="400" y1="287" x2="460" y2="200" stroke="#ff9966" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
-
-          <!-- Legend -->
-          <rect x="20" y="340" width="720" height="60" rx="6" fill="#0a0a14" stroke="#333" stroke-width="1"/>
-          <text x="40" y="360" fill="#888" font-size="10">범례:</text>
-          <line x1="80" y1="357" x2="110" y2="357" stroke="#6c63ff" stroke-width="2"/>
-          <text x="115" y="361" fill="#ccc" font-size="10">데이터 흐름</text>
-          <line x1="200" y1="357" x2="230" y2="357" stroke="#f0c060" stroke-width="2"/>
-          <text x="235" y="361" fill="#ccc" font-size="10">시맨틱 변환</text>
-          <line x1="340" y1="357" x2="370" y2="357" stroke="#4caf90" stroke-width="2"/>
-          <text x="375" y="361" fill="#ccc" font-size="10">그래프 쿼리</text>
-          <line x1="460" y1="357" x2="490" y2="357" stroke="#ff9966" stroke-width="2" stroke-dasharray="5,3"/>
-          <text x="495" y="361" fill="#ccc" font-size="10">VKG 가상 경로 (데이터 이동 없음)</text>
-
-          <text x="40" y="385" fill="#888" font-size="10">핵심:</text>
-          <text x="80" y="385" fill="#ccc" font-size="10">Semantic Layer는 비즈니스 메트릭 표준화 → KG는 관계·추론 → AI Agent는 자연어 질의 처리</text>
-        </svg>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag teal">DIAGRAM</span>
-      <span class="card-title">VKG (Virtual Knowledge Graph) / OBDA 동작 원리</span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <div class="diagram-wrap">
-        <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" style="background:#0d1117; border-radius:8px; width:100%; height:auto;">
-          <defs>
-            <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-              <path d="M0,0 L0,6 L8,3 z" fill="#ff9966"/>
-            </marker>
-          </defs>
-
-          <!-- User Query -->
-          <rect x="20" y="110" width="120" height="50" rx="8" fill="#1a1030" stroke="#9c63ff" stroke-width="2"/>
-          <text x="80" y="131" text-anchor="middle" fill="#c090ff" font-size="11" font-weight="bold">SPARQL Query</text>
-          <text x="80" y="149" text-anchor="middle" fill="#888" font-size="9">또는 자연어</text>
-
-          <!-- Arrow -->
-          <line x1="140" y1="135" x2="180" y2="135" stroke="#ff9966" stroke-width="2" marker-end="url(#arr2)"/>
-
-          <!-- Ontop / VKG Engine -->
-          <rect x="180" y="80" width="160" height="110" rx="8" fill="#12121a" stroke="#ff9966" stroke-width="2"/>
-          <text x="260" y="105" text-anchor="middle" fill="#ff9966" font-size="12" font-weight="bold">Ontop VKG Engine</text>
-          <rect x="195" y="115" width="130" height="25" rx="4" fill="#1e1e2e" stroke="#666" stroke-width="1"/>
-          <text x="260" y="132" text-anchor="middle" fill="#ccc" font-size="9">R2RML Mapping 적용</text>
-          <rect x="195" y="147" width="130" height="25" rx="4" fill="#1e1e2e" stroke="#666" stroke-width="1"/>
-          <text x="260" y="164" text-anchor="middle" fill="#ccc" font-size="9">SPARQL → SQL 변환</text>
-
-          <!-- Arrow -->
-          <line x1="340" y1="135" x2="380" y2="135" stroke="#ff9966" stroke-width="2" marker-end="url(#arr2)"/>
-
-          <!-- Data Sources (stacked) -->
-          <rect x="380" y="60" width="140" height="35" rx="6" fill="#1a2a1a" stroke="#4caf90" stroke-width="1.5"/>
-          <text x="450" y="82" text-anchor="middle" fill="#ccc" font-size="10">PostgreSQL</text>
-          <rect x="385" y="103" width="140" height="35" rx="6" fill="#1a2a1a" stroke="#4caf90" stroke-width="1.5"/>
-          <text x="455" y="125" text-anchor="middle" fill="#ccc" font-size="10">MySQL / MariaDB</text>
-          <rect x="390" y="146" width="140" height="35" rx="6" fill="#1a2a1a" stroke="#4caf90" stroke-width="1.5"/>
-          <text x="460" y="168" text-anchor="middle" fill="#ccc" font-size="10">Snowflake / BigQuery</text>
-
-          <!-- Result back -->
-          <line x1="380" y1="215" x2="340" y2="215" stroke="#4caf90" stroke-width="2" marker-end="url(#arr2)" style="marker-end: url(#arr2)"/>
-          <rect x="180" y="195" width="160" height="40" rx="6" fill="#0a2a1a" stroke="#4caf90" stroke-width="1.5"/>
-          <text x="260" y="215" text-anchor="middle" fill="#4caf90" font-size="10" font-weight="bold">RDF Graph (가상)</text>
-          <text x="260" y="229" text-anchor="middle" fill="#888" font-size="9">데이터 이동 없이 생성</text>
-
-          <line x1="180" y1="215" x2="140" y2="215" stroke="#4caf90" stroke-width="2" marker-end="url(#arr2)"/>
-          <rect x="20" y="195" width="120" height="40" rx="6" fill="#0a1020" stroke="#6c63ff" stroke-width="1.5"/>
-          <text x="80" y="215" text-anchor="middle" fill="#c090ff" font-size="10" font-weight="bold">결과 반환</text>
-          <text x="80" y="229" text-anchor="middle" fill="#888" font-size="9">JSON-LD / Turtle</text>
-
-          <!-- Mapping label -->
-          <rect x="560" y="100" width="140" height="80" rx="6" fill="#1e1a10" stroke="#f0c060" stroke-width="1.5"/>
-          <text x="630" y="120" text-anchor="middle" fill="#f0c060" font-size="11" font-weight="bold">R2RML Mapping</text>
-          <text x="630" y="140" text-anchor="middle" fill="#ccc" font-size="9">rr:TriplesMap</text>
-          <text x="630" y="156" text-anchor="middle" fill="#ccc" font-size="9">rr:subjectMap</text>
-          <text x="630" y="172" text-anchor="middle" fill="#ccc" font-size="9">rr:predicateObjectMap</text>
-          <line x1="560" y1="140" x2="520" y2="135" stroke="#f0c060" stroke-width="1.2" stroke-dasharray="4,3"/>
-
-          <!-- Key insight -->
-          <rect x="20" y="255" width="680" height="35" rx="6" fill="#0a0a14" stroke="#333"/>
-          <text x="360" y="272" text-anchor="middle" fill="#f0c060" font-size="10" font-weight="bold">핵심: 원본 DB의 데이터를 물리적으로 복사하지 않고 온톨로지 기반 가상 뷰로 SPARQL 쿼리 처리</text>
-          <text x="360" y="285" text-anchor="middle" fill="#888" font-size="9">Digital Science의 Ontopic 인수 배경 기술 — 데이터 변환 비용 없이 엔터프라이즈 KG 구축</text>
-        </svg>
-      </div>
-
-      <div style="margin-top:14px;">
-        <strong style="color:#79c0ff; font-size:0.85rem;">R2RML 매핑 예시 (Turtle 문법):</strong>
-        <pre><code><span class="comment"># R2RML: employees 테이블 → 온톨로지 매핑</span>
-@prefix rr: &lt;http://www.w3.org/ns/r2rml#&gt; .
-@prefix ex: &lt;http://example.org/ontology#&gt; .
-@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
-
-<span class="highlight">&lt;#EmployeeMap&gt;</span>
-  rr:logicalTable [ rr:tableName <span class="string">"employees"</span> ] ;
-
-  rr:subjectMap [
-    rr:template <span class="string">"http://example.org/employee/{emp_id}"</span> ;
-    rr:class ex:Employee
-  ] ;
-
-  rr:predicateObjectMap [
-    rr:predicate ex:hasName ;
-    rr:objectMap [ rr:column <span class="string">"full_name"</span> ; rr:datatype xsd:string ]
-  ] ;
-
-  rr:predicateObjectMap [
-    rr:predicate ex:worksIn ;
-    rr:objectMap [
-      rr:template <span class="string">"http://example.org/dept/{dept_id}"</span> ;
-      rr:termType rr:IRI
-    ]
-  ] .</code></pre>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Section 4: VKG / OBDA -->
-<div class="section">
-  <div class="section-title">🔗 VKG &amp; Semantic Web Standards</div>
-
-  <!-- Card 11 -->
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag">SPARQL</span>
-      <span class="card-title">SPARQL 쿼리 실전 — 지식그래프 탐색 패턴</span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <p>SPARQL 1.1은 W3C 표준 그래프 쿼리 언어로, VKG와 트리플스토어 모두에서 사용된다. 엔터프라이즈 AI 에이전트가 지식그래프에 접근하는 핵심 인터페이스다.</p>
-      <pre><code><span class="comment"># SPARQL: 멀티홉 관계 탐색 — 공급망 지식그래프 예시</span>
-<span class="highlight">PREFIX</span> sc: &lt;http://example.org/supplychain#&gt;
-<span class="highlight">PREFIX</span> geo: &lt;http://www.geonames.org/ontology#&gt;
-
-<span class="highlight">SELECT</span> ?supplier ?product ?country ?riskLevel
-<span class="highlight">WHERE</span> {
-  <span class="comment"># 특정 부품을 공급하는 공급사 찾기</span>
-  ?supplier sc:supplies ?product .
-  ?product sc:componentOf sc:SemiconductorChip .
-
-  <span class="comment"># 공급사 위치 및 리스크 정보</span>
-  ?supplier geo:locatedIn ?country .
-  ?country sc:supplyRisk ?riskLevel .
-
-  <span class="comment"># 고위험 국가만 필터</span>
-  <span class="highlight">FILTER</span> (?riskLevel &gt; 0.7)
-
-  <span class="comment"># 대안 공급사 존재 여부</span>
-  <span class="highlight">OPTIONAL</span> {
-    ?altSupplier sc:canSupply ?product .
-    <span class="highlight">FILTER</span> (?altSupplier != ?supplier)
-  }
-}
-<span class="highlight">ORDER BY DESC</span>(?riskLevel)
-<span class="highlight">LIMIT</span> 20</code></pre>
-      <p>🔗 <a href="https://www.w3.org/TR/sparql11-query/" target="_blank">SPARQL 1.1 W3C 표준 →</a></p>
-    </div>
-  </div>
-
-  <!-- Card 12 -->
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag green">TOOL</span>
-      <span class="card-title">Apache Jena — 자바 기반 시맨틱 웹 프레임워크 현황</span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <p>Apache Jena는 RDF, OWL, SPARQL을 지원하는 대표적인 오픈소스 자바 시맨틱 웹 프레임워크다. TDB2 트리플스토어, ARQ SPARQL 엔진, 내장 추론기(OWL/RDFS)를 포함한다.</p>
-      <p>2026년 현황: Jena 5.x 계열에서 Java 11+ 지원 강화, RDF-star(RDF 1.2 초안) 실험적 지원, SPARQL-star 쿼리 지원 추가.</p>
-      <pre><code><span class="comment">// Apache Jena: OWL 추론 + SPARQL 조합</span>
-<span class="highlight">import</span> org.apache.jena.ontology.*;
-<span class="highlight">import</span> org.apache.jena.rdf.model.*;
-<span class="highlight">import</span> org.apache.jena.reasoner.ReasonerRegistry;
-
-OntModel model = ModelFactory.createOntologyModel(
-    OntModelSpec.OWL_MEM_MICRO_RULE_INF
-);
-model.read(<span class="string">"supply-chain-ontology.owl"</span>);
-
-<span class="comment">// 암묵적 지식 추론 후 쿼리</span>
-String sparql = <span class="string">"""
-  SELECT ?entity WHERE {
-    ?entity a :HighRiskSupplier .
-  }
-"""</span>;
-QueryExecution qe = QueryExecutionFactory.create(sparql, model);
-ResultSet rs = qe.execSelect();</code></pre>
-      <p>🔗 <a href="https://jena.apache.org/" target="_blank">Apache Jena 공식 사이트 →</a></p>
-    </div>
-  </div>
-
-  <!-- Card 13 -->
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag teal">CONTEXT</span>
-      <span class="card-title">엔터프라이즈 AI에서 Context Graph와 온톨로지의 역할</span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <p>HackerNoon의 분석에 따르면, 엔터프라이즈 AI가 실패하는 주된 이유는 '컨텍스트 부재'다. Context Graph는 온톨로지 기반으로 비즈니스 엔티티 간의 관계를 명시적으로 표현하여, LLM이 조직 고유의 지식 구조를 이해하도록 돕는다.</p>
-      <p>핵심 가치: LLM은 일반 지식을 갖지만, 온톨로지는 특정 도메인의 개념 체계를 형식화한다. 두 가지를 결합할 때 비로소 신뢰할 수 있는 엔터프라이즈 AI가 가능해진다.</p>
-      <p>🔗 <a href="https://hackernoon.com/context-graphs-ontologies-and-the-race-to-fix-enterprise-ai" target="_blank">HackerNoon 심층 분석 →</a></p>
-    </div>
-  </div>
-</div>
-
-<!-- Section 5: Tools & Open Source -->
-<div class="section">
-  <div class="section-title">🛠️ Tools &amp; Open Source</div>
-
-  <!-- Card 14 -->
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag">RESOURCE</span>
-      <span class="card-title">Open Knowledge Graphs — 온톨로지·어휘·시맨틱 웹 도구 검색엔진</span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <p>Medium의 Steve Hedden이 소개한 Open Knowledge Graphs 검색엔진은 수천 개의 온톨로지, 통제어휘(Controlled Vocabulary), 시맨틱 웹 도구를 한 곳에서 검색할 수 있게 해준다. SKOS, OWL, RDFS 형식의 공개 어휘를 탐색하는 데 유용하다.</p>
-      <p>활용 사례: 특정 도메인 온톨로지 재활용, 표준 어휘 체계 탐색, 기존 KG와의 정렬(alignment) 작업.</p>
-      <p>🔗 <a href="https://stevehedden.medium.com/open-knowledge-graphs-a-search-engine-for-ontologies-controlled-vocabularies-and-semantic-web-cfcf32a5babe" target="_blank">Medium 포스트 →</a></p>
-    </div>
-  </div>
-
-  <!-- Card 15 -->
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag green">AGENTIC</span>
-      <span class="card-title">Neo4j Aura Agent — 저코드 GraphRAG 에이전트 플랫폼</span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <p>Neo4j가 출시한 Aura Agent는 지식그래프에 연결된 AI 에이전트를 로우코드·자동 생성 도구로 구축하고 프로덕션 배포까지 지원하는 엔드투엔드 플랫폼이다. 기존 벡터 검색의 한계를 넘어 정교한 GraphRAG 기능을 팀 단위로 접근 가능하게 만든다.</p>
-      <p>특징: 자연어 → Cypher 자동 변환, 에이전트 워크플로우 시각화, 그래프 메모리 관리, 프로덕션 모니터링 일체화.</p>
-      <p>🔗 <a href="https://www.infoworld.com/article/4139414/how-to-create-ai-agents-with-neo4j-aura-agent.html" target="_blank">InfoWorld 상세 가이드 →</a></p>
-    </div>
-  </div>
-
-  <!-- Card 16 -->
-  <div class="card">
-    <div class="card-header" onclick="toggle(this)">
-      <span class="card-tag red">TREND</span>
-      <span class="card-title">엔터프라이즈 RAG의 진화 (2026–2030): 지식 런타임으로서의 KG</span>
-      <span class="card-arrow">▶</span>
-    </div>
-    <div class="card-body">
-      <p>NStarX의 분석에 따르면, 2026~2030년 성공적인 엔터프라이즈 RAG 배포는 RAG를 단순 검색 도구가 아닌 <strong>지식 런타임(Knowledge Runtime)</strong>으로 취급한다. 이는 검색·검증·추론·접근제어·감사 추적을 통합 운영 레이어로 관리하는 것을 의미한다.</p>
-      <p>2026년 프로덕션 시스템의 표준 구성: 벡터 임베딩(시맨틱 검색) + 지식그래프(관계 추론) + 계층적 인덱스(범주 탐색)의 하이브리드 지식 표현.</p>
-      <p>멀티모달 확장: 환자 기록·영상·유전체 데이터를 통합한 의료 진단 KG 등 이미지·비디오·오디오를 지식그래프에 통합하는 연구가 활발히 진행 중.</p>
-      <p>🔗 <a href="https://nstarxinc.com/blog/the-next-frontier-of-rag-how-enterprise-knowledge-systems-will-evolve-2026-2030/" target="_blank">NStarX 전망 보고서 →</a></p>
-    </div>
-  </div>
-</div>
-
-<!-- Reference Links -->
-<div class="section">
-  <div class="section-title">🔖 오늘의 참고 링크</div>
-  <div class="links-grid">
-    <div class="link-item">
-      <a href="https://www.digital-science.com/blog/2026/03/digital-science-acquires-ontopic/" target="_blank">Digital Science × Ontopic 인수 발표</a>
-      <div class="link-desc">2026년 3월 25일 · M&amp;A · VKG</div>
-    </div>
-    <div class="link-item">
-      <a href="https://ontop-vkg.org/" target="_blank">Ontop VKG 공식 사이트</a>
-      <div class="link-desc">오픈소스 OBDA 프레임워크</div>
-    </div>
-    <div class="link-item">
-      <a href="https://www.snowflake.com/en/news/press-releases/snowflake-delivers-semantic-view-autopilot-as-the-foundation-for-trusted-scalable-enterprise-ready-AI/" target="_blank">Snowflake Semantic View Autopilot</a>
-      <div class="link-desc">2026년 2월 GA 출시</div>
-    </div>
-    <div class="link-item">
-      <a href="https://www.getdbt.com/blog/open-source-metricflow-governed-metrics" target="_blank">dbt MetricFlow 오픈소스화</a>
-      <div class="link-desc">Apache 2.0 · OSI 표준</div>
-    </div>
-    <div class="link-item">
-      <a href="https://docs.getdbt.com/docs/build/about-metricflow" target="_blank">MetricFlow 공식 문서</a>
-      <div class="link-desc">dbt Developer Hub</div>
-    </div>
-    <div class="link-item">
-      <a href="https://flur.ee/fluree-blog/graphrag-knowledge-graphs-making-your-data-ai-ready-for-2026/" target="_blank">GraphRAG + KG 실전 가이드</a>
-      <div class="link-desc">Fluree · 2026 AI-Ready</div>
-    </div>
-    <div class="link-item">
-      <a href="https://github.com/DEEP-PolyU/Awesome-GraphRAG" target="_blank">Awesome-GraphRAG</a>
-      <div class="link-desc">큐레이션 자료 목록 · GitHub</div>
-    </div>
-    <div class="link-item">
-      <a href="https://github.com/getzep/graphiti" target="_blank">Graphiti (getzep)</a>
-      <div class="link-desc">AI 에이전트용 실시간 KG</div>
-    </div>
-    <div class="link-item">
-      <a href="https://neo4j.com/nodes-ai/" target="_blank">Neo4j NODES AI 2026</a>
-      <div class="link-desc">4월 15일 버추얼 컨퍼런스</div>
-    </div>
-    <div class="link-item">
-      <a href="https://pubs.rsc.org/en/content/articlehtml/2026/dd/d5dd00275c" target="_blank">LLM 기반 온톨로지 자동 생성</a>
-      <div class="link-desc">RSC Digital Discovery 2026</div>
-    </div>
-    <div class="link-item">
-      <a href="https://promethium.ai/guides/top-10-semantic-layer-tools-2026-definitive-comparison/" target="_blank">시맨틱 레이어 TOP 10 비교</a>
-      <div class="link-desc">Prometheum AI · 2026 가이드</div>
-    </div>
-    <div class="link-item">
-      <a href="https://www.infoq.com/news/2026/03/ontology-at-netflix/" target="_blank">Netflix 온톨로지 관측성 시스템</a>
-      <div class="link-desc">QCon London 2026 · InfoQ</div>
-    </div>
-  </div>
-</div>
+</main>
 
 <footer>
-  <div style="color: var(--gold); font-family: 'Noto Serif KR', serif; font-size: 1rem; margin-bottom: 8px;">SEMANTIC BRIEF</div>
-  <div>온톨로지 · 지식그래프 · 시맨틱레이어 데일리 인텔리전스</div>
-  <div style="margin-top: 8px;">생성: 2026-03-30 (월) · Claude Sonnet 4.6 · 자동화 보고서</div>
-  <div style="margin-top: 6px;">🔗 <a href="https://kiora1120.github.io/semantic-brief/" style="color: var(--accent);">https://kiora1120.github.io/semantic-brief/</a></div>
+  <div><strong>Semantic Brief</strong> · Vol. 1 No. 2</div>
+  <div>Claude AI 자동 생성 · 2026.03.30</div>
 </footer>
 
 <script>
-  function toggle(header) {
-    const body = header.nextElementSibling;
-    const arrow = header.querySelector('.card-arrow');
-    body.classList.toggle('open');
-    arrow.classList.toggle('open');
-  }
+  function toggle(el) { el.classList.toggle('open'); }
+  const sections = document.querySelectorAll('section[id], .cover');
+  const links = document.querySelectorAll('.nav-bar a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) cur = s.id || 'cover'; });
+    links.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  }, { passive: true });
 </script>
 </body>
 </html>
