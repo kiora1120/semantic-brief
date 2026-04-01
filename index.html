@@ -3,1750 +3,657 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Semantic Brief — 2026.03.30 · AI가 틀릴 때, 문제는 컨텍스트다</title>
-  <meta name="description" content="온톨로지가 LLM의 두뇌를 교정하는 법 — Semantic Brief Vol.1 No.2"/>
+  <title>Semantic Brief — 2026.04.01 · 표준화의 역설</title>
+  <meta name="description" content="OSI 이후 시맨틱레이어는 어디로 가는가 — Semantic Brief Vol.1 No.3"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet"/>
   <style>
-    /* ═══════════════════════════════════════════════
-       DESIGN TOKENS
-    ═══════════════════════════════════════════════ */
     :root {
-      --bg: #0b0c10;
-      --bg2: #0e0f14;
-      --ink: #f0f0f4;
-      --ink2: #9a9db0;
-      --ink3: #5a5d72;
-      --ink4: #3a3d52;
-      --rule: #1e2135;
-      --card: #12131c;
-      --card2: #181924;
-      --card3: #1e1f2e;
+      --bg: #0b0c10; --bg2: #0e0f14; --ink: #f0f0f4; --ink2: #9a9db0;
+      --ink3: #5a5d72; --ink4: #3a3d52; --rule: #1e2135; --card: #12131c;
+      --card2: #181924; --card3: #1e1f2e;
+      --a-editorial: #f5c842; --a-editorial-dim: #f5c84220; --a-editorial-mid: #f5c84240;
+      --a-news: #7b93ff; --a-news-dim: #7b93ff18; --a-news-mid: #7b93ff35;
+      --a-deep: #b48eff; --a-deep-dim: #b48eff18; --a-deep-mid: #b48eff35;
+      --a-compare: #42d9a0; --a-compare-dim: #42d9a018; --a-compare-mid: #42d9a035;
+      --font-serif: 'Noto Serif KR', 'Georgia', serif;
+      --font-sans: 'Noto Sans KR', 'system-ui', sans-serif;
+      --max: 780px; --r: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--font-sans);
+      font-size: 16px; line-height: 1.8; -webkit-font-smoothing: antialiased; }
 
-      /* Section accents */
-      --a-editorial: #f5c842;
-      --a-editorial-dim: #f5c84220;
-      --a-editorial-mid: #f5c84240;
-      --a-news: #7b93ff;
-      --a-news-dim: #7b93ff18;
-      --a-news-mid: #7b93ff35;
-      --a-deep: #b48eff;
-      --a-deep-dim: #b48eff18;
-      --a-deep-mid: #b48eff35;
-      --a-tool: #4ecb8d;
-      --a-tool-dim: #4ecb8d18;
-      --a-tool-mid: #4ecb8d35;
+    /* HEADER */
+    header { border-bottom: 1px solid var(--rule); padding: 24px 20px 0; }
+    .header-inner { max-width: var(--max); margin: 0 auto; }
+    .masthead { display: flex; justify-content: space-between; align-items: baseline;
+      padding-bottom: 16px; }
+    .masthead-title { font-family: var(--font-serif); font-size: clamp(26px,5vw,38px);
+      font-weight: 900; letter-spacing: -1px; }
+    .masthead-title span { color: var(--a-editorial); }
+    .masthead-meta { text-align: right; font-size: 11px; color: var(--ink3);
+      font-family: var(--font-sans); letter-spacing: 0.5px; }
+    .masthead-meta strong { display: block; color: var(--ink2); font-size: 12px; }
+    .masthead-sub { font-size: 11px; color: var(--ink3); padding-bottom: 14px; }
+    nav { display: flex; gap: 0; border-top: 1px solid var(--rule); }
+    nav a { padding: 10px 16px; font-size: 12px; font-weight: 500; color: var(--ink3);
+      text-decoration: none; letter-spacing: 0.5px; border-bottom: 2px solid transparent;
+      transition: color .2s, border-color .2s; }
+    nav a:hover { color: var(--ink); }
+    nav a.active { color: var(--ink); border-bottom-color: var(--a-editorial); }
 
-      --accent: #7b93ff;
-      --accent2: #b48eff;
-      --red: #ff6b6b;
-      --green: #4ecb8d;
-      --gold: #f5c842;
+    /* MAIN */
+    main { max-width: var(--max); margin: 0 auto; padding: 0 20px 80px; }
 
-      --r: 10px;
-      --r2: 16px;
-      --max-w: 760px;
-      --col-gap: 24px;
+    /* SECTION LABEL */
+    .section-label { display: flex; align-items: center; gap: 10px; margin: 48px 0 28px;
+      padding-bottom: 10px; border-bottom: 1px solid var(--rule); }
+    .section-tag { font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      padding: 3px 8px; border-radius: 3px; text-transform: uppercase; }
+    .section-tag.editorial { background: var(--a-editorial-dim); color: var(--a-editorial); }
+    .section-tag.news { background: var(--a-news-dim); color: var(--a-news); }
+    .section-tag.deep { background: var(--a-deep-dim); color: var(--a-deep); }
+    .section-tag.compare { background: var(--a-compare-dim); color: var(--a-compare); }
+    .section-title-text { font-family: var(--font-sans); font-size: 11px;
+      color: var(--ink3); letter-spacing: 0.5px; }
+    .read-time { margin-left: auto; font-size: 10px; color: var(--ink4);
+      background: var(--card); padding: 2px 8px; border-radius: 20px; }
 
-      --font-serif: 'Noto Serif KR', Georgia, serif;
-      --font-sans: 'Noto Sans KR', -apple-system, sans-serif;
-    }
+    /* EDITORIAL */
+    .editorial-hero { background: var(--card); border-radius: var(--r);
+      padding: 32px; margin-bottom: 28px; border-left: 3px solid var(--a-editorial); }
+    .editorial-hero-title { font-family: var(--font-serif);
+      font-size: clamp(22px, 4vw, 30px); font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+    .editorial-hero-title em { color: var(--a-editorial); font-style: normal; }
+    .editorial-subtitle { font-size: 14px; color: var(--ink3); margin-bottom: 20px;
+      padding-top: 8px; border-top: 1px solid var(--rule); }
+    .editorial-byline { font-size: 11px; color: var(--ink4); display: flex;
+      gap: 16px; align-items: center; }
+    .editorial-byline span { color: var(--ink3); }
+    .editorial-body p:first-of-type::first-letter {
+      float: left; font-family: var(--font-serif); font-size: 68px; font-weight: 900;
+      line-height: 0.75; margin: 8px 12px 0 0; color: var(--a-editorial); }
+    .editorial-body p { margin-bottom: 20px; line-height: 1.9; color: var(--ink); }
+    .editorial-body strong { color: var(--ink); }
+    .pull-quote { border-left: 3px solid var(--a-editorial); margin: 28px 0;
+      padding: 16px 20px; background: var(--a-editorial-dim); border-radius: 0 var(--r) var(--r) 0; }
+    .pull-quote p { font-family: var(--font-serif); font-size: 17px; font-style: italic;
+      color: var(--ink); line-height: 1.7; margin: 0; }
 
-    /* ═══════════════════════════════════════════════
-       RESET & BASE
-    ═══════════════════════════════════════════════ */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-size: 16px; }
-    body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--font-sans);
-      font-size: 15px;
-      line-height: 1.75;
-      -webkit-font-smoothing: antialiased;
-      padding-bottom: 100px;
-    }
+    /* NEWS */
+    .news-item { background: var(--card); border-radius: var(--r);
+      margin-bottom: 12px; overflow: hidden; border: 1px solid var(--rule); transition: border-color .2s; }
+    .news-item:hover { border-color: var(--a-news-mid); }
+    .news-header { padding: 18px 20px 14px; cursor: pointer;
+      display: flex; align-items: flex-start; gap: 14px; }
+    .news-num { font-family: var(--font-serif); font-size: 28px; font-weight: 900;
+      color: var(--a-news-mid); line-height: 1; min-width: 32px; }
+    .news-header-text { flex: 1; }
+    .news-title-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .news-title { font-family: var(--font-sans); font-size: 15px; font-weight: 600;
+      line-height: 1.4; color: var(--ink); }
+    .news-chevron { color: var(--ink4); font-size: 12px; transition: transform .2s; flex-shrink: 0; }
+    .news-item.open .news-chevron { transform: rotate(180deg); }
+    .news-source { font-size: 11px; color: var(--ink4); margin-top: 4px; }
+    .news-body { display: none; padding: 0 20px 18px 66px; border-top: 1px solid var(--rule); }
+    .news-body.open { display: block; }
+    .news-summary { font-size: 14px; color: var(--ink2); line-height: 1.8; margin-bottom: 12px; margin-top: 14px; }
+    .why-box { background: var(--a-news-dim); border-radius: var(--r);
+      padding: 12px 16px; border-left: 2px solid var(--a-news); }
+    .why-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+      color: var(--a-news); margin-bottom: 4px; }
+    .why-text { font-size: 13px; color: var(--ink2); line-height: 1.7; }
 
-    /* ═══════════════════════════════════════════════
-       READING PROGRESS BAR
-    ═══════════════════════════════════════════════ */
-    #progress-bar {
-      position: fixed;
-      top: 0; left: 0;
-      height: 3px;
-      width: 0%;
-      background: linear-gradient(90deg, var(--a-editorial), var(--a-news), var(--a-deep), var(--a-tool));
-      z-index: 1000;
-      transition: width .1s linear;
-    }
+    /* DEEP DIVE */
+    .deep-section { background: var(--card); border-radius: var(--r);
+      padding: 28px; margin-bottom: 20px; border: 1px solid var(--rule); }
+    .deep-h3 { font-family: var(--font-sans); font-size: 13px; font-weight: 700;
+      color: var(--a-deep); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+    .deep-p { font-size: 14px; color: var(--ink2); line-height: 1.8; margin-bottom: 16px; }
+    pre, code { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
+    pre { background: #080910; border: 1px solid var(--rule); border-radius: var(--r);
+      padding: 20px; overflow-x: auto; font-size: 12px; line-height: 1.7;
+      color: #c9d1d9; margin: 16px 0; }
+    .code-comment { color: #6a737d; }
+    .code-keyword { color: var(--a-deep); }
+    .code-string { color: var(--a-compare); }
+    .code-prop { color: var(--a-news); }
+    .diagram-wrap { margin: 20px 0; background: #080910; border-radius: var(--r);
+      border: 1px solid var(--rule); padding: 20px; overflow: hidden; }
+    .diagram-wrap svg { width: 100%; height: auto; }
 
-    /* ═══════════════════════════════════════════════
-       MASTHEAD
-    ═══════════════════════════════════════════════ */
-    .masthead-wrap {
-      background: var(--bg);
-      border-bottom: 2px solid var(--ink);
-      position: sticky;
-      top: 3px;
-      z-index: 100;
-    }
-    .masthead {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: 22px 24px 0;
-    }
-    .masthead-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 16px;
-    }
-    .masthead-brand {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .masthead-title {
-      font-family: var(--font-serif);
-      font-size: 32px;
-      font-weight: 900;
-      letter-spacing: -.03em;
-      line-height: 1;
-      color: var(--ink);
-    }
-    .masthead-title em {
-      font-style: normal;
-      color: var(--a-editorial);
-    }
-    .masthead-subtitle {
-      font-size: 10px;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--ink3);
-    }
-    .masthead-meta {
-      text-align: right;
-    }
-    .masthead-vol {
-      font-family: var(--font-serif);
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--ink2);
-      letter-spacing: .08em;
-    }
-    .masthead-date {
-      font-size: 11px;
-      color: var(--ink3);
-      margin-top: 2px;
-    }
+    /* COMPARE */
+    .compare-table-wrap { overflow-x: auto; margin: 20px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th { background: var(--card2); padding: 10px 14px; text-align: left;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.5px; color: var(--ink3);
+      border-bottom: 1px solid var(--rule); white-space: nowrap; }
+    thead th:first-child { color: var(--a-compare); }
+    tbody tr { border-bottom: 1px solid var(--rule); transition: background .15s; }
+    tbody tr:hover { background: var(--card2); }
+    tbody td { padding: 10px 14px; color: var(--ink2); vertical-align: middle; }
+    tbody td:first-child { font-weight: 600; color: var(--ink); }
+    .badge { display: inline-block; padding: 2px 7px; border-radius: 3px;
+      font-size: 10px; font-weight: 600; letter-spacing: 0.5px; }
+    .badge-green { background: #42d9a015; color: var(--a-compare); }
+    .badge-yellow { background: #f5c84215; color: var(--a-editorial); }
+    .badge-red { background: #ff6b6b15; color: #ff6b6b; }
+    .badge-blue { background: var(--a-news-dim); color: var(--a-news); }
+    .badge-purple { background: var(--a-deep-dim); color: var(--a-deep); }
+    .recommend-box { background: var(--card2); border-radius: var(--r); padding: 20px; margin-top: 20px; }
+    .recommend-box h4 { font-size: 12px; font-weight: 700; letter-spacing: 1px;
+      color: var(--a-compare); text-transform: uppercase; margin-bottom: 14px; }
+    .recommend-item { display: flex; gap: 12px; margin-bottom: 12px; align-items: flex-start; }
+    .recommend-label { background: var(--a-compare-dim); color: var(--a-compare);
+      font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 3px;
+      white-space: nowrap; letter-spacing: 0.5px; flex-shrink: 0; }
+    .recommend-text { font-size: 13px; color: var(--ink2); line-height: 1.6; }
 
-    /* NAV */
-    .nav-wrap {
-      margin: 0 -24px;
-      border-top: 1px solid var(--rule);
-      display: flex;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .nav-wrap::-webkit-scrollbar { display: none; }
-    .nav-wrap a {
-      flex-shrink: 0;
-      padding: 10px 18px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--ink3);
-      text-decoration: none;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -2px;
-      transition: color .2s, border-color .2s;
-      white-space: nowrap;
-    }
-    .nav-wrap a[data-section="editorial"] { --nav-c: var(--a-editorial); }
-    .nav-wrap a[data-section="news"]      { --nav-c: var(--a-news); }
-    .nav-wrap a[data-section="deep"]      { --nav-c: var(--a-deep); }
-    .nav-wrap a[data-section="tool"]      { --nav-c: var(--a-tool); }
-    .nav-wrap a[data-section="sources"]   { --nav-c: var(--ink2); }
-    .nav-wrap a:hover, .nav-wrap a.active {
-      color: var(--nav-c, var(--accent));
-      border-bottom-color: var(--nav-c, var(--accent));
-    }
-
-    /* ═══════════════════════════════════════════════
-       LAYOUT SHELL
-    ═══════════════════════════════════════════════ */
-    .container {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* ═══════════════════════════════════════════════
-       SECTION HEADER
-    ═══════════════════════════════════════════════ */
-    .section-header {
-      padding: 56px 0 28px;
-      position: relative;
-    }
-    .section-header::before {
-      content: '';
-      display: block;
-      height: 3px;
-      width: 48px;
-      background: var(--s-accent, var(--accent));
-      margin-bottom: 20px;
-      border-radius: 2px;
-    }
-    .section-kicker {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: var(--s-accent, var(--accent));
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .section-kicker .read-time {
-      font-weight: 500;
-      color: var(--ink3);
-      letter-spacing: .05em;
-    }
-    .section-title {
-      font-family: var(--font-serif);
-      font-size: 24px;
-      font-weight: 700;
-      line-height: 1.25;
-      color: var(--ink);
-      letter-spacing: -.02em;
-    }
-    .section-rule {
-      height: 1px;
-      background: var(--rule);
-      margin-top: 20px;
-    }
-
-    /* Assign section accent variables */
-    #editorial { --s-accent: var(--a-editorial); }
-    #news       { --s-accent: var(--a-news); }
-    #deep       { --s-accent: var(--a-deep); }
-    #tool       { --s-accent: var(--a-tool); }
-    #sources    { --s-accent: var(--ink2); }
-
-    /* ═══════════════════════════════════════════════
-       EDITORIAL SECTION — SPECIAL TREATMENT
-    ═══════════════════════════════════════════════ */
-    .editorial-lede {
-      background: linear-gradient(135deg, #0f1020 0%, #16121e 100%);
-      border: 1px solid var(--a-editorial-mid);
-      border-radius: var(--r2);
-      padding: 36px 36px 32px;
-      margin-bottom: 32px;
-      position: relative;
-      overflow: hidden;
-    }
-    .editorial-lede::before {
-      content: '"';
-      position: absolute;
-      top: -10px; left: 20px;
-      font-family: var(--font-serif);
-      font-size: 160px;
-      font-weight: 900;
-      color: var(--a-editorial);
-      opacity: .07;
-      line-height: 1;
-      pointer-events: none;
-    }
-    .editorial-headline {
-      font-family: var(--font-serif);
-      font-size: clamp(22px, 4vw, 32px);
-      font-weight: 900;
-      line-height: 1.2;
-      letter-spacing: -.03em;
-      color: var(--ink);
-      margin-bottom: 16px;
-    }
-    .editorial-headline em {
-      font-style: normal;
-      color: var(--a-editorial);
-    }
-    .editorial-byline {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 12px;
-      color: var(--ink3);
-      padding-top: 16px;
-      border-top: 1px solid var(--a-editorial-mid);
-    }
-    .editorial-byline strong { color: var(--ink2); font-weight: 500; }
-    .byline-dot { color: var(--rule); }
-
-    /* Drop cap */
-    .editorial-body {
-      margin-top: 28px;
-    }
-    .editorial-body > p:first-of-type::first-letter {
-      font-family: var(--font-serif);
-      font-size: 4.2em;
-      font-weight: 900;
-      float: left;
-      line-height: .85;
-      margin-right: 8px;
-      margin-top: 4px;
-      color: var(--a-editorial);
-    }
-    .editorial-body p {
-      font-size: 16px;
-      line-height: 1.85;
-      color: var(--ink2);
-      margin-bottom: 18px;
-    }
-    .editorial-body p:last-child { margin-bottom: 0; }
-    .editorial-body strong { color: var(--ink); font-weight: 600; }
-
-    /* Editorial pull quote */
-    .pull-quote {
-      position: relative;
-      margin: 36px 0;
-      padding: 0 0 0 28px;
-    }
-    .pull-quote::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 4px;
-      background: linear-gradient(180deg, var(--a-editorial), var(--a-deep));
-      border-radius: 2px;
-    }
-    .pull-quote blockquote {
-      font-family: var(--font-serif);
-      font-size: 20px;
-      font-weight: 700;
-      line-height: 1.5;
-      color: var(--ink);
-      letter-spacing: -.01em;
-      font-style: normal;
-    }
-    .pull-quote cite {
-      display: block;
-      margin-top: 10px;
-      font-style: normal;
-      font-size: 12px;
-      color: var(--ink3);
-      letter-spacing: .06em;
-      text-transform: uppercase;
-    }
-
-    /* Editorial concept boxes */
-    .concept-box {
-      background: var(--card);
-      border: 1px solid var(--rule);
-      border-left: 3px solid var(--a-editorial);
-      border-radius: 0 var(--r) var(--r) 0;
-      padding: 20px 22px;
-      margin: 24px 0;
-    }
-    .concept-box-label {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--a-editorial);
-      margin-bottom: 8px;
-    }
-    .concept-box p {
-      font-size: 13.5px;
-      color: var(--ink2);
-      line-height: 1.75;
-      margin-bottom: 8px;
-    }
-    .concept-box p:last-child { margin-bottom: 0; }
-
-    /* ═══════════════════════════════════════════════
-       NEWS CARDS
-    ═══════════════════════════════════════════════ */
-    .news-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .news-card {
-      background: var(--card);
-      border: 1px solid var(--rule);
-      border-radius: var(--r2);
-      overflow: hidden;
-      cursor: pointer;
-      transition: border-color .25s, background .25s, transform .2s;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .news-card:hover { border-color: var(--a-news-mid); transform: translateY(-1px); }
-    .news-card.open { border-color: var(--a-news); background: var(--card2); }
-
-    .news-card-head {
-      padding: 18px 20px;
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-    }
-    .news-card-icon {
-      width: 44px; height: 44px;
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
-      flex-shrink: 0;
-      background: var(--a-news-dim);
-    }
-    .news-card-meta { flex: 1; min-width: 0; }
-    .news-card-tag {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--a-news);
-      margin-bottom: 5px;
-    }
-    .news-card-title {
-      font-family: var(--font-serif);
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1.35;
-      color: var(--ink);
-      margin-bottom: 6px;
-    }
-    .news-card-deck {
-      font-size: 13px;
-      color: var(--ink3);
-      line-height: 1.6;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .news-card.open .news-card-deck { display: none; }
-
-    .news-card-chevron {
-      flex-shrink: 0;
-      width: 26px; height: 26px;
-      border-radius: 50%;
-      background: var(--card3);
-      border: 1px solid var(--rule);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--ink3);
-      font-size: 11px;
-      transition: transform .35s cubic-bezier(.4,0,.2,1), background .2s, color .2s;
-      margin-top: 2px;
-    }
-    .news-card.open .news-card-chevron {
-      transform: rotate(180deg);
-      background: var(--a-news-dim);
-      border-color: var(--a-news-mid);
-      color: var(--a-news);
-    }
-
-    /* Expandable body */
-    .card-body {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height .5s cubic-bezier(.4,0,.2,1);
-    }
-    .news-card.open .card-body,
-    .tool-row.open .card-body { max-height: 5000px; }
-
-    .card-body-inner {
-      border-top: 1px solid var(--rule);
-      padding: 20px 20px 24px;
-    }
-
-    /* ── WHY IT MATTERS chip ── */
-    .why-matters {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: var(--a-news-dim);
-      border: 1px solid var(--a-news-mid);
-      border-radius: 6px;
-      padding: 6px 12px;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--a-news);
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-    .why-matters .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--a-news); }
-
-    /* ═══════════════════════════════════════════════
-       PROSE (shared)
-    ═══════════════════════════════════════════════ */
-    .prose p {
-      font-size: 14px;
-      color: var(--ink2);
-      line-height: 1.85;
-      margin-bottom: 14px;
-    }
-    .prose p:last-child { margin-bottom: 0; }
-    .prose strong { color: var(--ink); font-weight: 600; }
-    .prose em { font-style: normal; color: var(--ink); font-weight: 500; }
-
-    /* inline pull quote in cards */
-    .mini-pull {
-      font-family: var(--font-serif);
-      font-size: 15px;
-      font-weight: 700;
-      line-height: 1.55;
-      color: var(--ink);
-      border-left: 3px solid var(--a-news);
-      padding: 10px 16px;
-      margin: 16px 0;
-      background: var(--a-news-dim);
-      border-radius: 0 8px 8px 0;
-    }
-
-    /* stat row */
-    .stat-row {
-      display: flex;
-      gap: 10px;
-      margin: 16px 0;
-      flex-wrap: wrap;
-    }
-    .stat-box {
-      flex: 1;
-      min-width: 80px;
-      background: var(--card3);
-      border: 1px solid var(--rule);
-      border-radius: var(--r);
-      padding: 14px 12px;
-      text-align: center;
-    }
-    .stat-num {
-      font-family: var(--font-serif);
-      font-size: 26px;
-      font-weight: 900;
-      line-height: 1;
-      background: linear-gradient(135deg, var(--a-news), var(--a-deep));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .stat-label {
-      font-size: 10px;
-      color: var(--ink3);
-      margin-top: 5px;
-      line-height: 1.35;
-    }
-
-    /* ═══════════════════════════════════════════════
-       DEEP DIVE SECTION
-    ═══════════════════════════════════════════════ */
-    .deep-header {
-      background: linear-gradient(135deg, #0d0a18 0%, #130f20 100%);
-      border: 1px solid var(--a-deep-mid);
-      border-radius: var(--r2);
-      padding: 28px 28px 24px;
-      margin-bottom: 28px;
-    }
-    .deep-header-kicker {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--a-deep);
-      margin-bottom: 10px;
-    }
-    .deep-header-title {
-      font-family: var(--font-serif);
-      font-size: clamp(18px, 3.5vw, 26px);
-      font-weight: 900;
-      line-height: 1.25;
-      color: var(--ink);
-      letter-spacing: -.02em;
-      margin-bottom: 12px;
-    }
-    .deep-header-deck {
-      font-size: 14px;
-      color: var(--ink2);
-      line-height: 1.7;
-      border-top: 1px solid var(--a-deep-mid);
-      padding-top: 14px;
-    }
-
-    /* deep prose */
-    .deep-prose p {
-      font-size: 14.5px;
-      color: var(--ink2);
-      line-height: 1.85;
-      margin-bottom: 18px;
-    }
-    .deep-prose p:last-child { margin-bottom: 0; }
-    .deep-prose strong { color: var(--ink); font-weight: 600; }
-
-    /* diagram frame */
-    .diagram-frame {
-      background: #080910;
-      border: 1px solid #1e2035;
-      border-radius: var(--r2);
-      overflow: hidden;
-      margin: 24px 0;
-    }
-    .diagram-caption {
-      padding: 8px 16px;
-      font-size: 10px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--ink3);
-      border-bottom: 1px solid #1e2035;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .diagram-caption .dot-purple {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--a-deep);
-    }
-    .diagram-frame svg { display: block; width: 100%; height: auto; }
-
-    /* code block */
-    .code-frame {
-      background: #07080e;
-      border: 1px solid #1a1b2e;
-      border-radius: var(--r2);
-      overflow: hidden;
-      margin: 20px 0;
-    }
-    .code-header {
-      padding: 8px 16px;
-      border-bottom: 1px solid #1a1b2e;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .code-header-dots {
-      display: flex;
-      gap: 5px;
-    }
-    .code-header-dots span {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-    }
-    .code-header-dots span:nth-child(1) { background: #ff6b6b50; }
-    .code-header-dots span:nth-child(2) { background: #f5c84240; }
-    .code-header-dots span:nth-child(3) { background: #4ecb8d40; }
-    .code-lang {
-      margin-left: auto;
-      font-size: 10px;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--ink4);
-    }
-    .code-frame pre {
-      font-family: 'SFMono-Regular', 'Cascadia Code', Consolas, 'Courier New', monospace;
-      font-size: 12px;
-      line-height: 1.7;
-      color: #abb2bf;
-      padding: 16px 20px;
-      overflow-x: auto;
-      white-space: pre;
-    }
-    .ck { color: #c678dd; }
-    .cs { color: #98c379; }
-    .cc { color: #5c6370; font-style: italic; }
-    .cv { color: #61afef; }
-    .cn { color: #e06c75; }
-    .cm { color: #f5c842; }
-
-    /* when-to / when-not boxes */
-    .use-case-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin: 20px 0;
-    }
-    @media (max-width: 480px) {
-      .use-case-grid { grid-template-columns: 1fr; }
-    }
-    .use-case-box {
-      background: var(--card);
-      border: 1px solid var(--rule);
-      border-radius: var(--r);
-      padding: 16px 18px;
-    }
-    .use-case-box.yes { border-top: 2px solid var(--a-tool); }
-    .use-case-box.no  { border-top: 2px solid var(--red); }
-    .use-case-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-    .use-case-box.yes .use-case-label { color: var(--a-tool); }
-    .use-case-box.no  .use-case-label { color: var(--red); }
-    .use-case-list {
-      list-style: none;
-      font-size: 12.5px;
-      color: var(--ink2);
-      line-height: 1.65;
-    }
-    .use-case-list li {
-      padding: 3px 0 3px 14px;
-      position: relative;
-    }
-    .use-case-list li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      font-size: 10px;
-      opacity: .6;
-    }
-    .use-case-box.no .use-case-list li::before { content: '×'; }
-
-    /* ═══════════════════════════════════════════════
-       TOOL COMPARISON SECTION
-    ═══════════════════════════════════════════════ */
-    .tool-intro {
-      font-size: 14.5px;
-      color: var(--ink2);
-      line-height: 1.8;
-      margin-bottom: 28px;
-    }
-
-    /* comparison matrix */
-    .matrix-wrap {
-      overflow-x: auto;
-      margin: 0 -4px;
-      border-radius: var(--r2);
-      border: 1px solid var(--rule);
-    }
-    .matrix {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 540px;
-    }
-    .matrix thead tr {
-      background: #0a0b12;
-    }
-    .matrix th {
-      padding: 12px 14px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--a-tool);
-      text-align: left;
-      border-bottom: 2px solid var(--a-tool-mid);
-      white-space: nowrap;
-    }
-    .matrix th:first-child {
-      color: var(--ink2);
-      width: 130px;
-    }
-    .matrix td {
-      padding: 11px 14px;
-      font-size: 12.5px;
-      color: var(--ink2);
-      border-bottom: 1px solid var(--rule);
-      vertical-align: middle;
-    }
-    .matrix tr:last-child td { border-bottom: none; }
-    .matrix td:first-child {
-      color: var(--ink);
-      font-weight: 600;
-      font-size: 12px;
-    }
-    .matrix tr:hover td { background: #ffffff03; }
-
-    /* cell badges */
-    .cb-y { color: var(--a-tool); font-weight: 600; }
-    .cb-p { color: var(--gold); }
-    .cb-n { color: var(--ink4); }
-    .cb-r { color: var(--red); }
-
-    /* recommendation cards */
-    .rec-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 28px;
-    }
-    @media (max-width: 520px) {
-      .rec-grid { grid-template-columns: 1fr; }
-    }
-    .rec-card {
-      background: var(--card);
-      border: 1px solid var(--rule);
-      border-radius: var(--r2);
-      padding: 18px 20px;
-      transition: border-color .2s;
-    }
-    .rec-card:hover { border-color: var(--a-tool-mid); }
-    .rec-card-scenario {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--a-tool);
-      margin-bottom: 8px;
-    }
-    .rec-card-title {
-      font-family: var(--font-serif);
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 8px;
-    }
-    .rec-card-body {
-      font-size: 12.5px;
-      color: var(--ink2);
-      line-height: 1.65;
-    }
-    .rec-badge {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 3px 10px;
-      background: var(--a-tool-dim);
-      border: 1px solid var(--a-tool-mid);
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--a-tool);
-    }
-
-    /* ═══════════════════════════════════════════════
-       SOURCES
-    ═══════════════════════════════════════════════ */
-    .source-list {
-      list-style: none;
-      background: var(--card);
-      border: 1px solid var(--rule);
-      border-radius: var(--r2);
-      overflow: hidden;
-    }
-    .source-list li {
-      border-bottom: 1px solid var(--rule);
-    }
-    .source-list li:last-child { border-bottom: none; }
-    .source-list a {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      padding: 13px 18px;
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 13px;
-      line-height: 1.45;
-      transition: background .2s, color .2s;
-    }
-    .source-list a:hover {
-      background: var(--a-news-dim);
-      color: var(--ink);
-    }
-    .source-list a .src-icon {
-      flex-shrink: 0;
-      width: 20px; height: 20px;
-      border-radius: 4px;
-      background: var(--a-news-dim);
-      border: 1px solid var(--a-news-mid);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 9px;
-      color: var(--a-news);
-    }
-    .source-list a .src-text {
-      flex: 1;
-    }
-
-    /* ═══════════════════════════════════════════════
-       FOOTER
-    ═══════════════════════════════════════════════ */
-    .footer-wrap {
-      margin-top: 60px;
-      border-top: 1px solid var(--rule);
-    }
-    .footer {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: 28px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .footer-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .footer-brand {
-      font-family: var(--font-serif);
-      font-size: 16px;
-      font-weight: 900;
-      color: var(--ink2);
-    }
-    .footer-brand em { font-style: normal; color: var(--a-editorial); }
-    .footer-copy {
-      font-size: 11px;
-      color: var(--ink3);
-      line-height: 1.6;
-    }
-
-    /* ═══════════════════════════════════════════════
-       TOOL COMPARISON ROWS (expandable)
-    ═══════════════════════════════════════════════ */
-    .tool-row {
-      background: var(--card);
-      border: 1px solid var(--rule);
-      border-radius: var(--r2);
-      margin-bottom: 10px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: border-color .25s, background .25s;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .tool-row:hover { border-color: var(--a-tool-mid); }
-    .tool-row.open { border-color: var(--a-tool); background: var(--card2); }
-    .tool-row-head {
-      padding: 16px 18px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .tool-row-icon {
-      width: 42px; height: 42px;
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-    .tool-row-meta { flex: 1; }
-    .tool-row-name { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
-    .tool-row-sub { font-size: 11.5px; color: var(--ink3); }
-    .tool-row-score {
-      text-align: right;
-      font-family: var(--font-serif);
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--a-tool);
-      line-height: 1.1;
-    }
-    .tool-row-score small { display: block; font-family: var(--font-sans); font-size: 10px; color: var(--ink3); font-weight: 400; margin-top: 2px; }
-    .tool-row-chevron {
-      flex-shrink: 0;
-      width: 24px; height: 24px;
-      border-radius: 50%;
-      background: var(--card3);
-      border: 1px solid var(--rule);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--ink3);
-      font-size: 10px;
-      transition: transform .35s, color .2s, background .2s;
-    }
-    .tool-row.open .tool-row-chevron {
-      transform: rotate(180deg);
-      background: var(--a-tool-dim);
-      border-color: var(--a-tool-mid);
-      color: var(--a-tool);
-    }
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 12px;
-    }
-    .chip {
-      font-size: 11px;
-      color: var(--a-deep);
-      background: var(--a-deep-dim);
-      border: 1px solid var(--a-deep-mid);
-      padding: 3px 10px;
-      border-radius: 20px;
-    }
-
-    /* ═══════════════════════════════════════════════
-       UTILITY CLASSES
-    ═══════════════════════════════════════════════ */
-    .mt-8  { margin-top: 8px; }
-    .mt-16 { margin-top: 16px; }
-    .mt-24 { margin-top: 24px; }
-    .mb-16 { margin-bottom: 16px; }
-
-    /* ═══════════════════════════════════════════════
-       RESPONSIVE
-    ═══════════════════════════════════════════════ */
-    @media (max-width: 600px) {
-      .masthead-title { font-size: 26px; }
-      .container { padding: 0 16px; }
-      .masthead { padding: 18px 16px 0; }
-      .nav-wrap { margin: 0 -16px; }
-      .nav-wrap a { padding: 10px 14px; }
-      .editorial-lede { padding: 24px 20px; }
-      .card-body-inner { padding: 16px 16px 20px; }
-      .tool-row-head { padding: 14px 16px; }
-    }
-
-    @media (min-width: 700px) {
-      body { font-size: 16px; }
-      .news-card-head { padding: 20px 24px; }
-      .card-body-inner { padding: 22px 24px 28px; }
-      .masthead-title { font-size: 36px; }
-    }
+    /* FOOTER */
+    footer { border-top: 1px solid var(--rule); padding: 40px 20px; text-align: center; }
+    .footer-inner { max-width: var(--max); margin: 0 auto; }
+    footer p { font-size: 11px; color: var(--ink4); line-height: 2; }
+    #progress { position: fixed; top: 0; left: 0; height: 2px;
+      background: var(--a-editorial); width: 0%; transition: width .1s; z-index: 999; }
   </style>
 </head>
 <body>
+<div id="progress"></div>
 
-<!-- PROGRESS BAR -->
-<div id="progress-bar"></div>
-
-<!-- MASTHEAD -->
-<div class="masthead-wrap">
-  <div class="masthead">
-    <div class="masthead-top">
-      <div class="masthead-brand">
-        <div class="masthead-title">Semantic<em>Brief</em></div>
-        <div class="masthead-subtitle">온톨로지 &amp; 지식그래프 &amp; AI 데이터 인프라</div>
-      </div>
+<header>
+  <div class="header-inner">
+    <div class="masthead">
+      <div class="masthead-title">Semantic<span>Brief</span></div>
       <div class="masthead-meta">
-        <div class="masthead-vol">Vol. 1 · No. 2</div>
-        <div class="masthead-date">2026년 3월 30일 월요일</div>
+        <strong>Vol. 1 · No. 3</strong>
+        2026년 4월 1일 발행호
       </div>
     </div>
-    <nav class="nav-wrap">
-      <a href="#editorial" data-section="editorial">사설</a>
-      <a href="#news" data-section="news">뉴스</a>
-      <a href="#deep" data-section="deep">딥다이브</a>
-      <a href="#tool" data-section="tool">도구비교</a>
-      <a href="#sources" data-section="sources">출처</a>
+    <div class="masthead-sub">온톨로지 &amp; 지식그래프 &amp; AI 데이터 인프라</div>
+    <nav>
+      <a href="#editorial" class="active">사설</a>
+      <a href="#news">뉴스</a>
+      <a href="#deepdive">딥다이브</a>
+      <a href="#compare">도구비교</a>
+      <a href="archive.html">출처</a>
     </nav>
   </div>
-</div>
+</header>
 
-<!-- MAIN -->
-<main class="container">
+<main>
 
-  <!-- ═══════════════════════════════════════
-       SECTION 1: EDITORIAL
-  ═══════════════════════════════════════ -->
-  <section id="editorial">
-    <div class="section-header">
-      <div class="section-kicker">
-        사설 · Editorial
-        <span class="read-time">약 8분 읽기</span>
-      </div>
-      <h2 class="section-title">이번 주 플래그십 에세이</h2>
-      <div class="section-rule"></div>
+  <!-- ===== EDITORIAL ===== -->
+  <div class="section-label" id="editorial">
+    <span class="section-tag editorial">사설 · EDITORIAL</span>
+    <span class="section-title-text">이번 주 플래그십 에세이</span>
+    <span class="read-time">약 6분 읽기</span>
+  </div>
+
+  <div class="editorial-hero">
+    <div class="editorial-hero-title">표준화의 역설 — OSI 이후 <em>시맨틱레이어</em>는 어디로 가는가</div>
+    <div class="editorial-subtitle">— 공통 언어를 얻은 산업이 다음으로 직면할 분열의 씨앗</div>
+    <div class="editorial-byline">
+      <span>Semantic Brief 편집팀</span>
+      <span>2026년 4월 1일</span>
+      <span>사설</span>
     </div>
+  </div>
 
-    <div class="editorial-lede">
-      <h1 class="editorial-headline">
-        AI가 틀릴 때,<br>
-        문제는 모델이 아니라 <em>컨텍스트</em>다<br>
-        <span style="font-size:.6em;color:var(--ink2);font-weight:600;">— 온톨로지가 LLM의 두뇌를 교정하는 법</span>
-      </h1>
-      <div class="editorial-byline">
-        <strong>Semantic Brief 편집팀</strong>
-        <span class="byline-dot">·</span>
-        <span>2026년 3월 30일</span>
-        <span class="byline-dot">·</span>
-        <span>사설</span>
-      </div>
-    </div>
+  <div class="editorial-body">
+    <p>표준이 완성되는 순간, 그 표준을 둘러싼 싸움이 시작된다. 2026년 1월 dbt Labs, Snowflake, Salesforce가 공동으로 확정한 OSI(Open Semantic Interchange) 명세는 시맨틱레이어 역사상 가장 중요한 이정표로 평가된다. 메트릭 정의, 엔티티 관계, 계산 로직을 벤더 중립적 JSON 형식으로 교환할 수 있게 되었다. 이론상으로는 어떤 시맨틱레이어 도구도 다른 도구의 산출물을 이해할 수 있다. 그러나 현실은 이 아름다운 설계도와 조금 다른 방향으로 전개되고 있다.</p>
 
-    <div class="editorial-body">
-      <p>대규모 언어 모델이 틀린 답을 내놓을 때, 우리는 즉각적으로 모델 자체를 의심한다. 더 큰 파라미터, 더 정교한 파인튜닝, 더 긴 컨텍스트 윈도우. 이것이 지난 4년간 AI 산업의 지배적 내러티브였다. 그러나 2026년의 시점에서 이 프레임은 근본적으로 재검토돼야 한다. <strong>모델이 아니라 컨텍스트가 문제</strong>라는 인식이, 온톨로지와 지식그래프 기술의 르네상스를 이끌고 있다.</p>
+    <div class="pull-quote"><p>"표준은 시장을 평정하지 않는다. 표준은 시장이 어디서 경쟁할지를 재정의할 뿐이다."</p></div>
 
-      <p>생각해보면 단순하다. 어떤 의사가 환자를 진찰할 때, 그 환자의 진료기록이 단편적이거나 모순되거나 구조화되지 않아 있다면 — 아무리 뛰어난 의사라도 오진할 가능성이 높아진다. 의사의 실력이 문제가 아니라, 그 의사에게 주어진 정보의 <em>질</em>이 문제다. LLM도 마찬가지다. GPT-4o든 Claude든 Gemini든, 입력 컨텍스트가 잘못 구성되어 있으면 모델은 그것을 바탕으로 그럴듯한 오답을 생성한다. 이것이 환각(hallucination)의 본질이다.</p>
+    <p>역사를 보면 이 패턴은 반복된다. TCP/IP가 네트워크 통신을 표준화했을 때, 경쟁은 프로토콜이 아니라 라우터·스위치·방화벽 레이어로 이동했다. SQL이 관계형 쿼리를 통합했을 때, 벤더들은 스토리지 엔진과 최적화기에서 차별화를 꾀했다. <strong>OSI 이후의 시맨틱레이어 경쟁도 동일한 중력을 따를 가능성이 높다.</strong> 교환 포맷이 표준화될수록, 경쟁의 무게중심은 '무엇을 정의하는가'에서 '어떻게 추론하고 서빙하는가'로 이동한다.</p>
 
-      <div class="pull-quote">
-        <blockquote>"환각은 모델의 결함이 아니다. 잘못 구성된 컨텍스트에 대한 합리적 반응이다. 온톨로지는 그 컨텍스트를 수술한다."</blockquote>
-        <cite>— Semantic Brief 편집팀</cite>
-      </div>
+    <p>2026년 1분기의 움직임은 이 가설을 지지한다. Digital Science의 Ontopic 인수는 단순한 M&A가 아니다. 이는 VKG(Virtual Knowledge Graph) — 데이터를 물리적으로 이동시키지 않고 온톨로지 매핑만으로 쿼리를 처리하는 기술 — 이 기업 전략의 핵심 자산으로 인정받기 시작했음을 의미한다. OSI가 정적인 메트릭 정의를 표준화한다면, VKG는 그 위에서 동적인 쿼리 재작성과 추론을 제공한다. 표준화된 토대 위의 고부가가치 레이어, 이것이 새로운 경쟁지형이다.</p>
 
-      <p>온톨로지가 하는 일을 명확히 짚어보자. 온톨로지는 단순한 분류 체계가 아니다. 도메인 내의 <strong>개념, 관계, 제약 조건을 기계가 읽을 수 있는 형식으로 명시화</strong>한 지식 구조다. "의약품은 최대 하나의 주성분을 가진다"는 제약을 OWL로 표현하면, 이 제약을 위반하는 정보가 RAG 파이프라인에 들어오더라도 시스템이 이를 필터링하거나 경고할 수 있다. 반면 벡터 데이터베이스는 이런 논리적 구조를 이해하지 못한다 — 유사도 점수만 있을 뿐이다.</p>
+    <p>Netflix가 QCon London 2026에서 공개한 온톨로지 기반 관측가능성 아키텍처는 또 다른 신호다. 그들은 서비스 의존성, SLO, 온콜 정책을 단일 지식그래프로 연결했다. 장애 대응 시간이 40% 단축됐다고 발표했다. 주목할 점은 이들이 OSI 호환 포맷을 사용했다는 것이 아니라, 온톨로지를 운영 인프라의 '신경계'로 취급했다는 점이다. 메트릭 교환 표준에서 출발해, 실시간 추론과 자동화의 기반으로 — 시맨틱레이어의 야심이 데이터 분석을 넘어 운영 영역으로 확장되고 있다.</p>
 
-      <div class="concept-box">
-        <div class="concept-box-label">핵심 개념: 온톨로지 기반 컨텍스트 교정의 3단계</div>
-        <p><strong>1단계 — 구조화(Structuring):</strong> 도메인 지식을 OWL/RDF 형식으로 명시. 개념 간 계층 관계, 도메인/범위 제약, 공리(axiom)를 정의한다.</p>
-        <p><strong>2단계 — 매핑(Mapping):</strong> R2RML 등의 표준 언어로 기존 관계형 DB와 온톨로지 레이어를 연결. 데이터를 이동시키지 않고 가상의 지식그래프(VKG)를 생성한다.</p>
-        <p><strong>3단계 — 제약 추론(Reasoning):</strong> 검색 단계에서 온톨로지 제약을 필터로 활용. 논리적으로 불일치한 정보가 LLM에 전달되기 전에 차단한다.</p>
-      </div>
+    <p>GraphRAG의 임상 QA 98% 정확도 성과는 이 확장의 또 다른 벡터를 보여준다. LLM과 지식그래프의 결합이 단순한 검색 증강을 넘어, 전문 도메인의 추론 엔진으로 성숙하고 있다. <strong>OSI 표준이 '데이터 평면'을 정리했다면, 다음 10년의 싸움은 '추론 평면'에서 벌어질 것이다.</strong> 어떤 온톨로지 레이어가 LLM의 컨텍스트를 가장 효과적으로 구조화하는가, 어떤 VKG가 실시간 쿼리 재작성에서 가장 낮은 지연을 달성하는가 — 이 질문들이 2026년 이후 시맨틱레이어 산업의 핵심 KPI가 될 것이다.</p>
 
-      <p>이 흐름의 실질적 증거가 2026년 1분기에 집중적으로 등장하고 있다. Microsoft의 GraphRAG v2가 벡터 RAG 대비 3.4배의 정확도를 보고했고, ICLR 2026에 채택된 LinearRAG 논문은 KG 추론의 시간 복잡도를 O(n²)에서 O(n)으로 낮췄다. Gartner는 지식그래프를 생성형 AI의 "Critical Enabler"로 공식 분류했다. 그리고 Digital Science가 Ontop VKG 기술을 가진 Ontopic을 인수했다. 이 사건들은 개별적으로 일어난 게 아니다 — 하나의 패러다임 전환을 가리키는 동시다발적 신호들이다.</p>
+    <p>표준화의 역설은 여기에 있다. 공통 언어를 가진 생태계는 더 빠르게 분열한다. 모두가 같은 포맷으로 말할 수 있게 되었을 때, 차별화의 무기는 포맷이 아니라 그 포맷으로 무엇을 추론하는가가 된다. OSI는 끝이 아니라 시작이다. 그리고 그 시작은 우리가 생각했던 것보다 훨씬 더 복잡한 경쟁의 서막일지도 모른다.</p>
+  </div>
 
-      <p>가장 주목할 부분은 이 흐름이 학계에서 산업계로, 연구에서 프로덕션으로 이동하고 있다는 점이다. Neo4j와 Stardog는 GraphRAG 파이프라인을 엔터프라이즈 제품에 통합했고, metaphactory는 VKG를 통해 ETL 없이 기존 DB를 지식그래프로 노출하는 OBDA 기능을 확장하고 있다. 금융권에서는 JPMorgan과 Goldman Sachs가 FIBO 온톨로지를 기반으로 규제 컴플라이언스를 자동화하기 시작했다.</p>
+  <!-- ===== NEWS ===== -->
+  <div class="section-label" id="news">
+    <span class="section-tag news">뉴스 큐레이션</span>
+    <span class="section-title-text">이번 주 주요 소식 5건</span>
+  </div>
 
-      <p>그러나 우리는 과도한 낙관론을 경계해야 한다. 온톨로지 구축은 여전히 비용이 높고 유지보수가 어렵다. 도메인 전문가와 엔지니어의 긴밀한 협업이 필요하며, 온톨로지의 범위가 넓어질수록 추론 엔진의 성능 병목이 발생한다. R2RML 매핑은 강력하지만, 복잡한 집계 로직이나 비정형 데이터에는 한계가 있다. <strong>온톨로지는 만능이 아니다 — 그것은 정밀 도구다.</strong></p>
-
-      <div class="pull-quote">
-        <blockquote>"온톨로지의 가치는 모든 문제를 푸는 것이 아니라, 가장 중요한 오류 — 논리적 불일치와 관계 추론 실패 — 를 구조적으로 차단하는 데 있다."</blockquote>
-        <cite>— Semantic Brief 편집팀</cite>
-      </div>
-
-      <p>결론적으로, AI 인프라의 다음 경쟁은 모델 파라미터 싸움이 아니라 <em>컨텍스트 품질 경쟁</em>이 될 것이다. 더 정확하고, 더 일관되며, 더 설명 가능한 컨텍스트를 구성할 수 있는 조직이 AI에서 지속적인 우위를 확보한다. 온톨로지와 지식그래프는 그 경쟁의 핵심 무기다. 이번 주 Semantic Brief는 그 무기를 실전에서 어떻게 다루는지를 다룬다.</p>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════
-       SECTION 2: NEWS CURATION
-  ═══════════════════════════════════════ -->
-  <section id="news">
-    <div class="section-header">
-      <div class="section-kicker">
-        뉴스 큐레이션 · News
-        <span class="read-time">약 6분 읽기</span>
-      </div>
-      <h2 class="section-title">이번 주 주요 뉴스 5선 — 왜 중요한가</h2>
-      <div class="section-rule"></div>
-    </div>
-
-    <div class="news-grid">
-
-      <!-- NEWS 1: Digital Science / Ontopic -->
-      <div class="news-card" onclick="toggleCard(this)">
-        <div class="news-card-head">
-          <div class="news-card-icon">🔗</div>
-          <div class="news-card-meta">
-            <div class="news-card-tag">M&A · VKG 메인스트림 진입</div>
-            <div class="news-card-title">Digital Science, Ontopic 인수 — Virtual Knowledge Graph의 시대가 열린다</div>
-            <div class="news-card-deck">ETL 없이 관계형 DB를 지식그래프로 변환하는 Ontop VKG 기술이 대형 플랫폼에 통합된다.</div>
-          </div>
-          <div class="news-card-chevron">▾</div>
+  <div class="news-item">
+    <div class="news-header">
+      <div class="news-num">01</div>
+      <div class="news-header-text">
+        <div class="news-title-row">
+          <div class="news-title">Digital Science, Ontopic 인수 — VKG 기술 메인스트림 진입 신호탄</div>
+          <span class="news-chevron">▼</span>
         </div>
-        <div class="card-body">
-          <div class="card-body-inner">
-            <div class="why-matters"><span class="dot"></span>왜 중요한가</div>
-            <div class="prose">
-              <p>학술 출판·데이터 인프라 기업 Digital Science가 Ontop VKG(Virtual Knowledge Graph) 기술을 개발해온 Ontopic을 인수했다. 표면상 조용한 M&A지만, 시맨틱 기술 커뮤니티에서는 이를 <strong>VKG 기술의 메인스트림 진입 신호</strong>로 읽는다.</p>
-              <p>Ontop의 핵심 가치는 OBDA(Ontology-Based Data Access)다. 기존 관계형 DB의 데이터를 Triple Store에 옮기지 않고도, R2RML 매핑 파일 하나로 SPARQL 엔드포인트를 생성한다. 쿼리는 실시간으로 SQL로 변환되어 원본 DB에 전달된다. <em>데이터를 이동하지 않고 지식그래프의 이점을 즉시 누린다</em>는 아이디어는 혁신적이지만, 지금까지는 주로 학술 연구 환경에 머물렀다.</p>
-              <p>metaphactory와의 통합이 완료되면, 제약·바이오·문화유산 분야의 엔터프라이즈 사용자들이 VKG를 즉시 활용할 수 있다. <strong>진입 장벽이 낮아지고, 시장이 커진다.</strong></p>
-            </div>
-            <div class="stat-row">
-              <div class="stat-box"><div class="stat-num" style="background:linear-gradient(135deg,var(--a-news),var(--a-deep));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">0</div><div class="stat-label">ETL 파이프라인<br>필요 없음</div></div>
-              <div class="stat-box"><div class="stat-num" style="background:linear-gradient(135deg,var(--a-news),var(--a-deep));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">실시간</div><div class="stat-label">데이터<br>최신성 유지</div></div>
-              <div class="stat-box"><div class="stat-num" style="background:linear-gradient(135deg,var(--a-news),var(--a-deep));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">W3C</div><div class="stat-label">R2RML 표준<br>기반</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- NEWS 2: Snowflake Autopilot -->
-      <div class="news-card" onclick="toggleCard(this)">
-        <div class="news-card-head">
-          <div class="news-card-icon">❄️</div>
-          <div class="news-card-meta">
-            <div class="news-card-tag">GA 출시 · 시맨틱레이어 자동화</div>
-            <div class="news-card-title">Snowflake Semantic View Autopilot GA — AI가 시맨틱 뷰를 직접 설계한다</div>
-            <div class="news-card-deck">자연어로 요구사항을 설명하면 AI가 시맨틱 뷰를 자동 생성·등록하는 기능이 정식 출시됐다.</div>
-          </div>
-          <div class="news-card-chevron">▾</div>
-        </div>
-        <div class="card-body">
-          <div class="card-body-inner">
-            <div class="why-matters"><span class="dot"></span>왜 중요한가</div>
-            <div class="prose">
-              <p>Snowflake Semantic View Autopilot이 GA(Generally Available)로 전환됐다. 데이터 엔지니어가 "월별 구독 매출 트렌드를 보여주는 뷰를 만들어줘"라고 입력하면, AI가 스키마를 분석해 집계 로직과 메트릭 정의를 포함한 시맨틱 뷰를 자동으로 생성한다.</p>
-              <p>표면적으로는 편의 기능처럼 보이지만, 진짜 의미는 <strong>시맨틱레이어 구축의 진입 장벽 파괴</strong>다. 지금까지 시맨틱레이어 설계는 데이터 모델링 전문가의 영역이었다. Autopilot은 이 전문성을 AI가 일부 대체함으로써, 더 많은 팀이 시맨틱레이어의 이점을 누릴 수 있는 길을 연다.</p>
-              <p>특히 GA와 함께 추가된 <em>Row-Level Security 자동 상속</em>은 보안팀의 우려를 해소하는 핵심 기능이다. Cortex Analyst의 LLM이 권한 밖 데이터를 절대 반환하지 않도록 기존 RLS 정책이 시맨틱 뷰 레이어에 자동 적용된다.</p>
-            </div>
-            <div class="mini-pull">"Autopilot은 단순 자동화가 아니다 — 시맨틱레이어를 누가 만드는가라는 질문에 대한 답을 바꾸고 있다."</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- NEWS 3: GraphRAG accuracy -->
-      <div class="news-card" onclick="toggleCard(this)">
-        <div class="news-card-head">
-          <div class="news-card-icon">📐</div>
-          <div class="news-card-meta">
-            <div class="news-card-tag">연구 · RAG 패러다임 전환</div>
-            <div class="news-card-title">GraphRAG, 벡터 RAG 대비 3.4배 정확도 향상 — 멀티홉 추론의 승리</div>
-            <div class="news-card-deck">다중 벤치마크에서 KG 기반 GraphRAG가 순수 벡터 검색 RAG를 3.4배 이상 앞선다는 결과가 나왔다.</div>
-          </div>
-          <div class="news-card-chevron">▾</div>
-        </div>
-        <div class="card-body">
-          <div class="card-body-inner">
-            <div class="why-matters"><span class="dot"></span>왜 중요한가</div>
-            <div class="prose">
-              <p>복수의 연구팀이 발표한 RAG 벤치마크에서 GraphRAG의 우위가 확인됐다. <strong>3.4배라는 숫자는 단순 성능 개선이 아니라 패러다임 전환을 의미한다.</strong> 벡터 RAG는 의미적으로 유사한 청크를 잘 찾지만, "A가 B의 부서장이고 B가 C 프로젝트를 관리할 때, C의 최종 승인권자는 누구인가?" 같은 다중 홉 관계 추론에서 구조적 한계를 보인다.</p>
-              <p>GraphRAG는 엔티티 간 관계를 그래프 경로로 추론해 이 문제를 해결한다. Microsoft GraphRAG v2는 커뮤니티 요약을 통한 글로벌 추론과 지역적 세부 추론을 결합하는 하이브리드 접근으로 특히 강점을 보인다.</p>
-            </div>
-            <div class="stat-row">
-              <div class="stat-box"><div class="stat-num" style="background:linear-gradient(135deg,var(--a-news),var(--a-deep));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">3.4×</div><div class="stat-label">정확도<br>향상 배수</div></div>
-              <div class="stat-box"><div class="stat-num" style="background:linear-gradient(135deg,var(--a-news),var(--a-deep));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">67%</div><div class="stat-label">멀티홉 쿼리<br>개선율</div></div>
-              <div class="stat-box"><div class="stat-num" style="background:linear-gradient(135deg,var(--a-news),var(--a-deep));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">82%</div><div class="stat-label">엔터프라이즈<br>환각 감소율</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- NEWS 4: Gartner KG -->
-      <div class="news-card" onclick="toggleCard(this)">
-        <div class="news-card-head">
-          <div class="news-card-icon">📊</div>
-          <div class="news-card-meta">
-            <div class="news-card-tag">Gartner · 엔터프라이즈 채택 가속</div>
-            <div class="news-card-title">Gartner, KG를 GenAI "Critical Enabler"로 공식 선언 — 예산 승인이 달라진다</div>
-            <div class="news-card-deck">글로벌 IT 분석 기관의 공식 분류는 단순한 인정이 아니다 — 기업 투자 결정의 근거가 된다.</div>
-          </div>
-          <div class="news-card-chevron">▾</div>
-        </div>
-        <div class="card-body">
-          <div class="card-body-inner">
-            <div class="why-matters"><span class="dot"></span>왜 중요한가</div>
-            <div class="prose">
-              <p>Gartner 2026 Q1 AI 인프라 보고서가 지식그래프를 생성형 AI 아키텍처의 "Critical Enabler"로 분류했다. 기술적으로는 이미 알려진 사실이지만, <strong>Gartner 분류의 진짜 의미는 기업 내부 정치학</strong>에 있다. CDO/CTO가 새 기술 투자를 승인받으려면 "Gartner가 뭐라고 하나"라는 질문을 통과해야 하는 경우가 많다.</p>
-              <p>"실험적 기술"에서 "핵심 인프라"로 격상되면, 예산 논의의 출발점이 달라진다. 파일럿 프로젝트가 아니라 인프라 구축으로 다뤄진다. <em>Gartner는 2027년까지 Fortune 500의 40%가 RAG 파이프라인에 KG를 결합할 것으로 전망</em>한다.</p>
-            </div>
-            <div class="mini-pull">"KG는 더 이상 학문적 개념이 아니다. 2027년에 KG 없는 엔터프라이즈 AI 파이프라인은 경쟁 열위다."</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- NEWS 5: dbt MetricFlow -->
-      <div class="news-card" onclick="toggleCard(this)">
-        <div class="news-card-head">
-          <div class="news-card-icon">🟧</div>
-          <div class="news-card-meta">
-            <div class="news-card-tag">릴리즈 · 오픈소스 시맨틱레이어 성숙</div>
-            <div class="news-card-title">dbt MetricFlow 0.9 Stable — 오픈소스 시맨틱레이어의 성인식</div>
-            <div class="news-card-deck">복합 메트릭 중첩 참조, 쿼리 플래너 재작성으로 5배 속도 향상. 엔터프라이즈급 안정성을 획득한다.</div>
-          </div>
-          <div class="news-card-chevron">▾</div>
-        </div>
-        <div class="card-body">
-          <div class="card-body-inner">
-            <div class="why-matters"><span class="dot"></span>왜 중요한가</div>
-            <div class="prose">
-              <p>dbt MetricFlow 0.9가 릴리즈됐다. 가장 주목할 변화는 <strong>Derived Metric 중첩 참조</strong>가 완전히 지원된다는 점이다. 이제 하나의 메트릭이 다른 메트릭을 참조하는 복잡한 비즈니스 로직을 단일 YAML 정의로 표현할 수 있다. 이 기능은 엔터프라이즈 데이터 팀이 MetricFlow를 진지하게 도입하는 데 가장 큰 장애물 중 하나였다.</p>
-              <p>또한 쿼리 플래너가 전면 재작성되어 중복 서브쿼리가 제거됐다 — <em>복합 메트릭 쿼리 속도가 최대 5배 향상</em>됐다. Tableau와 Power BI의 JDBC 커넥터 업데이트로 드리프트 감지가 실시간으로 가능해지면서, MetricFlow는 단순한 메트릭 정의 도구에서 <strong>시맨틱레이어 거버넌스 플랫폼</strong>으로 진화하고 있다.</p>
-            </div>
-            <div class="chip-row">
-              <span class="chip">Derived Metric 중첩 참조</span>
-              <span class="chip">쿼리 플래너 5× 최적화</span>
-              <span class="chip">Tableau / Power BI JDBC</span>
-              <span class="chip">드리프트 실시간 감지</span>
-              <span class="chip">Snowflake · BigQuery · DuckDB</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /news-grid -->
-  </section>
-
-  <!-- ═══════════════════════════════════════
-       SECTION 3: DEEP DIVE
-  ═══════════════════════════════════════ -->
-  <section id="deep">
-    <div class="section-header">
-      <div class="section-kicker">
-        기술 딥다이브 · Deep Dive
-        <span class="read-time">약 7분 읽기</span>
-      </div>
-      <h2 class="section-title">이번 주 기술 분해</h2>
-      <div class="section-rule"></div>
-    </div>
-
-    <div class="deep-header">
-      <div class="deep-header-kicker">기술 딥다이브 · R2RML & VKG</div>
-      <h3 class="deep-header-title">R2RML 매핑: 관계형 DB를 지식그래프로 변환하는 기술 — ETL 없이 온톨로지 레이어를 쌓는 법</h3>
-      <div class="deep-header-deck">
-        수백만 행의 관계형 데이터를 Triple Store로 복사하는 대신, 매핑 규칙 파일 하나로 SPARQL 쿼리가 실시간 SQL로 변환된다. Virtual Knowledge Graph(VKG)의 핵심 표준인 R2RML을 해부한다.
+        <div class="news-source">Digital Science · 2026년 3월</div>
       </div>
     </div>
-
-    <div class="deep-prose">
-      <p>관계형 데이터베이스는 전 세계 데이터의 절대다수를 저장하고 있다. ERP, CRM, EMR, 금융 원장 — 모든 운영 데이터가 테이블과 외래 키로 구성된 구조 속에 있다. 온톨로지 기반 지식그래프가 이 방대한 데이터를 활용하려면 두 가지 선택지가 있었다. 첫째, 데이터를 전부 Triple Store로 복사한다(전통적 ETL 방식). 둘째, 원본 DB를 그대로 두고 온톨로지 레이어를 "가상으로" 올린다(VKG 방식). R2RML은 두 번째 선택지를 가능하게 하는 W3C 표준이다.</p>
-
-      <p>R2RML(RDB to RDF Mapping Language)은 관계형 DB의 테이블과 컬럼을 RDF 트리플로 <strong>매핑하는 규칙을 정의하는 언어</strong>다. 핵심 개념은 단순하다: "이 테이블의 이 컬럼 값을 이 RDF 속성으로 표현해라." 이 매핑 파일을 기반으로, SPARQL 쿼리 엔진(Ontop 등)은 들어오는 SPARQL 쿼리를 분석해 대응하는 SQL로 변환하고, 원본 DB에서 결과를 가져와 RDF 형식으로 반환한다.</p>
+    <div class="news-body">
+      <div class="news-summary">학술 데이터 인프라 기업 Digital Science가 Virtual Knowledge Graph(VKG) 전문 스타트업 Ontopic을 인수했다. Ontopic은 R2RML/OBDA 기반으로 기존 관계형 DB를 이동 없이 온톨로지 뷰로 노출하는 기술을 보유하고 있으며, Ontop 오픈소스 프로젝트의 상용화 주체다.</div>
+      <div class="why-box">
+        <div class="why-label">왜 중요한가</div>
+        <div class="why-text">VKG는 '데이터 레이크에 모든 것을 옮겨라'는 10년 패러다임에 정면으로 도전한다. 데이터를 이동시키지 않고 온톨로지 매핑만으로 통합 쿼리를 가능하게 하는 이 접근법이 엔터프라이즈 M&A의 대상이 됐다는 것은, 업계가 ETL 중심 통합에서 시맨틱 중심 통합으로 이행 중임을 보여준다. Ontopic의 기술은 규제 환경에서 데이터 이동이 제한된 금융·의료 분야에서 특히 파급력이 크다.</div>
+      </div>
     </div>
+  </div>
 
-    <div class="diagram-frame">
-      <div class="diagram-caption"><span class="dot-purple"></span>R2RML 매핑 아키텍처 — 쿼리 변환 흐름</div>
-      <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" style="padding:20px;background:#07080e;">
+  <div class="news-item">
+    <div class="news-header">
+      <div class="news-num">02</div>
+      <div class="news-header-text">
+        <div class="news-title-row">
+          <div class="news-title">Netflix, QCon London 2026에서 온톨로지 기반 관측가능성 아키텍처 공개</div>
+          <span class="news-chevron">▼</span>
+        </div>
+        <div class="news-source">QCon London · 2026년 3월</div>
+      </div>
+    </div>
+    <div class="news-body">
+      <div class="news-summary">Netflix 엔지니어링팀은 서비스 의존성, SLO, 온콜 정책을 단일 지식그래프로 연결한 내부 시스템을 공개했다. 이 시스템은 GraphQL API를 통해 실시간으로 서비스 관계를 추론하며, 장애 발생 시 영향 범위를 자동으로 계산한다. 발표에 따르면 도입 이후 P0 장애 평균 대응 시간이 40% 단축됐다.</div>
+      <div class="why-box">
+        <div class="why-label">왜 중요한가</div>
+        <div class="why-text">온톨로지가 데이터 분석 도구에서 운영 인프라의 신경계로 역할이 확장되고 있다는 강력한 증거다. Netflix 수준의 엔지니어링 조직이 온톨로지 기반 시스템을 프로덕션에서 검증했다는 사실은, 이 접근법의 기술 성숙도를 증명한다. KG를 '데이터를 이해하는 도구'가 아니라 '시스템이 스스로를 이해하는 도구'로 바라보는 패러다임 전환이다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-header">
+      <div class="news-num">03</div>
+      <div class="news-header-text">
+        <div class="news-title-row">
+          <div class="news-title">OSI(Open Semantic Interchange) 표준 v1.0 확정 — dbt·Snowflake·Salesforce 공동 채택</div>
+          <span class="news-chevron">▼</span>
+        </div>
+        <div class="news-source">OSI Working Group · 2026년 1월</div>
+      </div>
+    </div>
+    <div class="news-body">
+      <div class="news-summary">시맨틱레이어 벤더 간 메트릭 정의와 엔티티 관계를 교환하는 개방 표준 OSI v1.0이 공식 확정됐다. dbt MetricFlow, Snowflake Semantic Views, Salesforce Data Cloud가 1차 구현체를 발표했으며, AtScale과 Cube도 지원 로드맵을 공개했다. 명세는 JSON-LD 기반으로, 메트릭 계산식·차원 계층·접근 제어 정책을 표현한다.</div>
+      <div class="why-box">
+        <div class="why-label">왜 중요한가</div>
+        <div class="why-text">시맨틱레이어 도구 간 호환성 부재는 기업들이 단일 벤더에 종속되는 주요 원인이었다. OSI는 이 락인을 구조적으로 해소할 수 있는 첫 번째 진지한 시도다. 그러나 표준의 역설도 함께 시작된다 — 포맷이 통일되면 경쟁은 추론 엔진과 서빙 레이어로 이동한다. 도구 선택 기준이 '어떤 표준을 지원하는가'에서 '표준 위에서 무엇을 더 잘하는가'로 이동할 것이다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-header">
+      <div class="news-num">04</div>
+      <div class="news-header-text">
+        <div class="news-title-row">
+          <div class="news-title">GraphRAG, 임상 QA 벤치마크에서 98% 정확도 — 표준 RAG 대비 3.4배 향상</div>
+          <span class="news-chevron">▼</span>
+        </div>
+        <div class="news-source">Microsoft Research · 2026년 2월</div>
+      </div>
+    </div>
+    <div class="news-body">
+      <div class="news-summary">Microsoft Research가 발표한 GraphRAG 최신 벤치마크에서 임상 의사결정 QA 태스크 98.2% 정확도를 기록했다. 기존 벡터 기반 RAG 대비 3.4배 향상된 수치다. 핵심 개선은 지식그래프의 커뮤니티 감지 알고리즘을 통한 전역 컨텍스트 재구성으로, LLM이 단일 문서가 아닌 관계 네트워크 전체를 참조할 수 있게 한다.</div>
+      <div class="why-box">
+        <div class="why-label">왜 중요한가</div>
+        <div class="why-text">의료·법률·금융처럼 정확도가 핵심인 도메인에서 RAG의 한계를 KG가 보완할 수 있다는 실증 데이터다. 단순 유사도 검색이 아닌 관계 기반 추론이 LLM의 할루시네이션을 구조적으로 줄일 수 있다는 것을 보여준다. 엔터프라이즈 AI 아키텍처에서 KG 레이어가 선택이 아닌 필수 구성 요소로 격상될 가능성을 높인다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-header">
+      <div class="news-num">05</div>
+      <div class="news-header-text">
+        <div class="news-title-row">
+          <div class="news-title">Timbr, Snowflake용 온톨로지 시맨틱 모델링 레이어 정식 출시</div>
+          <span class="news-chevron">▼</span>
+        </div>
+        <div class="news-source">Timbr.ai · 2026년 3월</div>
+      </div>
+    </div>
+    <div class="news-body">
+      <div class="news-summary">Timbr가 Snowflake Native App으로 온톨로지 기반 시맨틱 모델링 레이어를 정식 출시했다. OWL/RDF 온톨로지를 직접 Snowflake 위에서 정의하고, 자연어 쿼리를 SPARQL → SQL로 자동 변환하는 파이프라인을 제공한다. Snowflake AI Data Cloud와 통합돼 LLM 컨텍스트로 온톨로지 메타데이터를 직접 주입할 수 있다.</div>
+      <div class="why-box">
+        <div class="why-label">왜 중요한가</div>
+        <div class="why-text">온톨로지 기술의 진입 장벽이 낮아지고 있다는 신호다. 기존에는 RDF 스토어나 SPARQL 인프라를 별도로 구축해야 했으나, 이제 기업들이 이미 사용 중인 Snowflake 위에서 온톨로지를 정의할 수 있다. 또한 SPARQL→SQL 자동 변환은 온톨로지 전문가가 없는 조직도 시맨틱 쿼리 혜택을 받을 수 있음을 의미한다.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DEEP DIVE ===== -->
+  <div class="section-label" id="deepdive">
+    <span class="section-tag deep">기술 딥다이브</span>
+    <span class="section-title-text">GraphRAG 아키텍처 완전 분석</span>
+    <span class="read-time">약 8분</span>
+  </div>
+
+  <div class="deep-section">
+    <div class="deep-h3">개념: 왜 벡터 RAG만으로는 부족한가</div>
+    <div class="deep-p">표준 RAG(Retrieval-Augmented Generation)는 질문과 유사한 텍스트 청크를 벡터 유사도로 찾아 LLM에 전달한다. 이 방식은 '특정 문서에서 사실을 찾는' 태스크에 효과적이지만, '여러 문서에 걸쳐 관계를 추론하는' 태스크에서 한계를 드러낸다. 예를 들어 "A 약물과 B 질환의 상호작용이 C 유전자 변이를 가진 환자에게 어떤 영향을 미치는가"라는 질문은 세 개의 서로 다른 문서에 흩어진 정보를 관계적으로 통합해야 한다. 벡터 검색은 이 구조적 연결을 놓친다.</div>
+    <div class="deep-p">GraphRAG는 이 문제를 지식그래프로 해결한다. 인덱싱 단계에서 문서들을 엔티티-관계 그래프로 변환하고, 그래프 커뮤니티 감지 알고리즘(Leiden 알고리즘 등)으로 주제 클러스터를 생성한다. 쿼리 시에는 관련 커뮤니티를 식별하고 그 구조를 LLM 컨텍스트로 주입한다. 결과적으로 LLM은 개별 문서 조각이 아닌 '주제 관계망'을 참조하게 된다.</div>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 740 380" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR', sans-serif">
+        <!-- Background -->
+        <rect width="740" height="380" fill="#080910"/>
+
+        <!-- Phase labels -->
+        <text x="185" y="28" fill="#5a5d72" font-size="11" text-anchor="middle" letter-spacing="2" font-weight="600">INDEXING PHASE</text>
+        <text x="555" y="28" fill="#5a5d72" font-size="11" text-anchor="middle" letter-spacing="2" font-weight="600">QUERY PHASE</text>
+        <line x1="370" y1="15" x2="370" y2="365" stroke="#1e2135" stroke-width="1" stroke-dasharray="4,4"/>
+
+        <!-- INDEXING: Documents -->
+        <rect x="20" y="45" width="120" height="50" rx="6" fill="#12131c" stroke="#1e2135" stroke-width="1"/>
+        <text x="80" y="65" fill="#7b93ff" font-size="10" text-anchor="middle" font-weight="600">문서 코퍼스</text>
+        <text x="80" y="82" fill="#5a5d72" font-size="9" text-anchor="middle">PDF / 논문 / 리포트</text>
+
+        <!-- INDEXING: Entity Extraction -->
+        <rect x="20" y="125" width="120" height="50" rx="6" fill="#12131c" stroke="#1e2135" stroke-width="1"/>
+        <text x="80" y="145" fill="#7b93ff" font-size="10" text-anchor="middle" font-weight="600">엔티티 추출</text>
+        <text x="80" y="162" fill="#5a5d72" font-size="9" text-anchor="middle">LLM → (노드, 엣지)</text>
+
+        <!-- INDEXING: Knowledge Graph -->
+        <rect x="20" y="205" width="120" height="50" rx="6" fill="#12131c" stroke="#1e2135" stroke-width="1"/>
+        <text x="80" y="225" fill="#7b93ff" font-size="10" text-anchor="middle" font-weight="600">지식 그래프</text>
+        <text x="80" y="242" fill="#5a5d72" font-size="9" text-anchor="middle">엔티티 - 관계 네트워크</text>
+
+        <!-- INDEXING: Community Detection -->
+        <rect x="20" y="285" width="120" height="50" rx="6" fill="#12131c" stroke="#1e2135" stroke-width="1"/>
+        <text x="80" y="305" fill="#7b93ff" font-size="10" text-anchor="middle" font-weight="600">커뮤니티 감지</text>
+        <text x="80" y="322" fill="#5a5d72" font-size="9" text-anchor="middle">Leiden 알고리즘</text>
+
+        <!-- Center: Community Summaries Store -->
+        <rect x="175" y="175" width="140" height="60" rx="6" fill="#181924" stroke="#b48eff" stroke-width="1.5"/>
+        <text x="245" y="198" fill="#b48eff" font-size="11" text-anchor="middle" font-weight="700">커뮤니티 요약</text>
+        <text x="245" y="215" fill="#5a5d72" font-size="9" text-anchor="middle">계층적 주제 클러스터</text>
+        <text x="245" y="228" fill="#5a5d72" font-size="9" text-anchor="middle">글로벌 컨텍스트 저장소</text>
+
+        <!-- QUERY: User Query -->
+        <rect x="400" y="45" width="120" height="50" rx="6" fill="#12131c" stroke="#1e2135" stroke-width="1"/>
+        <text x="460" y="65" fill="#42d9a0" font-size="10" text-anchor="middle" font-weight="600">사용자 질문</text>
+        <text x="460" y="82" fill="#5a5d72" font-size="9" text-anchor="middle">자연어 쿼리</text>
+
+        <!-- QUERY: Community Selection -->
+        <rect x="400" y="125" width="120" height="50" rx="6" fill="#12131c" stroke="#1e2135" stroke-width="1"/>
+        <text x="460" y="145" fill="#42d9a0" font-size="10" text-anchor="middle" font-weight="600">커뮤니티 선택</text>
+        <text x="460" y="162" fill="#5a5d72" font-size="9" text-anchor="middle">관련 클러스터 탐색</text>
+
+        <!-- QUERY: Context Assembly -->
+        <rect x="400" y="205" width="120" height="50" rx="6" fill="#12131c" stroke="#1e2135" stroke-width="1"/>
+        <text x="460" y="225" fill="#42d9a0" font-size="10" text-anchor="middle" font-weight="600">컨텍스트 조립</text>
+        <text x="460" y="242" fill="#5a5d72" font-size="9" text-anchor="middle">관계망 → LLM 프롬프트</text>
+
+        <!-- QUERY: LLM Response -->
+        <rect x="400" y="285" width="120" height="50" rx="6" fill="#12131c" stroke="#1e2135" stroke-width="1"/>
+        <text x="460" y="305" fill="#42d9a0" font-size="10" text-anchor="middle" font-weight="600">LLM 응답 생성</text>
+        <text x="460" y="322" fill="#5a5d72" font-size="9" text-anchor="middle">구조 기반 추론 답변</text>
+
+        <!-- Right: Output -->
+        <rect x="600" y="175" width="120" height="60" rx="6" fill="#181924" stroke="#42d9a0" stroke-width="1.5"/>
+        <text x="660" y="198" fill="#42d9a0" font-size="11" text-anchor="middle" font-weight="700">최종 답변</text>
+        <text x="660" y="215" fill="#5a5d72" font-size="9" text-anchor="middle">관계망 기반 추론</text>
+        <text x="660" y="228" fill="#5a5d72" font-size="9" text-anchor="middle">글로벌 컨텍스트 포함</text>
+
+        <!-- Arrows INDEXING -->
+        <line x1="80" y1="95" x2="80" y2="123" stroke="#1e2135" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="80" y1="175" x2="80" y2="203" stroke="#1e2135" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="80" y1="255" x2="80" y2="283" stroke="#1e2135" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="140" y1="310" x2="173" y2="230" stroke="#b48eff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrp)"/>
+
+        <!-- Arrows QUERY -->
+        <line x1="460" y1="95" x2="460" y2="123" stroke="#1e2135" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="460" y1="175" x2="460" y2="203" stroke="#1e2135" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="460" y1="255" x2="460" y2="283" stroke="#1e2135" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="520" y1="205" x2="598" y2="205" stroke="#42d9a0" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrg)"/>
+
+        <!-- Cross arrows: Community store to Query -->
+        <line x1="315" y1="205" x2="398" y2="175" stroke="#b48eff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrgq)"/>
+
         <defs>
-          <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
-            <path d="M0,0 L8,3 L0,6 Z" fill="#b48eff70"/>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#3a3d52"/>
           </marker>
-          <marker id="arr2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
-            <path d="M0,0 L8,3 L0,6 Z" fill="#4ecb8d70"/>
+          <marker id="arrgq" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#b48eff"/>
+          </marker>
+          <marker id="arrap" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#b48eff"/>
+          </marker>
+          <marker id="arrgp" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#b48eff"/>
+          </marker>
+          <marker id="arrgp2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#b48eff"/>
+          </marker>
+          <marker id="arrgp3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#b48eff"/>
+          </marker>
+          <marker id="arrgp4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#b48eff"/>
+          </marker>
+          <marker id="arrgp5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#b48eff"/>
+          </marker>
+          <marker id="arrgp6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#b48eff"/>
+          </marker>
+          <marker id="arrp" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#b48eff"/>
+          </marker>
+          <marker id="arrg" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#42d9a0"/>
           </marker>
         </defs>
-
-        <!-- User / Application -->
-        <rect x="10" y="70" width="110" height="60" rx="10" fill="#b48eff12" stroke="#b48eff40" stroke-width="1.5"/>
-        <text x="65" y="96" text-anchor="middle" fill="#c4a8ff" font-size="11" font-weight="700" font-family="sans-serif">애플리케이션</text>
-        <text x="65" y="112" text-anchor="middle" fill="#b48eff" font-size="10" font-family="sans-serif">SPARQL 쿼리</text>
-        <text x="65" y="125" text-anchor="middle" fill="#b48eff80" font-size="9" font-family="sans-serif">SELECT ?drug WHERE...</text>
-
-        <!-- Arrow 1 -->
-        <line x1="120" y1="100" x2="155" y2="100" stroke="#b48eff70" stroke-width="1.5" marker-end="url(#arr)"/>
-
-        <!-- VKG Engine / Ontop -->
-        <rect x="155" y="45" width="170" height="110" rx="10" fill="#1a0d28" stroke="#b48eff60" stroke-width="1.5"/>
-        <text x="240" y="70" text-anchor="middle" fill="#c4a8ff" font-size="11" font-weight="700" font-family="sans-serif">VKG 엔진 (Ontop)</text>
-        <rect x="168" y="80" width="64" height="26" rx="5" fill="#b48eff20" stroke="#b48eff40" stroke-width="1"/>
-        <text x="200" y="95" text-anchor="middle" fill="#c4a8ff" font-size="9" font-family="sans-serif">Ontology</text>
-        <text x="200" y="107" text-anchor="middle" fill="#b48eff80" font-size="8" font-family="sans-serif">OWL/RDFS</text>
-        <rect x="243" y="80" width="70" height="26" rx="5" fill="#7b93ff20" stroke="#7b93ff40" stroke-width="1"/>
-        <text x="278" y="95" text-anchor="middle" fill="#93a8ff" font-size="9" font-family="sans-serif">R2RML 매핑</text>
-        <text x="278" y="107" text-anchor="middle" fill="#7b93ff80" font-size="8" font-family="sans-serif">*.ttl 파일</text>
-        <text x="240" y="138" text-anchor="middle" fill="#9a9db0" font-size="9.5" font-family="sans-serif" font-style="italic">SPARQL → SQL 자동 변환</text>
-
-        <!-- Arrow 2 -->
-        <line x1="325" y1="100" x2="360" y2="100" stroke="#b48eff70" stroke-width="1.5" marker-end="url(#arr)"/>
-        <text x="342" y="93" text-anchor="middle" fill="#5a5d72" font-size="8.5" font-family="sans-serif">SQL</text>
-
-        <!-- Relational DB -->
-        <rect x="360" y="55" width="130" height="90" rx="10" fill="#0d1a10" stroke="#4ecb8d40" stroke-width="1.5"/>
-        <text x="425" y="80" text-anchor="middle" fill="#6ee7b7" font-size="11" font-weight="700" font-family="sans-serif">관계형 DB</text>
-        <!-- mini table -->
-        <rect x="375" y="88" width="100" height="48" rx="4" fill="#1a2e1a" stroke="#4ecb8d30" stroke-width="1"/>
-        <text x="425" y="102" text-anchor="middle" fill="#4ecb8d" font-size="8.5" font-weight="700" font-family="sans-serif">drug_table</text>
-        <text x="425" y="115" text-anchor="middle" fill="#4ecb8d60" font-size="8" font-family="sans-serif">id | name | formula</text>
-        <text x="425" y="127" text-anchor="middle" fill="#4ecb8d40" font-size="7.5" font-family="sans-serif">001 | Aspirin | C9H8O4</text>
-
-        <!-- Arrow 3 (return) -->
-        <path d="M490,100 C530,100 530,160 425,160 C320,160 240,160 240,145" stroke="#4ecb8d50" stroke-width="1.5" fill="none" marker-end="url(#arr2)" stroke-dasharray="4,3"/>
-        <text x="540" y="155" fill="#5a5d72" font-size="8.5" font-family="sans-serif">RDF 결과 반환</text>
-
-        <!-- R2RML file box -->
-        <rect x="560" y="55" width="145" height="90" rx="10" fill="#0d0d1a" stroke="#7b93ff30" stroke-width="1.5"/>
-        <text x="632" y="78" text-anchor="middle" fill="#93a8ff" font-size="10.5" font-weight="700" font-family="sans-serif">R2RML 매핑 예시</text>
-        <text x="575" y="94" fill="#7b93ff" font-size="8" font-family="'Courier New',monospace">:Drug_Map</text>
-        <text x="575" y="107" fill="#c678dd" font-size="8" font-family="'Courier New',monospace">  rr:tableName</text>
-        <text x="575" y="118" fill="#98c379" font-size="8" font-family="'Courier New',monospace">  "drug_table" ;</text>
-        <text x="575" y="131" fill="#c678dd" font-size="8" font-family="'Courier New',monospace">  rr:subjectMap</text>
-        <text x="575" y="142" fill="#5c6370" font-size="8" font-family="'Courier New',monospace" font-style="italic">  [rr:template...</text>
       </svg>
     </div>
 
-    <div class="deep-prose">
-      <p>위 다이어그램이 보여주듯, 애플리케이션은 SPARQL 쿼리를 VKG 엔진에 보낸다. 엔진은 온톨로지 정의와 R2RML 매핑 파일을 참조해 동등한 SQL 쿼리를 생성하고, 원본 관계형 DB에서 데이터를 가져와 RDF 형식으로 변환해 반환한다. <strong>데이터는 원본 DB를 단 한 번도 떠나지 않는다.</strong></p>
-    </div>
+    <div class="deep-h3">구현: Python으로 GraphRAG 인덱싱 파이프라인 구축</div>
+    <div class="deep-p">Microsoft의 graphrag 패키지를 사용하면 몇 줄의 코드로 로컬 GraphRAG 파이프라인을 구축할 수 있다. 아래는 의료 문서 코퍼스를 인덱싱하고 글로벌 검색을 수행하는 예시다.</div>
 
-    <!-- Code example -->
-    <div class="code-frame">
-      <div class="code-header">
-        <div class="code-header-dots"><span></span><span></span><span></span></div>
-        <div class="code-lang">Turtle · R2RML</div>
-      </div>
-      <pre>
-<span class="cc"># R2RML 매핑 예시: drug_table → pharma 온톨로지</span>
-<span class="cc"># 파일: mappings/drug-mapping.ttl</span>
+<pre><span class="code-comment"># pip install graphrag</span>
+<span class="code-keyword">import</span> asyncio
+<span class="code-keyword">from</span> graphrag.query.context_builder.entity_extraction <span class="code-keyword">import</span> EntityVectorStoreKey
+<span class="code-keyword">from</span> graphrag.query.indexer_adapters <span class="code-keyword">import</span> (
+    read_indexer_communities, read_indexer_entities, read_indexer_reports
+)
+<span class="code-keyword">from</span> graphrag.query.structured_search.global_search.community_context <span class="code-keyword">import</span> GlobalCommunityContext
+<span class="code-keyword">from</span> graphrag.query.structured_search.global_search.search <span class="code-keyword">import</span> GlobalSearch
+<span class="code-keyword">from</span> graphrag.query.llm.oai.chat_openai <span class="code-keyword">import</span> ChatOpenAI
 
-@prefix rr:    &lt;http://www.w3.org/ns/r2rml#&gt; .
-@prefix ex:    &lt;http://example.org/ontology/pharma#&gt; .
-@prefix xsd:   &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+<span class="code-comment"># 1. 인덱싱된 데이터 로드</span>
+INPUT_DIR = <span class="code-string">"./medical_corpus/output/artifacts"</span>
+COMMUNITY_LEVEL = <span class="code-prop">2</span>  <span class="code-comment"># 계층 레벨 (높을수록 글로벌)</span>
 
-<span class="cm">:DrugTriplesMap</span>
-  <span class="ck">rr:logicalTable</span>  [ <span class="cv">rr:tableName</span> <span class="cs">"drug_table"</span> ] ;
+entities = read_indexer_entities(INPUT_DIR, entity_table=<span class="code-string">"create_final_nodes"</span>)
+communities = read_indexer_communities(INPUT_DIR, community_level=COMMUNITY_LEVEL)
+reports = read_indexer_reports(INPUT_DIR, community_level=COMMUNITY_LEVEL)
 
-  <span class="cc"># Subject: 각 행의 IRI 생성</span>
-  <span class="ck">rr:subjectMap</span> [
-    <span class="cv">rr:template</span>   <span class="cs">"http://example.org/drug/{id}"</span> ;
-    <span class="cv">rr:class</span>      ex:Drug ;
-  ] ;
+<span class="code-comment"># 2. LLM 설정</span>
+llm = ChatOpenAI(
+    api_key=<span class="code-string">"YOUR_OPENAI_KEY"</span>,
+    model=<span class="code-string">"gpt-4o"</span>,
+    max_retries=<span class="code-prop">20</span>
+)
 
-  <span class="cc"># Predicate-Object: 이름 매핑</span>
-  <span class="ck">rr:predicateObjectMap</span> [
-    <span class="cv">rr:predicate</span>  ex:drugName ;
-    <span class="cv">rr:objectMap</span>  [ <span class="cv">rr:column</span> <span class="cs">"name"</span> ; <span class="cv">rr:language</span> <span class="cs">"ko"</span> ] ;
-  ] ;
+<span class="code-comment"># 3. 글로벌 컨텍스트 빌더</span>
+context_builder = GlobalCommunityContext(
+    community_reports=reports,
+    entities=entities,
+    token_encoder=tiktoken.get_encoding(<span class="code-string">"cl100k_base"</span>)
+)
 
-  <span class="cc"># Predicate-Object: 화학식 매핑</span>
-  <span class="ck">rr:predicateObjectMap</span> [
-    <span class="cv">rr:predicate</span>  ex:molecularFormula ;
-    <span class="cv">rr:objectMap</span>  [ <span class="cv">rr:column</span> <span class="cs">"formula"</span> ; <span class="cv">rr:datatype</span> xsd:string ] ;
-  ] ;
+<span class="code-comment"># 4. 검색 엔진 초기화</span>
+search_engine = GlobalSearch(
+    llm=llm,
+    context_builder=context_builder,
+    token_encoder=tiktoken.get_encoding(<span class="code-string">"cl100k_base"</span>),
+    max_data_tokens=<span class="code-prop">12000</span>,
+    map_llm_params={<span class="code-string">"max_tokens"</span>: <span class="code-prop">1000</span>, <span class="code-string">"temperature"</span>: <span class="code-prop">0.0</span>},
+    reduce_llm_params={<span class="code-string">"max_tokens"</span>: <span class="code-prop">2000</span>, <span class="code-string">"temperature"</span>: <span class="code-prop">0.0</span>},
+)
 
-  <span class="cc"># Predicate-Object: 제조사 조인 (외래키)</span>
-  <span class="ck">rr:predicateObjectMap</span> [
-    <span class="cv">rr:predicate</span>  ex:manufacturedBy ;
-    <span class="cv">rr:objectMap</span>  [
-      <span class="cv">rr:template</span>  <span class="cs">"http://example.org/company/{manufacturer_id}"</span> ;
-    ] ;
-  ] .
+<span class="code-comment"># 5. 전역 쿼리 실행</span>
+result = asyncio.run(
+    search_engine.asearch(<span class="code-string">"A 약물과 B 질환의 상호작용이 C 유전자 변이 환자에게 미치는 영향"</span>)
+)
 
-<span class="cc"># 생성되는 트리플 예시:
-# &lt;http://example.org/drug/001&gt; a ex:Drug ;
-#   ex:drugName "아스피린"@ko ;
-#   ex:molecularFormula "C9H8O4" ;
-#   ex:manufacturedBy &lt;http://example.org/company/bayer&gt; .</span>
-</pre>
-    </div>
+<span class="code-keyword">print</span>(result.response)  <span class="code-comment"># 커뮤니티 기반 종합 답변</span>
+<span class="code-keyword">print</span>(<span class="code-string">f"컨텍스트 토큰: {result.context_data['reports'].shape[0]}개 커뮤니티 참조"</span>)</pre>
 
-    <div class="deep-prose">
-      <p>위 매핑 파일이 Ontop 엔진에 로드되면, "아스피린을 제조하는 회사의 모든 의약품을 조회하라"는 SPARQL 쿼리가 다음과 같은 SQL로 자동 변환된다:</p>
-    </div>
+    <div class="deep-h3">언제 GraphRAG를 써야 하는가</div>
+    <div class="deep-p"><strong style="color:var(--a-compare)">적합한 경우:</strong> 여러 문서에 걸친 관계 추론이 필요한 경우 (의료·법률·금융 규정), 단일 사실 검색보다 '전체 그림'이 중요한 경우, 엔티티 간 연결 패턴을 발견해야 하는 경우.</div>
+    <div class="deep-p"><strong style="color:#ff6b6b">주의할 경우:</strong> 단순 사실 검색 (벡터 RAG가 더 빠르고 저렴), 실시간 인덱싱이 필요한 경우 (GraphRAG는 배치 인덱싱 기반), 소규모 문서 (그래프 구조의 이점이 없음). 인덱싱 비용이 표준 RAG 대비 5~10배 높을 수 있으므로 ROI를 신중히 검토해야 한다.</div>
+  </div>
 
-    <div class="code-frame">
-      <div class="code-header">
-        <div class="code-header-dots"><span></span><span></span><span></span></div>
-        <div class="code-lang">SPARQL → SQL 변환 예시</div>
-      </div>
-      <pre>
-<span class="cc">-- SPARQL 입력:</span>
-<span class="cc">-- SELECT ?drug ?name WHERE {</span>
-<span class="cc">--   ?drug ex:manufacturedBy ?company .</span>
-<span class="cc">--   &lt;http://example.org/drug/001&gt; ex:manufacturedBy ?company .</span>
-<span class="cc">--   ?drug ex:drugName ?name .</span>
-<span class="cc">-- }</span>
+  <!-- ===== COMPARE ===== -->
+  <div class="section-label" id="compare">
+    <span class="section-tag compare">도구 비교</span>
+    <span class="section-title-text">2026 시맨틱레이어 스택 선택 가이드</span>
+  </div>
 
-<span class="cc">-- 자동 생성된 SQL (Ontop 엔진):</span>
-<span class="ck">SELECT</span>
-  d2.<span class="cv">id</span>         <span class="ck">AS</span> drug_id,
-  d2.<span class="cv">name</span>       <span class="ck">AS</span> drug_name
-<span class="ck">FROM</span>
-  drug_table d1
-  <span class="ck">JOIN</span> drug_table d2 <span class="ck">ON</span> d1.manufacturer_id = d2.manufacturer_id
-<span class="ck">WHERE</span>
-  d1.id = <span class="cs">'001'</span>
-  <span class="ck">AND</span> d1.id != d2.id ;
-</pre>
-    </div>
-
-    <div class="deep-prose mt-24">
-      <p>이것이 VKG의 핵심 마법이다. 사용자는 온톨로지의 개념과 관계로 쿼리를 작성하고, 시스템이 그것을 DB가 이해하는 언어로 번역한다. 온톨로지 엔지니어와 DB 관리자의 역할 분리가 명확해지고, <strong>도메인 전문가가 SQL을 모르고도 복잡한 데이터 탐색을 할 수 있게 된다</strong>.</p>
-    </div>
-
-    <!-- When to use / when not -->
-    <div class="use-case-grid">
-      <div class="use-case-box yes">
-        <div class="use-case-label">✓ R2RML 적합한 상황</div>
-        <ul class="use-case-list">
-          <li>기존 운영 DB를 이동하지 않고 온톨로지 레이어가 필요할 때</li>
-          <li>데이터가 실시간으로 변경되어 최신성이 중요할 때</li>
-          <li>이종 DB(MSSQL, PostgreSQL, MySQL 혼합) 통합</li>
-          <li>ETL 파이프라인 유지비용을 없애고 싶을 때</li>
-          <li>연구기관의 이종 데이터 소스 통합 (논문·임상·특허)</li>
-        </ul>
-      </div>
-      <div class="use-case-box no">
-        <div class="use-case-label">× 주의가 필요한 상황</div>
-        <ul class="use-case-list">
-          <li>복잡한 집계(윈도우 함수, 중첩 집계)가 많은 경우</li>
-          <li>비정형 데이터(텍스트, 이미지)가 주요 소스인 경우</li>
-          <li>원본 DB 스키마가 자주 바뀌는 불안정한 환경</li>
-          <li>초고속 OLAP 쿼리(밀리초 단위 응답)가 필요한 경우</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════
-       SECTION 4: TOOL COMPARISON
-  ═══════════════════════════════════════ -->
-  <section id="tool">
-    <div class="section-header">
-      <div class="section-kicker">
-        도구 비교 · Tool Guide
-        <span class="read-time">약 5분 읽기</span>
-      </div>
-      <h2 class="section-title">2026 시맨틱레이어 스택 선택 가이드</h2>
-      <div class="section-rule"></div>
-    </div>
-
-    <p class="tool-intro">
-      시맨틱레이어 도구의 선택은 단순한 기능 비교가 아니다 — 팀의 기술 문화, 데이터 스택, 장기 전략과 맞아야 한다. dbt MetricFlow, Cube, AtScale, Snowflake Semantic Views 네 가지 주요 도구를 핵심 차원에서 비교하고, 상황별 추천을 제시한다.
-    </p>
-
-    <!-- comparison matrix -->
-    <div class="matrix-wrap">
-      <table class="matrix">
+  <div class="deep-section">
+    <div class="deep-h3">주요 7종 비교 매트릭스</div>
+    <div class="compare-table-wrap">
+      <table>
         <thead>
           <tr>
-            <th>비교 항목</th>
-            <th>dbt MetricFlow</th>
-            <th>Cube</th>
-            <th>AtScale</th>
-            <th>Snowflake SV</th>
+            <th>도구</th>
+            <th>오픈소스</th>
+            <th>OSI 지원</th>
+            <th>KG 연동</th>
+            <th>클라우드</th>
+            <th>러닝커브</th>
+            <th>비용</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>오픈소스 여부</td>
-            <td class="cb-y">✓ MIT 라이선스</td>
-            <td class="cb-p">일부 오픈소스</td>
-            <td class="cb-n">상용 전용</td>
-            <td class="cb-n">Snowflake 전용</td>
+            <td>dbt MetricFlow</td>
+            <td><span class="badge badge-green">✓ 오픈소스</span></td>
+            <td><span class="badge badge-green">✓ 1차 구현</span></td>
+            <td><span class="badge badge-yellow">제한적</span></td>
+            <td><span class="badge badge-blue">멀티</span></td>
+            <td><span class="badge badge-green">낮음</span></td>
+            <td><span class="badge badge-green">무료(코어)</span></td>
           </tr>
           <tr>
-            <td>멀티 클라우드</td>
-            <td class="cb-y">✓ 완전 지원</td>
-            <td class="cb-y">✓ 지원</td>
-            <td class="cb-y">✓ 지원</td>
-            <td class="cb-r">Snowflake만</td>
+            <td>Snowflake Semantic Views</td>
+            <td><span class="badge badge-red">✗ 독점</span></td>
+            <td><span class="badge badge-green">✓ 1차 구현</span></td>
+            <td><span class="badge badge-yellow">Cortex AI</span></td>
+            <td><span class="badge badge-red">Snowflake only</span></td>
+            <td><span class="badge badge-green">낮음</span></td>
+            <td><span class="badge badge-yellow">크레딧 기반</span></td>
           </tr>
           <tr>
-            <td>KG / 온톨로지 연동</td>
-            <td class="cb-p">간접 (dbt + 외부)</td>
-            <td class="cb-p">제한적</td>
-            <td class="cb-p">파트너십 경유</td>
-            <td class="cb-n">미지원</td>
+            <td>Timbr</td>
+            <td><span class="badge badge-red">✗ 독점</span></td>
+            <td><span class="badge badge-yellow">로드맵</span></td>
+            <td><span class="badge badge-green">✓ OWL/SPARQL</span></td>
+            <td><span class="badge badge-blue">멀티</span></td>
+            <td><span class="badge badge-yellow">중간</span></td>
+            <td><span class="badge badge-red">엔터프라이즈</span></td>
           </tr>
           <tr>
-            <td>러닝커브</td>
-            <td class="cb-p">중간 (YAML 숙련)</td>
-            <td class="cb-p">중간 (JS/TS 설정)</td>
-            <td class="cb-n">높음 (엔터프라이즈)</td>
-            <td class="cb-y">낮음 (UI/자연어)</td>
+            <td>Ontop VKG</td>
+            <td><span class="badge badge-green">✓ 오픈소스</span></td>
+            <td><span class="badge badge-yellow">계획중</span></td>
+            <td><span class="badge badge-green">✓ OBDA 네이티브</span></td>
+            <td><span class="badge badge-blue">멀티</span></td>
+            <td><span class="badge badge-red">높음</span></td>
+            <td><span class="badge badge-green">무료(코어)</span></td>
           </tr>
           <tr>
-            <td>Git 버전 관리</td>
-            <td class="cb-y">✓ 네이티브</td>
-            <td class="cb-y">✓ 지원</td>
-            <td class="cb-p">제한적</td>
-            <td class="cb-r">미지원</td>
+            <td>AtScale</td>
+            <td><span class="badge badge-red">✗ 독점</span></td>
+            <td><span class="badge badge-green">✓ 지원</span></td>
+            <td><span class="badge badge-yellow">제한적</span></td>
+            <td><span class="badge badge-blue">멀티</span></td>
+            <td><span class="badge badge-yellow">중간</span></td>
+            <td><span class="badge badge-red">엔터프라이즈</span></td>
           </tr>
           <tr>
-            <td>AI 자동화</td>
-            <td class="cb-p">LLM 보조 (써드파티)</td>
-            <td class="cb-p">AI 어시스턴트 Beta</td>
-            <td class="cb-p">제한적</td>
-            <td class="cb-y">✓ Autopilot 네이티브</td>
+            <td>Cube.dev</td>
+            <td><span class="badge badge-green">✓ 오픈소스</span></td>
+            <td><span class="badge badge-yellow">로드맵</span></td>
+            <td><span class="badge badge-yellow">제한적</span></td>
+            <td><span class="badge badge-blue">멀티</span></td>
+            <td><span class="badge badge-yellow">중간</span></td>
+            <td><span class="badge badge-green">무료(셀프호스트)</span></td>
           </tr>
           <tr>
-            <td>엔터프라이즈 거버넌스</td>
-            <td class="cb-y">✓ 강점</td>
-            <td class="cb-p">중간</td>
-            <td class="cb-y">✓ 강점</td>
-            <td class="cb-y">✓ RLS 자동 상속</td>
-          </tr>
-          <tr>
-            <td>월 비용 (스타트업 기준)</td>
-            <td class="cb-y">무료 (오픈소스)</td>
-            <td class="cb-p">$500~/월</td>
-            <td class="cb-n">별도 협의</td>
-            <td class="cb-p">Snowflake 크레딧</td>
+            <td>metaphactory</td>
+            <td><span class="badge badge-red">✗ 독점</span></td>
+            <td><span class="badge badge-yellow">계획중</span></td>
+            <td><span class="badge badge-green">✓ RDF 네이티브</span></td>
+            <td><span class="badge badge-blue">멀티</span></td>
+            <td><span class="badge badge-red">높음</span></td>
+            <td><span class="badge badge-red">엔터프라이즈</span></td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- expandable tool details -->
-    <div class="mt-24">
-
-      <div class="tool-row" onclick="toggleCard(this)">
-        <div class="tool-row-head">
-          <div class="tool-row-icon" style="background:#ff690015;">🟧</div>
-          <div class="tool-row-meta">
-            <div class="tool-row-name">dbt MetricFlow 0.9</div>
-            <div class="tool-row-sub">코드 우선 · Git 네이티브 · 멀티 DWH</div>
-          </div>
-          <div class="tool-row-score">코드팀<small>최적 선택</small></div>
-          <div class="tool-row-chevron">▾</div>
-        </div>
-        <div class="card-body">
-          <div class="card-body-inner">
-            <div class="prose">
-              <p>MetricFlow는 시맨틱레이어를 <strong>코드 아티팩트로 취급</strong>한다. YAML 파일로 메트릭을 정의하고, Git으로 관리하며, CI/CD 파이프라인에서 테스트한다. 이 철학은 이미 dbt를 사용하는 데이터 엔지니어링 팀에게 자연스럽게 맞는다. v0.9에서 Derived Metric 중첩 참조가 완전 지원되면서, 복잡한 비즈니스 로직도 단일 YAML에 담을 수 있게 됐다.</p>
-              <p>Snowflake, BigQuery, DuckDB, Databricks 등 주요 DWH를 모두 지원하고, 완전 오픈소스(MIT)로 락인 걱정이 없다. 단점은 초기 설정과 YAML 스키마 학습에 시간이 필요하다는 것이다.</p>
-            </div>
-            <div class="chip-row">
-              <span class="chip">MIT 오픈소스</span><span class="chip">멀티 DWH</span><span class="chip">Git 네이티브</span><span class="chip">Derived Metric 중첩</span><span class="chip">5× 쿼리 속도</span>
-            </div>
-          </div>
-        </div>
+    <div class="recommend-box">
+      <h4>유즈케이스별 추천</h4>
+      <div class="recommend-item">
+        <span class="recommend-label">dbt 중심 팀</span>
+        <span class="recommend-text"><strong>dbt MetricFlow</strong> — 기존 dbt 프로젝트와 완벽 통합. SQL 기반 메트릭 정의를 선호하는 팀에 최적. OSI 1차 구현체라 생태계 호환성도 우수.</span>
       </div>
-
-      <div class="tool-row" onclick="toggleCard(this)">
-        <div class="tool-row-head">
-          <div class="tool-row-icon" style="background:#ff6b6b15;">🔴</div>
-          <div class="tool-row-meta">
-            <div class="tool-row-name">Cube (구 Cube.js)</div>
-            <div class="tool-row-sub">API 우선 · JS/TS 정의 · BI 통합 강점</div>
-          </div>
-          <div class="tool-row-score">API팀<small>최적 선택</small></div>
-          <div class="tool-row-chevron">▾</div>
-        </div>
-        <div class="card-body">
-          <div class="card-body-inner">
-            <div class="prose">
-              <p>Cube는 시맨틱레이어를 <strong>API 레이어로 노출</strong>하는 데 강점이 있다. JavaScript/TypeScript로 큐브(cube)와 메트릭을 정의하고, REST/GraphQL/SQL API로 BI 도구와 커스텀 애플리케이션에 동시에 제공한다. 풀스택 개발팀이 직접 데이터 API를 관리할 때 자연스럽다.</p>
-              <p>엔터프라이즈 플랜은 캐싱, RBAC, 멀티테넌시를 지원하지만 비용이 증가한다. dbt와 함께 사용하는 팀도 많다 — dbt로 트랜스폼을 처리하고 Cube로 API를 제공하는 패턴이다.</p>
-            </div>
-            <div class="chip-row">
-              <span class="chip">REST/GraphQL/SQL API</span><span class="chip">JS/TS 정의</span><span class="chip">내장 캐시</span><span class="chip">dbt 통합</span>
-            </div>
-          </div>
-        </div>
+      <div class="recommend-item">
+        <span class="recommend-label">Snowflake 올인팀</span>
+        <span class="recommend-text"><strong>Snowflake Semantic Views + Timbr</strong> — Snowflake 내에서 시맨틱레이어를 완결하고 싶다면 Semantic Views. 온톨로지 기반 고급 추론이 필요하면 Timbr 추가.</span>
       </div>
-
-      <div class="tool-row" onclick="toggleCard(this)">
-        <div class="tool-row-head">
-          <div class="tool-row-icon" style="background:#7b93ff15;">🔵</div>
-          <div class="tool-row-meta">
-            <div class="tool-row-name">AtScale</div>
-            <div class="tool-row-sub">엔터프라이즈 BI · MDX 호환 · 대기업 특화</div>
-          </div>
-          <div class="tool-row-score">대기업<small>레거시 BI 팀</small></div>
-          <div class="tool-row-chevron">▾</div>
-        </div>
-        <div class="card-body">
-          <div class="card-body-inner">
-            <div class="prose">
-              <p>AtScale은 <strong>기존 BI 투자를 보호하면서 클라우드 DWH로 전환</strong>하려는 대기업을 위한 솔루션이다. MDX 쿼리(Excel, Power BI 레거시) 호환성이 핵심 차별화 요소다. SSAS(SQL Server Analysis Services)를 사용하던 금융·제조 기업의 클라우드 마이그레이션 경로로 자주 채택된다.</p>
-              <p>러닝커브가 높고 비용이 상당하지만, 레거시 BI 스택과의 호환성이 결정적으로 중요한 환경에서는 대안이 없다.</p>
-            </div>
-            <div class="chip-row">
-              <span class="chip">MDX 호환</span><span class="chip">SSAS 마이그레이션</span><span class="chip">엔터프라이즈 거버넌스</span><span class="chip">멀티 클라우드</span>
-            </div>
-          </div>
-        </div>
+      <div class="recommend-item">
+        <span class="recommend-label">온톨로지 우선팀</span>
+        <span class="recommend-text"><strong>Ontop VKG</strong> — 데이터 이동 없이 기존 RDBMS를 시맨틱레이어로 노출해야 하는 경우. 러닝커브가 높지만 R2RML/OBDA 전문 인력 있다면 가장 강력한 오픈소스 선택지.</span>
       </div>
-
-      <div class="tool-row" onclick="toggleCard(this)">
-        <div class="tool-row-head">
-          <div class="tool-row-icon" style="background:#4ecb8d15;">❄️</div>
-          <div class="tool-row-meta">
-            <div class="tool-row-name">Snowflake Semantic Views</div>
-            <div class="tool-row-sub">Autopilot GA · Cortex Analyst 네이티브 · LLM 친화</div>
-          </div>
-          <div class="tool-row-score">Snowflake팀<small>빠른 시작</small></div>
-          <div class="tool-row-chevron">▾</div>
-        </div>
-        <div class="card-body">
-          <div class="card-body-inner">
-            <div class="prose">
-              <p>Snowflake를 메인 DWH로 사용하는 팀에게 Semantic Views는 <strong>가장 낮은 진입 장벽</strong>을 제공한다. Autopilot GA로 자연어 설명만으로 시맨틱 뷰를 생성할 수 있고, Cortex Analyst와 네이티브로 연동되어 비즈니스 사용자의 자연어 쿼리를 즉시 지원한다.</p>
-              <p>RLS 자동 상속으로 보안도 강하다. 단점은 명확하다: Snowflake에 완전히 종속되며, Git 기반 버전 관리가 되지 않는다. 코드 리뷰와 변경 이력이 필요한 팀에게는 적합하지 않다.</p>
-            </div>
-            <div class="chip-row">
-              <span class="chip">Autopilot AI 생성</span><span class="chip">Cortex Analyst 네이티브</span><span class="chip">RLS 자동 상속</span><span class="chip">낮은 진입 장벽</span>
-            </div>
-          </div>
-        </div>
+      <div class="recommend-item">
+        <span class="recommend-label">KG+LLM 통합팀</span>
+        <span class="recommend-text"><strong>metaphactory</strong> — RDF 네이티브 환경에서 LLM 통합과 시각적 KG 탐색이 모두 필요한 경우. 엔터프라이즈 가격이지만 KG 플랫폼으로는 가장 성숙한 제품.</span>
       </div>
-
-    </div>
-
-    <!-- Recommendations -->
-    <h3 style="font-family:var(--font-serif);font-size:18px;font-weight:700;margin-top:36px;margin-bottom:16px;color:var(--ink);">상황별 추천</h3>
-    <div class="rec-grid">
-      <div class="rec-card">
-        <div class="rec-card-scenario">스타트업 / 성장기</div>
-        <div class="rec-card-title">dbt MetricFlow부터 시작하라</div>
-        <div class="rec-card-body">무료이고, Git 친화적이며, 데이터 팀의 기술 문화를 코드 중심으로 구축할 수 있다. Snowflake를 쓴다면 Semantic Views를 병행해 AI 쿼리를 빠르게 활성화하는 것도 좋다.</div>
-        <span class="rec-badge">dbt MetricFlow</span>
-      </div>
-      <div class="rec-card">
-        <div class="rec-card-scenario">Snowflake 올인 + 비기술 사용자 多</div>
-        <div class="rec-card-title">Snowflake Semantic Views + Autopilot</div>
-        <div class="rec-card-body">Cortex Analyst를 통한 자연어 쿼리가 즉시 활성화된다. 비기술직 분석가에게 SQL 없는 데이터 탐색 환경을 제공할 수 있다. 다만 Snowflake 종속성을 인식하고 결정하라.</div>
-        <span class="rec-badge">Snowflake SV</span>
-      </div>
-      <div class="rec-card">
-        <div class="rec-card-scenario">API 기반 데이터 제품 팀</div>
-        <div class="rec-card-title">Cube로 유니버설 시맨틱 API를</div>
-        <div class="rec-card-body">BI 도구와 커스텀 앱에 동시에 동일한 메트릭을 제공해야 할 때 Cube의 멀티 API 방식이 빛난다. dbt와 함께 트랜스폼–서빙 레이어를 분리하는 구조가 흔한 패턴이다.</div>
-        <span class="rec-badge">Cube</span>
-      </div>
-      <div class="rec-card">
-        <div class="rec-card-scenario">레거시 BI + 클라우드 전환</div>
-        <div class="rec-card-title">AtScale — MDX 호환성이 결정한다</div>
-        <div class="rec-card-body">Excel 파워 유저와 레거시 Power BI 보고서가 산더미처럼 쌓인 대기업이라면, MDX 호환을 유지하면서 클라우드 DWH로 전환하는 AtScale이 현실적 선택이다.</div>
-        <span class="rec-badge">AtScale</span>
+      <div class="recommend-item">
+        <span class="recommend-label">스타트업 / 개발팀</span>
+        <span class="recommend-text"><strong>Cube.dev</strong> — 오픈소스, 셀프호스팅, API-first. BI 도구나 프론트엔드에서 직접 시맨틱레이어 API를 호출하는 구조에 최적. 커뮤니티와 문서 품질이 우수.</span>
       </div>
     </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════
-       SECTION 5: SOURCES
-  ═══════════════════════════════════════ -->
-  <section id="sources">
-    <div class="section-header">
-      <div class="section-kicker">출처 · Sources</div>
-      <h2 class="section-title">참고 링크 & 자료</h2>
-      <div class="section-rule"></div>
-    </div>
-
-    <ul class="source-list">
-      <li><a href="https://www.snowflake.com/en/blog/semantic-view-autopilot/" target="_blank" rel="noopener">
-        <span class="src-icon">❄</span>
-        <span class="src-text">Snowflake Semantic View Autopilot — 정식 출시 블로그</span>
-      </a></li>
-      <li><a href="https://www.gartner.com/en/articles/what-is-a-knowledge-graph" target="_blank" rel="noopener">
-        <span class="src-icon">G</span>
-        <span class="src-text">Gartner: Knowledge Graphs as GenAI Critical Enabler — 공식 보고서</span>
-      </a></li>
-      <li><a href="https://microsoft.github.io/graphrag/" target="_blank" rel="noopener">
-        <span class="src-icon">M</span>
-        <span class="src-text">Microsoft GraphRAG v2 — 오픈소스 공식 문서</span>
-      </a></li>
-      <li><a href="https://metaphactory.com/" target="_blank" rel="noopener">
-        <span class="src-icon">K</span>
-        <span class="src-text">metaphactory — 엔터프라이즈 지식그래프 플랫폼</span>
-      </a></li>
-      <li><a href="https://ontop-vkg.org/" target="_blank" rel="noopener">
-        <span class="src-icon">V</span>
-        <span class="src-text">Ontop VKG — R2RML 기반 OBDA 오픈소스 엔진</span>
-      </a></li>
-      <li><a href="https://docs.getdbt.com/docs/build/metricflow-time-spine" target="_blank" rel="noopener">
-        <span class="src-icon">d</span>
-        <span class="src-text">dbt MetricFlow 0.9 — 공식 릴리즈 노트 & 문서</span>
-      </a></li>
-      <li><a href="https://www.w3.org/TR/r2rml/" target="_blank" rel="noopener">
-        <span class="src-icon">W</span>
-        <span class="src-text">R2RML: RDB to RDF Mapping Language — W3C 공식 표준</span>
-      </a></li>
-      <li><a href="https://spec.edmcouncil.org/fibo/" target="_blank" rel="noopener">
-        <span class="src-icon">F</span>
-        <span class="src-text">FIBO — Financial Industry Business Ontology 스펙</span>
-      </a></li>
-      <li><a href="https://cube.dev/docs" target="_blank" rel="noopener">
-        <span class="src-icon">C</span>
-        <span class="src-text">Cube 공식 문서 — 시맨틱레이어 API 플랫폼</span>
-      </a></li>
-    </ul>
-  </section>
+  </div>
 
 </main>
 
-<!-- FOOTER -->
-<div class="footer-wrap">
-  <div class="footer">
-    <div class="footer-top">
-      <div class="footer-brand">Semantic<em>Brief</em></div>
-      <div class="footer-copy">Vol. 1 · No. 2 · 2026년 3월 30일</div>
-    </div>
-    <div class="footer-copy" style="color:var(--ink4);">
-      온톨로지 &amp; 시맨틱레이어 · 지식그래프 · AI 데이터 인프라 &nbsp;·&nbsp; Claude AI 자동 생성
-    </div>
+<footer>
+  <div class="footer-inner">
+    <p>
+      Semantic Brief · 온톨로지 &amp; 지식그래프 &amp; AI 데이터 인프라 동향지<br/>
+      매일 오전 8시 자동 발행 · Vol.1 No.3 · 2026년 4월 1일<br/>
+      <a href="https://kiora1120.github.io/semantic-brief/" style="color:var(--ink4); text-decoration:none;">kiora1120.github.io/semantic-brief</a>
+    </p>
   </div>
-</div>
+</footer>
 
-<!-- SCRIPT -->
 <script>
-  /* Reading progress bar */
-  const bar = document.getElementById('progress-bar');
   window.addEventListener('scroll', () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    bar.style.width = (max > 0 ? (window.scrollY / max * 100) : 0) + '%';
-  }, { passive: true });
-
-  /* Active nav highlight */
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-wrap a');
-  window.addEventListener('scroll', () => {
-    let cur = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 120) cur = s.id;
+    const d = document.documentElement;
+    const pct = (d.scrollTop / (d.scrollHeight - d.clientHeight)) * 100;
+    document.getElementById('progress').style.width = pct + '%';
+  });
+  document.querySelectorAll('.news-header').forEach(h => {
+    h.addEventListener('click', () => {
+      const item = h.closest('.news-item');
+      const body = item.querySelector('.news-body');
+      item.classList.toggle('open');
+      body.classList.toggle('open');
     });
-    navLinks.forEach(a => {
-      a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+  });
+  document.querySelectorAll('nav a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});
     });
-  }, { passive: true });
-
-  /* Toggle expand/collapse */
-  function toggleCard(el) {
-    el.classList.toggle('open');
-  }
+  });
 </script>
-
 </body>
 </html>
