@@ -37,12 +37,17 @@
       font-family: var(--font-sans); letter-spacing: 0.5px; }
     .masthead-meta strong { display: block; color: var(--ink2); font-size: 12px; }
     .masthead-sub { font-size: 11px; color: var(--ink3); padding-bottom: 14px; }
-    nav { display: flex; gap: 0; border-top: 1px solid var(--rule); }
+    nav { display: flex; gap: 0; border-top: 1px solid var(--rule); align-items: center; }
     nav a { padding: 10px 16px; font-size: 12px; font-weight: 500; color: var(--ink3);
       text-decoration: none; letter-spacing: 0.5px; border-bottom: 2px solid transparent;
       transition: color .2s, border-color .2s; }
     nav a:hover { color: var(--ink); }
     nav a.active { color: var(--ink); border-bottom-color: var(--a-editorial); }
+    nav .nav-archive { margin-left: auto; display: flex; align-items: center; gap: 5px;
+      background: var(--card2); border: 1px solid var(--rule); border-radius: 20px;
+      padding: 4px 12px; font-size: 11px; font-weight: 600; color: var(--a-editorial);
+      letter-spacing: 0.5px; border-bottom: none; transition: background .2s, border-color .2s; }
+    nav .nav-archive:hover { background: var(--a-editorial-dim); border-color: var(--a-editorial); color: var(--a-editorial); }
 
     /* MAIN */
     main { max-width: var(--max); margin: 0 auto; padding: 0 20px 80px; }
@@ -177,7 +182,7 @@
       <a href="#news">뉴스</a>
       <a href="#deepdive">딥다이브</a>
       <a href="#compare">도구비교</a>
-      <a href="archive.html">출처</a>
+      <a href="archive.html" class="nav-archive">☰ 아카이브</a>
     </nav>
   </div>
 </header>
